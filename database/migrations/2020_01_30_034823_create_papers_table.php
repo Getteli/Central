@@ -18,7 +18,7 @@ class CreatePapersTable extends Migration
             $table->string('Descricao',100);
             $table->char('CodPapel',4);
             $table->boolean('Ativo');
-            $table->boolean('Deletado');
+            $table->boolean('Deletado')->nullable();
             $table->timestamps(); // data cadastro e modificado
         });
     }

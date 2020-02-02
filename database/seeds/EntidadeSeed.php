@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
 use App\Entidade;
 
 class EntidadeSeed extends Seeder
@@ -16,15 +15,11 @@ class EntidadeSeed extends Seeder
         //
         $Entidade = new Entidade();
 
-        $Entidade->PrimeiroNome = "Douglas";
-        $Entidade->SobreNome = "Araujo";
-        $Entidade->PrimeiroNome = "Douglas";
-        $Entidade->Email = "Douglas_Araujo018@outlook.com";
-        $Entidade->Ativo = 1;
-        $Entidade->Sexo = "M";
-        $Entidade->Apelido = "Getteli";
-        $Entidade->Cpf = "110.136.717-24";
-        $Entidade->Password = Hash::make("Douglas05");
+        $Entidade->PrimeiroNome = "Admin";
+        $Entidade->Email = "agenc921_admin@publikando.com";
+        $Entidade->Apelido = "Admin";
+        $Entidade->Ativo = true;
+        $Entidade->Password = Hash::make("publik@ndo.2020");
         $Entidade->save();
 
         $this->command->info('Seed entidade exemplo -- Central');

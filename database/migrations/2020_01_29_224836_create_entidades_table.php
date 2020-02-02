@@ -21,7 +21,7 @@ class CreateEntidadesTable extends Migration
             $table->string("OrgaoEmissor",15)->nullable();
             $table->char("Rg",13)->nullable();
             $table->string("Nacionalidade",25)->nullable();
-            $table->char("Cpf",15);
+            $table->char("Cpf",15)->nullable();
             $table->boolean("Deletado")->nullable();
             $table->boolean("Ativo");
             $table->char("Sexo",1)->nullable();
