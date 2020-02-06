@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+Auth::routes(['register' => false]); // Cancela a rota de registro
+
+Route::get('/home', 'HomeController@index')->name('home');
