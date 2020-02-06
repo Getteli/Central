@@ -1,21 +1,17 @@
 {
-    "name": "publikando/Central",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "Sistema online de gerenciamento de usuarios/clientes/tarefas entre outros - Central .",
+    "description": "The Laravel Framework.",
     "keywords": [
         "framework",
-        "laravel",
-        "Central"
+        "laravel"
     ],
-    "license": "Apache license 2.0",
+    "license": "MIT",
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^1.1",
-        "monolog/monolog": "^2.0",
-        "pagseguro/pagseguro-php-sdk": "^6.0"
+        "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

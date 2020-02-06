@@ -11,7 +11,6 @@
 |
 */
 
-// pagina inicial
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
