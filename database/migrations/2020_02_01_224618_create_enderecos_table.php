@@ -27,8 +27,8 @@ class CreateEnderecosTable extends Migration
             $table->integer('idCliente')->unsigned()->nullable();
             $table->foreign('idCliente')->references('idCliente')->on('clientes');
 
-            $table->integer('idUsuario')->unsigned()->nullable();
-            $table->foreign('idUsuario')->references('id')->on('users');
+            $table->integer('idUser')->unsigned()->nullable();
+            $table->foreign('idUser')->references('id')->on('users');
 
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");

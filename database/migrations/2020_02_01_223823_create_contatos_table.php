@@ -25,8 +25,8 @@ class CreateContatosTable extends Migration
             $table->integer('idCliente')->unsigned()->nullable();
             $table->foreign('idCliente')->references('IdCliente')->on('clientes');
 
-            $table->integer('idUsuario')->unsigned()->nullable();
-            $table->foreign('idUsuario')->references('id')->on('users');
+            $table->integer('idUser')->unsigned()->nullable();
+            $table->foreign('idUser')->references('id')->on('users');
 
             $table->timestamps(); // data cadastro e modificado
         });
