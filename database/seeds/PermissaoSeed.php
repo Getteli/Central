@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Permissao;
+use App\CodeRandom;
 
 class PermissaoSeed extends Seeder
 {
@@ -12,236 +13,243 @@ class PermissaoSeed extends Seeder
      */
     public function run()
     {
+        $this->command->info('Seed permissoes -- Central');
+
         // LISTAR
+        if(!Permissao::all()->count()){
 
-        $Permissao = Permissao::create([
-            'Descricao'=> 'Listar_usuario',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao = Permissao::create([
+                'descricao'=> 'Listar_usuario',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
+            
+            $Permissao2 = Permissao::create([
+                'descricao'=> 'Listar_cliente',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao2 = Permissao::create([
-            'Descricao'=> 'Listar_cliente',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao3 = Permissao::create([
+                'descricao'=> 'Listar_tarefas',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao3 = Permissao::create([
-            'Descricao'=> 'Listar_tarefas',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao4 = Permissao::create([
+                'descricao'=> 'Listar_eventos',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao4 = Permissao::create([
-            'Descricao'=> 'Listar_eventos',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao5 = Permissao::create([
+                'descricao'=> 'Listar_papeis',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao5 = Permissao::create([
-            'Descricao'=> 'Listar_papeis',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao6 = Permissao::create([
+                'descricao'=> 'Listar_permissoes',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao6 = Permissao::create([
-            'Descricao'=> 'Listar_permissoes',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao7 = Permissao::create([
+                'descricao'=> 'Listar_segmentos',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao7 = Permissao::create([
-            'Descricao'=> 'Listar_segmentos',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao8 = Permissao::create([
+                'descricao'=> 'Listar_servicos',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao8 = Permissao::create([
-            'Descricao'=> 'Listar_servicos',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao9 = Permissao::create([
+                'descricao'=> 'Listar_contas',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao9 = Permissao::create([
-            'Descricao'=> 'Listar_contas',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            // CRIAR
 
-        // CRIAR
+            $Permissao10 = Permissao::create([
+                'descricao'=> 'criar_usuario',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao10 = Permissao::create([
-            'Descricao'=> 'criar_usuario',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao11 = Permissao::create([
+                'descricao'=> 'criar_cliente',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao11 = Permissao::create([
-            'Descricao'=> 'criar_cliente',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao12 = Permissao::create([
+                'descricao'=> 'criar_evento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao12 = Permissao::create([
-            'Descricao'=> 'criar_evento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao13 = Permissao::create([
+                'descricao'=> 'criar_segmento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao13 = Permissao::create([
-            'Descricao'=> 'criar_segmento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao14 = Permissao::create([
+                'descricao'=> 'criar_servicos',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao14 = Permissao::create([
-            'Descricao'=> 'criar_servicos',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao15 = Permissao::create([
+                'descricao'=> 'criar_tarefa',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao15 = Permissao::create([
-            'Descricao'=> 'criar_tarefa',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao16 = Permissao::create([
+                'descricao'=> 'criar_papel',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao16 = Permissao::create([
-            'Descricao'=> 'criar_papel',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao17 = Permissao::create([
+                'descricao'=> 'criar_permissao',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao17 = Permissao::create([
-            'Descricao'=> 'criar_permissao',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao18 = Permissao::create([
+                'descricao'=> 'criar_contas',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao18 = Permissao::create([
-            'Descricao'=> 'criar_contas',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            // EDITAR
 
-        // EDITAR
+            $Permissao19 = Permissao::create([
+                'descricao'=> 'editar_usuario',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao19 = Permissao::create([
-            'Descricao'=> 'editar_usuario',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao20 = Permissao::create([
+                'descricao'=> 'editar_cliente',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao20 = Permissao::create([
-            'Descricao'=> 'editar_cliente',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao21 = Permissao::create([
+                'descricao'=> 'editar_evento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao21 = Permissao::create([
-            'Descricao'=> 'editar_evento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao22 = Permissao::create([
+                'descricao'=> 'editar_segmento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao22 = Permissao::create([
-            'Descricao'=> 'editar_segmento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao23 = Permissao::create([
+                'descricao'=> 'editar_servicos',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao23 = Permissao::create([
-            'Descricao'=> 'editar_servicos',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao24 = Permissao::create([
+                'descricao'=> 'editar_tarefa',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao24 = Permissao::create([
-            'Descricao'=> 'editar_tarefa',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao25 = Permissao::create([
+                'descricao'=> 'editar_papel',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao25 = Permissao::create([
-            'Descricao'=> 'editar_papel',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao26 = Permissao::create([
+                'descricao'=> 'editar_permissao',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao26 = Permissao::create([
-            'Descricao'=> 'editar_permissao',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao27 = Permissao::create([
+                'descricao'=> 'editar_contas',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao27 = Permissao::create([
-            'Descricao'=> 'editar_contas',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            // DELETAR
 
-        // DELETAR
+            $Permissao28 = Permissao::create([
+                'descricao'=> 'deletar_usuario',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao28 = Permissao::create([
-            'Descricao'=> 'deletar_usuario',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao29 = Permissao::create([
+                'descricao'=> 'deletar_cliente',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao29 = Permissao::create([
-            'Descricao'=> 'deletar_cliente',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao30 = Permissao::create([
+                'descricao'=> 'deletar_evento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao30 = Permissao::create([
-            'Descricao'=> 'deletar_evento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao31 = Permissao::create([
+                'descricao'=> 'deletar_segmento',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao31 = Permissao::create([
-            'Descricao'=> 'deletar_segmento',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao32 = Permissao::create([
+                'descricao'=> '_servicdeletaros',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao32 = Permissao::create([
-            'Descricao'=> '_servicdeletaros',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao33 = Permissao::create([
+                'descricao'=> 'deletar_tarefa',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao33 = Permissao::create([
-            'Descricao'=> 'deletar_tarefa',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao34 = Permissao::create([
+                'descricao'=> 'deletar_papel',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao34 = Permissao::create([
-            'Descricao'=> 'deletar_papel',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao35 = Permissao::create([
+                'descricao'=> 'deletar_permissao',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao35 = Permissao::create([
-            'Descricao'=> 'deletar_permissao',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Permissao36 = Permissao::create([
+                'descricao'=> 'deletar_contas',
+                'codPermissao'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Permissao36 = Permissao::create([
-            'Descricao'=> 'deletar_contas',
-            'CodPermissao'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+        }
+
+        $this->command->info('Seed permissoes rodado com sucesso -- Central');
 
     }
 
     public function GetCod()
     {
-        $codP = new Permissao;
-        $cod = $codP->CreateCod();
+        $codP = new CodeRandom;
+        $cod = $codP->CreateCod(4);
         return $cod;
     }
 

@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            $table->integer('idEntidade')->unsigned()->nullable();
-            $table->foreign('idEntidade')->references('idEntidade')->on('entidades');
+            $table->integer('idEntidade')->unsigned()->unique()->nullable();
+            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade');
 
             $table->integer('idPapel')->unsigned()->nullable();
             $table->foreign('idPapel')->references('idPapel')->on('papers');

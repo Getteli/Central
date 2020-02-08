@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Papel;
+use App\CodeRandom;
 
 class PapelSeed extends Seeder
 {
@@ -13,31 +14,35 @@ class PapelSeed extends Seeder
     public function run()
     {
         //
+        $this->command->info('Seed papel -- Central');
 
-        $Papel = Papel::create([
-            'Descricao'=> 'Papel de administrador',
-            'CodPapel'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+        if(!Papel::all()->count()){
 
-        $Papel2 = Papel::create([
-            'Descricao'=> 'Papel de gerente',
-            'CodPapel'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Papel = Papel::create([
+                'descricao'=> 'Papel de administrador',
+                'codPapel'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $Papel3 = Papel::create([
-            'Descricao'=> 'Papel de usuário',
-            'CodPapel'=> $this->GetCod(),
-            'Ativo'=> true
-        ]);
+            $Papel2 = Papel::create([
+                'descricao'=> 'Papel de gerente',
+                'codPapel'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
 
-        $this->command->info('Seed papel exemplo -- Central');
+            $Papel3 = Papel::create([
+                'descricao'=> 'Papel de usuário',
+                'codPapel'=> $this->GetCod(),
+                'ativo'=> true
+            ]);
+        }
+
+        $this->command->info('Seed papel rodado com sucesso -- Central');
     }
 
     public function GetCod(){
-        $codP = new Papel;
-        $cod = $codP->CreateCod();
+        $codP = new CodeRandom;
+        $cod = $codP->CreateCod(4);
         return $cod;
     }
 }

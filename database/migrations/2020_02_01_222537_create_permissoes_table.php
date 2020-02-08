@@ -17,7 +17,7 @@ class CreatePermissoesTable extends Migration
             $table->increments('idPermissao');
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");
-            $table->char('codPermissao',4);
+            $table->char('codPermissao',4)->unique();
             $table->string('descricao',100);
             $table->timestamps(); // data cadastro e modificado
         });

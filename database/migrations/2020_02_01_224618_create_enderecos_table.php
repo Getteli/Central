@@ -25,10 +25,10 @@ class CreateEnderecosTable extends Migration
             $table->char("cep",10);
 
             $table->integer('idCliente')->unsigned()->nullable();
-            $table->foreign('idCliente')->references('idCliente')->on('clientes');
+            $table->foreign('idCliente')->references('idCliente')->on('clientes')->onDelete('cascade');
 
             $table->integer('idUser')->unsigned()->nullable();
-            $table->foreign('idUser')->references('id')->on('users');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
 
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");

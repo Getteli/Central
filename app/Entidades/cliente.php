@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Cliente as Authenticatable;
 
-class cliente extends Authenticatable implements MustVerifyEmailContract
+class Cliente extends Authenticatable implements MustVerifyEmailContract
 {
     use MustVerifyEmail, Notifiable;
 

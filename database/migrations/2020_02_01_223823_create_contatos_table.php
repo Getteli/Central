@@ -23,10 +23,10 @@ class CreateContatosTable extends Migration
             $table->char("ddd",2)->nullable();
 
             $table->integer('idCliente')->unsigned()->nullable();
-            $table->foreign('idCliente')->references('IdCliente')->on('clientes');
+            $table->foreign('idCliente')->references('IdCliente')->on('clientes')->onDelete('cascade');
 
             $table->integer('idUser')->unsigned()->nullable();
-            $table->foreign('idUser')->references('id')->on('users');
+            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps(); // data cadastro e modificado
         });

@@ -11,10 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->command->info('Seeds RODADNDO...');
+
         $this->call(EntidadeSeed::class);
-        $this->call(UserSeed::class);
         $this->call(PapelSeed::class);
         $this->call(PermissaoSeed::class);
+
+        $this->command->info('Seeds rodado com SUCESSO !');
     }
 }

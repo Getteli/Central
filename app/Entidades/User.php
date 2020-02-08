@@ -2,16 +2,13 @@
 
 namespace App;
 
-use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Illuminate\Foundation\Auth\Usuario as Authenticatable;
 
-class usuario extends Authenticatable implements MustVerifyEmailContract
+class User extends Authenticatable
 {
-    use MustVerifyEmail, Notifiable;
-
-    protected $table = "usuarios";
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +16,7 @@ class usuario extends Authenticatable implements MustVerifyEmailContract
      * @var array
      */
     protected $fillable = [
-        'Funcao',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -28,7 +25,7 @@ class usuario extends Authenticatable implements MustVerifyEmailContract
      * @var array
      */
     protected $hidden = [
-        //'password', 'Rg',
+        'password', 'remember_token',
     ];
 
     /**
@@ -37,7 +34,7 @@ class usuario extends Authenticatable implements MustVerifyEmailContract
      * @var array
      */
     protected $casts = [
-        //'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime',
     ];
 
     // pegar a sua relacao com a entidade

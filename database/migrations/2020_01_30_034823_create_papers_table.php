@@ -16,7 +16,7 @@ class CreatePapersTable extends Migration
         Schema::create('papers', function (Blueprint $table) {
             $table->increments('idPapel');
             $table->string('descricao',100);
-            $table->char('codPapel',4);
+            $table->char('codPapel',4)->unique();
             $table->boolean('ativo');
             $table->boolean('deletado')->nullable();
             $table->timestamps(); // data cadastro e modificado

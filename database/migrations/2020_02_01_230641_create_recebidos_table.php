@@ -20,7 +20,7 @@ class CreateRecebidosTable extends Migration
             $table->string("descricao",100);
 
             $table->integer('idPlano')->unsigned()->nullable();
-            $table->foreign('idPlano')->references('idPlano')->on('planos');
+            $table->foreign('idPlano')->references('idPlano')->on('planos')->onDelete('cascade');
 
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");

@@ -14,11 +14,11 @@ class CreatePapeisPermissoesTable extends Migration
     public function up()
     {
         Schema::create('papeisPermissoes', function (Blueprint $table) {
-            $table->integer('idPapel')->unsigned()->nullable();
-            $table->foreign('idPapel')->references('idPapel')->on('papers');
+            $table->integer('idPapel')->unsigned();
+            $table->foreign('idPapel')->references('idPapel')->on('papers')->onDelete('cascade');
 
-            $table->integer('idPermissao')->unsigned()->nullable();
-            $table->foreign('idPermissao')->references('idPermissao')->on('permissoes');
+            $table->integer('idPermissao')->unsigned();
+            $table->foreign('idPermissao')->references('idPermissao')->on('permissoes')->onDelete('cascade');
 
             $table->timestamps(); // data cadastro e modificado
         });

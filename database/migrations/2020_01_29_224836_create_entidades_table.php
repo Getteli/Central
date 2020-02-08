@@ -29,7 +29,7 @@ class CreateEntidadesTable extends Migration
             $table->string("primeiroNome",45);
             $table->string("email",45)->unique();
             $table->string("apelido",45);
-            $table->string("password",70);
+            $table->string("senha",70)->nullable();
             $table->timestamps(); // cada de cadastro e modificado
         });
     }
