@@ -45,4 +45,16 @@ class CodeRandom extends Model
 
         return $token;
     }
+
+    // criar um codigo de licença
+    static function CreateCodLicense($codCli)
+    {
+        $_this = new self;
+        //data
+        $dt = new DateTime('NOW');
+        $dt = $dt->format('YmdHis');
+        $codR = $_this->CreateCod(20);
+
+        return $CodLicense = $dt . $codR . $codCli;
+    }
 }

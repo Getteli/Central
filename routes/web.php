@@ -25,10 +25,33 @@ Auth::routes(['register' => false]);
 // rotas auth's
 Route::post('/login',['as'=>'login', 'uses'=>'AuthController@login']);
 
-// login
-// Route::get('/login',['as'=>'login.page', function () {
-//     return view('auth.login');
-// }]);
+// ROTAS
+// cliente
+Route::get('/cliente/adicionar',['as'=>'cliente.adicionar', function () {
+    return view('content.cliente.adicionar');
+}]);
+
+Route::get('/clientes',['as'=>'clientes', 'uses'=>'ClienteController@list']);
+
+Route::get('/clientes/{idCliente}/{idEntidade}',['as'=>'cliente.editar', 'uses'=>'ClienteController@editar']);
+
+// segmento
+Route::get('/segmento/adicionar',['as'=>'segmento.adicionar', function () {
+    return view('content.segmento.adicionar');
+}]);
+
+Route::get('/segmentos',['as'=>'segmentos', 'uses'=>'SegmentoController@list']);
+
+Route::get('/segmentos/{idSegmento}',['as'=>'segmento.editar', 'uses'=>'SegmentoController@editar']);
+
+// servicos
+Route::get('/servico/adicionar',['as'=>'servico.adicionar', function () {
+    return view('content.servico.adicionar');
+}]);
+
+Route::get('/servicos',['as'=>'servicos', 'uses'=>'ServicoController@list']);
+
+Route::get('/servicos/{idServico}',['as'=>'servico.editar', 'uses'=>'ServicoController@editar']);
 
 
 // rotas only AUTH TRUE
@@ -40,4 +63,18 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/',['as'=>'dashboard', function () {
         return view('dashboard');
     }]);
+
+    // rotas adicionar e atualizar
+    // cliente
+    Route::post('/cliente/salvar',['as'=>'cliente.salvar', 'uses'=>'ClienteController@adicionar']);
+    Route::post('/clientes/atualizar',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
+
+    // segmento
+    Route::post('/segmento/salvar',['as'=>'segmento.salvar', 'uses'=>'SegmentoController@adicionar']);
+    Route::post('/segmentos/atualizar',['as'=>'segmento.atualizar', 'uses'=>'SegmentoController@atualizar']);
+
+    // servico
+    Route::post('/servico/salvar',['as'=>'servico.salvar', 'uses'=>'ServicoController@adicionar']);
+    Route::post('/servicos/atualizar',['as'=>'servico.atualizar', 'uses'=>'ServicoController@atualizar']);
+
 });
