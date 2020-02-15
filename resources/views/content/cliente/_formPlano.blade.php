@@ -18,3 +18,9 @@ colocando seus nomes na descricao + somando seus valores para o preço. select c
 	<input type="date" name="dataPagamentoPlano" class="validade" value="{{ isset($plano->dataPagamento) ? $plano->dataPagamento : '' }}">
 	<label>Data de pagamento</label>
 </div>
+
+<h5>se escolher o segmento que possua site, na gestao tecnologica</h5>
+<div class="input-field">
+	<input type="date" name="codLicense" class="validade" value="{{ isset($license->codLicense) ? $license->codLicense : '' }}">
+	<label>Código para o script q vai na pasta do site do cliente</label>
+</div>
