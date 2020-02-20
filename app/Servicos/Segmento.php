@@ -12,6 +12,7 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "segmentos";
+    protected $primaryKey = 'idSegmento';
 
     /**
      * The attributes that are mass assignable.

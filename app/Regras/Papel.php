@@ -12,6 +12,7 @@ class Papel extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
     
     protected $table = "papers";
+    protected $primaryKey = 'idPapel';
 
     /**
      * The attributes that are mass assignable.

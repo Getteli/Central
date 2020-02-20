@@ -75,6 +75,6 @@ Route::group(['middleware'=>'auth'], function(){
 
     // servico
     Route::post('/servico/salvar',['as'=>'servico.salvar', 'uses'=>'ServicoController@adicionar']);
-    Route::post('/servicos/atualizar',['as'=>'servico.atualizar', 'uses'=>'ServicoController@atualizar']);
+    Route::post('/servicos/atualizar/{idServico}',['as'=>'servico.atualizar', 'uses'=>'ServicoController@atualizar']);
 
 });

@@ -12,6 +12,7 @@ class Calendario extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "calendarios";
+    protected $primaryKey = 'idCalendario';
 
     /**
      * The attributes that are mass assignable.

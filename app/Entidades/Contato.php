@@ -12,6 +12,7 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "contatos";
+    protected $primaryKey = 'idContato';
 
     /**
      * The attributes that are mass assignable.

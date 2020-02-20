@@ -12,6 +12,7 @@ class Permissao extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "permissoes";
+    protected $primaryKey = 'idPermissao';
 
     /**
      * The attributes that are mass assignable.

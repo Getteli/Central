@@ -15,6 +15,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
     protected $connection = 'mysql_two';
 
     protected $table = "licenses";
+    protected $primaryKey = 'idLicense';
 
     /**
      * The attributes that are mass assignable.

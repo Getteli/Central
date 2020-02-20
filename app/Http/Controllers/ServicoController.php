@@ -32,13 +32,13 @@ class ServicoController extends Controller
         }
     }
 
-    public function atualizar(Request $request, $idSeg)
+    public function atualizar(Request $request, $idServ)
     {
         try{
             $dados = $request->all();
 
             // cria a entidade
-            $servico = Servico::find($idSeg);
+            $servico = Servico::find($idServ);
             $servico->servico = $dados['servico'];
             $servico->descricao = $dados['descricao'];
             $servico->idSegmento = $dados['idSegmento'];
@@ -61,9 +61,9 @@ class ServicoController extends Controller
         return view('content.servico.servicos',compact('servicos'));
     }
 
-    public function editar($idSeg)
+    public function editar($idServ)
     {
-        $servico = Servico::where('idServico', '=', $idSeg)->firstOrFail();
+        $servico = Servico::find($idServ);
         
         return view('content.servico.editar', compact('servico'));
     }    

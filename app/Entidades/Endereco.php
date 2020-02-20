@@ -12,6 +12,7 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "enderecos";
+    protected $primaryKey = 'idEndereco';
 
     /**
      * The attributes that are mass assignable.

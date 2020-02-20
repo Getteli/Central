@@ -12,7 +12,8 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "servicos";
-
+    protected $primaryKey = 'idServico';
+    
     /**
      * The attributes that are mass assignable.
      *

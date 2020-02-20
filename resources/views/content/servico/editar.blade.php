@@ -12,7 +12,7 @@
 
             <div class="container">
                 <div class="row">
-                    <form action="{{ route('servico.atualizar') }}" method="post">
+                    <form action="{{ route('servico.atualizar', [$servico->idServico]) }}" method="post">
                         {{csrf_field()}}
                         @include('content.servico._form')
                         <button class="btn blue">Atualizar</button>

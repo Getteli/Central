@@ -12,6 +12,7 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "entidades";
+    protected $primaryKey = 'idEntidade';
 
     /**
      * The attributes that are mass assignable.

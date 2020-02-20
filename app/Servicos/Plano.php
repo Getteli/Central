@@ -10,7 +10,9 @@ use Illuminate\Foundation\Auth\Plano as Authenticatable;
 class Plano extends Authenticatable implements MustVerifyEmailContract
 {
     use MustVerifyEmail, Notifiable;
+
     protected $table = "planos";
+    protected $primaryKey = 'idPlano';
 
     /**
      * The attributes that are mass assignable.

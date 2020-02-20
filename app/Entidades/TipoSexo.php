@@ -7,4 +7,14 @@ abstract class TipoSexo
     const Masculino = "F";
     const Outros = "O";
 
+    // metodo para buscar todas as opcoes
+    static function getAll(){
+
+        $array = array(
+            "Feminino" => "F",
+            "Masculino" => "M",
+            "Outros" => "O",
+        );
+        return $array;
+    }
 }

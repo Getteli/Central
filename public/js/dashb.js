@@ -53,3 +53,7 @@ if(ElemensToast){
         InstanceToast();
     });
 }
+
+$(document).ready(function() {
+    $('select').formSelect();
+});

@@ -12,6 +12,7 @@ class Despesa extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "despesas";
+    protected $primaryKey = 'idDespesa';
 
     /**
      * The attributes that are mass assignable.

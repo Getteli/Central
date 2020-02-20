@@ -121,12 +121,12 @@ class ClienteController extends Controller
 
     public function editar($idCli, $idEnt)
     {
-        $cliente = Cliente::where('idCliente', '=', $idCli)->firstOrFail();
+        $cliente = Cliente::find($idCli);
         
-        $entidade = Entidade::where('idEntidade', '=', $idEnt)->firstOrFail();
+        $entidade = Entidade::find($idEnt);
 
         if(isset($cliente->idPlano)){
-            $plano = Plano::where('idPlano', '=', $cliente->idPlano)->firstOrFail();
+            $plano = Plano::find($cliente->idPlano);
         }else{
             $plano = null;
         }

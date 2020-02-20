@@ -59,7 +59,7 @@ class SegmentoController extends Controller
 
     public function editar($idSeg)
     {
-        $segmento = Segmento::where('idSegmento', '=', $idSeg)->firstOrFail();
+        $segmento = Segmento::find($idSeg);
         
         return view('content.segmento.editar', compact('segmento'));
     }    

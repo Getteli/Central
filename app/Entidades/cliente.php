@@ -12,6 +12,7 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
     use MustVerifyEmail, Notifiable;
 
     protected $table = "clientes";
+    protected $primaryKey = 'idCliente';
 
     /**
      * The attributes that are mass assignable.

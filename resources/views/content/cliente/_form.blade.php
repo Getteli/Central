@@ -1,3 +1,8 @@
+<?php
+	use App\Entidades\TipoSexo;
+	use App\Entidades\TiposIdentificacao;
+?>
+
 <div class="input-field">
 	<input type="text" name="primeiroNome" class="validade" value="{{ isset($entidade->primeiroNome) ? $entidade->primeiroNome : '' }}">
 	<label>Primeiro Nome</label>
@@ -19,7 +24,12 @@
 	<label>Apelido</label>
 </div>
 <div class="input-field">
-	<input type="text" name="sexo" class="validade" value="{{ isset($entidade->sexo) ? $entidade->sexo : '' }}">
+	<select name="sexo" class="validade">
+		<option value="">Selecione</option>
+		@foreach(TipoSexo::getAll() as $sexo => $key )
+		<option value="{{ $key }}" {{ isset($entidade->sexo) && $entidade->sexo == $sexo ? 'selected' : '' }}>{{ $sexo }}</option>
+		@endforeach
+	</select>
 	<label>Sexo</label>
 </div>
 
@@ -59,6 +69,7 @@
 	<input type="text" name="link" class="validade" value="{{ isset($cliente->link) ? $cliente->link : '' }}">
 	<label>Link's</label>
 </div>
+
 <div class="input-field">
 	<input type="date" name="dataPagamento" class="validade" value="{{ isset($cliente->dataPagamento) ? $cliente->dataPagamento : '' }}">
 	<label>Data de Pagamento (SOME E ELE RECEBE O MESMO VALOR DO PLANO ou vice e versa??)</label>
