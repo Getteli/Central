@@ -8,6 +8,7 @@ use App\Cliente;
 use App\Entidade;
 use App\CodeRandom;
 use App\Plano;
+use App\Licenses;
 
 class ClienteController extends Controller
 {
@@ -125,13 +126,19 @@ class ClienteController extends Controller
         
         $entidade = Entidade::find($idEnt);
 
+        $license = Licenses::where('codCliente', '=', $cliente->codCliente)->firstOrFail();
+
+        if(!$license->count()){
+            $license = null;
+        }
+
         if(isset($cliente->idPlano)){
             $plano = Plano::find($cliente->idPlano);
         }else{
             $plano = null;
         }
         
-        return view('content.cliente.editar', compact('cliente', 'entidade', 'plano'));
+        return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license'));
     }
 
     public function GetCod(){
