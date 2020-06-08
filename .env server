@@ -2,7 +2,7 @@ APP_NAME=Central
 APP_ENV=production
 APP_KEY=base64:HPj5bTeNf9Ywm46VExNAudbcOaPQ2vddyZYB4SKyAOg=
 APP_DEBUG=false
-APP_URL=http://publicidadecarioca.com.br/
+APP_URL=http://central.agenciapublikando.com.br/
 
 LOG_CHANNEL=stack
 
