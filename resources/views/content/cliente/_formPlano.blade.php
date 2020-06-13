@@ -15,7 +15,7 @@
 	<label>Serviços</label>
 </div>
 
-<div class="input-field {{ isset($plano->descricao) || (isset(old('descricao')) ? '' : 'none' }}">
+<div class="input-field {{ isset($plano->descricao) || !empty(old('descricao')) ? '' : 'none' }}">
 	<input type="text" name="descricao" id="descricao" class="validade" value="{{ isset($plano->descricao) ? $plano->descricao : old('descricao') }}">
 	<label>Descrição</label>
 </div>
@@ -50,7 +50,7 @@
 	<label>Especial ?</label>
 </div>
 
-<div class="input-field {{ isset($license->codLicense) || isset(old('codLicense')) ? '' : 'none' }}">
+<div class="input-field {{ isset($license->codLicense) || !empty(old('codLicense')) ? '' : 'none' }}">
 	<input readonly type="text" name="codLicense" class="validade" value="{{ isset($license->codLicense) ? $license->codLicense : old('codLicense') }}">
 	<label>Código de licença</label>
 </div>

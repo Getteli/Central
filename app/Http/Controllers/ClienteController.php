@@ -108,7 +108,7 @@ class ClienteController extends Controller
 		}
 	}
 
-	public function atualizar(Request $request, $idEnt, $idPla, $idCli, $idEnd, $idCont)
+	public function atualizar(Request $request, $idEnt, $idPla, $idCli, $idEnd = null, $idCont = null)
 	{
 		try{
 			$dados = $request->all();
@@ -131,7 +131,7 @@ class ClienteController extends Controller
 			$entidade->update();
 			
 			// verifica se tem valor para registrar o endereço
-			if(isset($dados['cep'])){
+			if(!$idEnd){
 				$endereço = Endereco::find($idEnd);
 				$endereço->numero = $dados['numero'];
 				$endereço->descricao = $dados['descricaoEndereco'];
@@ -146,7 +146,7 @@ class ClienteController extends Controller
 			}
 
 			// verificar se tem valor para registrar contato
-			if(isset($dados['numero'])){
+			if(!$idCont){
 				$contato = Contato::find($idCont);	
 				$contato->numero = $dados['numeroContato'];
 				$contato->identificacao = $dados['identificacao'];

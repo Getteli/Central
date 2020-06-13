@@ -53,6 +53,9 @@ Route::get('/servicos',['as'=>'servicos', 'uses'=>'ServicoController@list']);
 
 Route::get('/servicos/{idServico}',['as'=>'servico.editar', 'uses'=>'ServicoController@editar']);
 
+// license
+Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>'LicenseController@blockall']);
+
 // rotas only AUTH TRUE
 Route::group(['middleware'=>'auth'], function(){
 	// rotas auth's
@@ -67,7 +70,7 @@ Route::group(['middleware'=>'auth'], function(){
 
 	// cliente
 	Route::post('/cliente/salvar',['as'=>'cliente.salvar', 'uses'=>'ClienteController@adicionar']);
-	Route::post('/clientes/atualizar/{idEntidade}/{idPlano}/{idCliente}/{idEndereco}/{idContato}',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
+	Route::post('/clientes/atualizar/{idEntidade}/{idPlano}/{idCliente}/{idEndereco?}/{idContato?}',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
 
 	// segmento
 	Route::post('/segmento/salvar',['as'=>'segmento.salvar', 'uses'=>'SegmentoController@adicionar']);
