@@ -36,11 +36,12 @@ class EntidadeSeed extends Seeder
             $User->name = "Admin";
             $User->email = "agenc921_admin@publikando.com";
             $User->funcao = "Administrador";
+            $User->ativo = true;
             $User->password = Hash::make("publik@ndo.2020");
             $User->save();
 
             // add a chave estrangeira a entidade onde esta o resto das informacoes dele
-            $lstIdEntidade = $Entidade->id; // busca o id do objecto criado (obs: msm o meu id se chamando idEntidade, o metodo para chamar esse atributo sempre sera id)
+            $lstIdEntidade = $Entidade->idEntidade; // busca o id do objecto criado (obs: msm o meu id se chamando idEntidade, o metodo para chamar esse atributo sempre sera id)
 
             // se nao for um numero maior que zero, ou seja nao for um numero, da erro, se nao continua
             if(!($lstIdEntidade > 0)){

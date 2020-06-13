@@ -16,6 +16,12 @@
                         {{csrf_field()}}
                         @include('content.cliente._form')
                         <div class="row">
+                            @include('content.cliente._formEndereco')
+                        </div>
+                        <div class="row">
+                            @include('content.cliente._formContato')
+                        </div>
+                        <div class="row">
                             @include('content.cliente._formPlano')
                         </div>
                         <button class="btn blue">Adicionar</button>

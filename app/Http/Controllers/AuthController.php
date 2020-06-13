@@ -22,7 +22,7 @@ class AuthController extends Controller
 
     	\Session::flash('mensagem',['msg'=>'Erro! Confira seus dados.','class'=>'red white-text']);
 
-    	return redirect()->back();
+    	return redirect()->back()->withInput($request->all);
 
 	}
 	

@@ -23,10 +23,10 @@ class SegmentoController extends Controller
             \Session::flash('mensagem',['msg'=>'Novo segmento criado com sucesso!','class'=>'green white-text']);
 
             return redirect()->route('segmentos');
-        }catch(Exception $e){
+        }catch(\Exception $e){
             //$e->getMessage();
             \Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
-            return redirect()->back();
+            return redirect()->back()->withInput($request->all);
         }
     }
 
@@ -44,10 +44,10 @@ class SegmentoController extends Controller
             \Session::flash('mensagem',['msg'=>'Cliente atualizado com sucesso!','class'=>'green white-text']);
             
             return redirect()->route('segmentos');
-        }catch(Exception $e){
+        }catch(\Exception $e){
             //$e->getMessage();
             \Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
-            return redirect()->back();
+            return redirect()->back()->withInput($request->all);
         }
     }
 

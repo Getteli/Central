@@ -22,11 +22,12 @@ class CreateClientesTable extends Migration
             $table->string("razaoSocial",45)->nullable();
 
             $table->integer('idEntidade')->unsigned()->unique()->nullable();
-            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade');
+            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade')->onUpdate('no action');
 
             $table->integer('idPlano')->unsigned()->nullable();
             $table->foreign('idPlano')->references('idPlano')->on('planos')->onDelete('cascade');
-
+            $table->boolean("deletado")->nullable();
+            $table->boolean("ativo");
             $table->timestamps(); // datacadastro e modificado
         });
     }

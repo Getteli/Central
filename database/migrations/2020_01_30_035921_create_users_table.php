@@ -23,12 +23,14 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             $table->integer('idEntidade')->unsigned()->unique()->nullable();
-            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade');
+            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade')->onUpdate('no action');
 
             $table->integer('idPapel')->unsigned()->nullable();
             $table->foreign('idPapel')->references('idPapel')->on('papers');
-
+            
             $table->rememberToken();
+            $table->boolean("deletado")->nullable();
+            $table->boolean("ativo");
             $table->timestamps(); // data cadastro e modificado
         });
     }

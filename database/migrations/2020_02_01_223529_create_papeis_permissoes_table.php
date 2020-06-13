@@ -19,7 +19,8 @@ class CreatePapeisPermissoesTable extends Migration
 
             $table->integer('idPermissao')->unsigned();
             $table->foreign('idPermissao')->references('idPermissao')->on('permissoes')->onDelete('cascade');
-
+            $table->boolean("deletado")->nullable();
+            $table->boolean("ativo");
             $table->timestamps(); // data cadastro e modificado
         });
     }

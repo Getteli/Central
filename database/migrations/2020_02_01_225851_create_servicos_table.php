@@ -20,7 +20,7 @@ class CreateServicosTable extends Migration
             $table->decimal("preco",10,2);
 
             $table->integer('idSegmento')->unsigned()->nullable();
-            $table->foreign('idSegmento')->references('IdSegmento')->on('segmentos')->onDelete('cascade');
+            $table->foreign('idSegmento')->references('IdSegmento')->on('segmentos')->onDelete('cascade')->onUpdate('no action');
 
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");

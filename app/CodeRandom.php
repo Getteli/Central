@@ -51,7 +51,7 @@ class CodeRandom extends Model
     {
         $_this = new self;
         //data
-        $dt = new DateTime('NOW');
+        $dt = new \DateTime('NOW');
         $dt = $dt->format('YmdHis');
         $codR = $_this->CreateCod(20);
 

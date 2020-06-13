@@ -12,9 +12,15 @@
 
             <div class="container">
                 <div class="row">
-                    <form action="{{ route('cliente.atualizar') }}" method="post">
+                    <form action="{{ route('cliente.atualizar', [$cliente->idEntidade, $plano->idPlano, $cliente->idCliente, $endereco->idEndereco, $contato->idContato]) }}" method="post">
                         {{csrf_field()}}
                         @include('content.cliente._form')
+                       <div class="row">
+                            @include('content.cliente._formEndereco')
+                        </div>
+                        <div class="row">
+                            @include('content.cliente._formContato')
+                        </div>
                         <div class="row">
                             @include('content.cliente._formPlano')
                         </div>

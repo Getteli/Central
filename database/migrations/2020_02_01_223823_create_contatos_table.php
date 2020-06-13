@@ -22,11 +22,8 @@ class CreateContatosTable extends Migration
             $table->string("email",45)->nullable();
             $table->char("ddd",2)->nullable();
 
-            $table->integer('idCliente')->unsigned()->nullable();
-            $table->foreign('idCliente')->references('IdCliente')->on('clientes')->onDelete('cascade');
-
-            $table->integer('idUser')->unsigned()->nullable();
-            $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('idEntidade')->unsigned()->nullable();
+            $table->foreign('idEntidade')->references('idEntidade')->on('entidades')->onDelete('cascade')->onUpdate('no action');
 
             $table->timestamps(); // data cadastro e modificado
         });
