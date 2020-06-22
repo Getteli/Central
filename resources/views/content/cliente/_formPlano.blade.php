@@ -21,8 +21,8 @@
 </div>
 
 <div class="input-field">
-	<input type="number" name="preco" id="preco" class="validade" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}">
-	<label>preco</label>
+	<input type="number" name="preco" id="preco" class="validade" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
+	<label>preco <strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
@@ -36,8 +36,24 @@
 </div>
 
 <div class="input-field">
-	<input type="date" name="dataPagamentoPlano" class="validade" value="{{ isset($plano->dataPagamento) ? strftime( '%Y-%m-%d',strtotime($plano->dataPagamento) ) : old('dataPagamentoPlano') }}">
-	<label>Data de pagamento</label>
+	<input type="number" min="1" max="31" name="dataPagamentoPlano" id="dataPagamento" class="validade" value="{{ isset($plano->dataPagamento) ? $plano->dataPagamento : old('dataPagamentoPlano') }}" required>
+	<label>DIA (Data de pagamento) <strong style="color: red">*</strong></label>
+</div>	
+
+<div class="input-field">
+	<!-- value="{{ isset($license->special) ? $license->special : old('especialLicense') }}" -->
+	<select type="text" name="especialLicense" class="validade">
+		<option value="0">Não</option1>
+		<optgroup label="Temporário">
+			<option value="1">Apenas este cliente</option>
+			<option value="2">Promoção</option>
+		</optgroup>
+		<optgroup label="Sem tempo">
+			<option value="3">Vitalício</option>
+			<option value="4">Outros (manual)</option>
+		</optgroup>
+	</select>
+	<label>É um cliente especial ? (ex: vitalicio, promoção, etc..)</label>
 </div>
 
 <div class="input-field">
@@ -45,17 +61,10 @@
 	<label>Observação</label>
 </div>
 
-<div class="input-field">
-	<input type="text" name="especialLicense" class="validade" value="{{ isset($license->special) ? $license->special : old('especialLicense') }}">
-	<label>Especial ?</label>
-</div>
-
 <div class="input-field {{ isset($license->codLicense) || !empty(old('codLicense')) ? '' : 'none' }}">
 	<input readonly type="text" name="codLicense" class="validade" value="{{ isset($license->codLicense) ? $license->codLicense : old('codLicense') }}">
 	<label>Código de licença</label>
 </div>
-
-
 <script>
 	// var aux
 	var valor = 0;

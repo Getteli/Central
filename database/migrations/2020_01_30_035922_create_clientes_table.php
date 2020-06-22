@@ -15,7 +15,7 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->increments('idCliente');
-            $table->dateTime("dataPagamento")->nullable();
+            $table->tinyInteger("dataPagamento")->nullable();
             $table->char("codCliente",5)->unique();
             $table->char("cnpj",19)->nullable();
             $table->mediumText("link")->nullable();

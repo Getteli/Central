@@ -20,7 +20,7 @@ class CreatePlanosTable extends Migration
             $table->decimal("preco",10,2)->nullable();
             $table->text("descricao")->nullable();
             $table->string("formaPagamento",45)->nullable();
-            $table->dateTime("dataPagamento")->nullable();
+            $table->tinyInteger("dataPagamento")->nullable();
             $table->timestamps(); // data cadastro e modificado 
         });
     }

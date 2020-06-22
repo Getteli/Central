@@ -37,32 +37,58 @@ class ClienteController extends Controller
 			$entidade->nacionalidade = $dados['nacionalidade'];
 			$entidade->save();
 
-			// verifica se tem valor para registrar o endereço
-			if(isset($dados['cep'])){
-				$endereço = new Endereco();
-				$endereço->numero = $dados['numero'];
-				$endereço->descricao = $dados['descricaoEndereco'];
-				$endereço->estado = $dados['estado'];
-				$endereço->cidade = $dados['cidade'];
-				$endereço->bairro = $dados['bairro'];
-				$endereço->idEntidade = $entidade->idEntidade;
-				$endereço->logradouro = $dados['logradouro'];
-				$endereço->complemento = $dados['complemento'];
-				$endereço->cep = $dados['cep'];
-				$endereço->ativo = true;
-				$endereço->save();
+			// passa os dados do formulario de endereco
+			$arrayE = array_filter($_POST["enderecoForm"]);
+			// array que guardará cada endereco
+			$endereco = array();
+			// organiza cada elemento em um unico array com chaves, para cada novo endereco
+			foreach ($arrayE as $chave1 => $arrayI) {
+				foreach ($arrayI as $chave2 => $valor) {
+					if(!empty($valor)){
+						$endereco[$chave2][$chave1] = $valor;
+					}
+				}
+			}
+			// add o endereco
+			foreach ($endereco as $k => $arrayInterno) {
+				$endereco = new Endereco();
+				$endereco->cep = isset($arrayInterno['cep']) ? $arrayInterno['cep'] : null;
+				$endereco->logradouro = isset($arrayInterno['logradouro']) ? $arrayInterno['logradouro'] : null;
+				$endereco->numero = isset($arrayInterno['numero']) ? $arrayInterno['numero'] : null;
+				$endereco->complemento = isset($arrayInterno['complemento']) ? $arrayInterno['complemento'] : null;
+				$endereco->estado = isset($arrayInterno['estado']) ? $arrayInterno['estado'] : null;
+				$endereco->cidade = isset($arrayInterno['cidade']) ? $arrayInterno['cidade'] : null;
+				$endereco->bairro = isset($arrayInterno['bairro']) ? $arrayInterno['bairro'] : null;
+				$endereco->descricao = isset($arrayInterno['descricaoEndereco']) ? $arrayInterno['descricaoEndereco'] : null;
+				$endereco->idEntidade = $entidade->idEntidade;
+				$endereco->ativo = true;
+				$endereco->save();
+				break;
 			}
 
-			// verificar se tem valor para registrar contato
-			if(isset($dados['numero'])){
-				$contato = new Contato();				
-				$contato->numero = $dados['numeroContato'];
-				$contato->identificacao = $dados['identificacao'];
-				$contato->ddd = $dados['ddd'];
-				$contato->Email = $dados['emailContato'];
+			// passa os dados do formulario de contato
+			$array = array_filter($_POST["contatoForm"]);
+			// array que guardará cada contato
+			$contato = array();
+			// organiza cada elemento em um unico array com chaves, para cada novo contato
+			foreach ($array as $chave1 => $arrayI) {
+				foreach ($arrayI as $chave2 => $valor) {
+					if(!empty($valor)){
+						$contato[$chave2][$chave1] = $valor;
+					}
+				}
+			}
+			// add o contato
+			foreach ($contato as $k => $arrayInterno) {
+				$contato = new Contato();
+				$contato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
+				$contato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
+				$contato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
+				$contato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
 				$contato->idEntidade = $entidade->idEntidade;
 				$contato->ativo = true;
 				$contato->save();
+				break;
 			}
 			
 			// criar o plano desse cliente
@@ -89,10 +115,10 @@ class ClienteController extends Controller
 			// cliente registrado com sucesso até aqui, agora crie um registro de licença
 			$license = new Licenses();
 			$license->codCliente = $cliente->codCliente;
-			$license->dias = 31;
+			$license->dias = 31; //padrao começa com 31 dias
 			$license->ativo = true;
-			$license->dataLicense = $dados['dataPagamentoPlano'];
 			// a data de licensa é o dia do pagamento. até chegar no dia de pagamento a primeira vez, o contador não transcorre
+			$license->dataLicense = $dados['dataPagamentoPlano'];
 			$license->codLicense = $this->GetCodLicense($cliente->codCliente);
 			$license->observacao = $dados['observacaoLicense'];
 			$license->special = $dados['especialLicense'];
@@ -108,7 +134,7 @@ class ClienteController extends Controller
 		}
 	}
 
-	public function atualizar(Request $request, $idEnt, $idPla, $idCli, $idEnd = null, $idCont = null)
+	public function atualizar(Request $request, $idEnt, $idPla, $idCli)
 	{
 		try{
 			$dados = $request->all();
@@ -130,30 +156,117 @@ class ClienteController extends Controller
 			$entidade->nacionalidade = $dados['nacionalidade'];
 			$entidade->update();
 			
-			// verifica se tem valor para registrar o endereço
-			if(!$idEnd){
-				$endereço = Endereco::find($idEnd);
-				$endereço->numero = $dados['numero'];
-				$endereço->descricao = $dados['descricaoEndereco'];
-				$endereço->estado = $dados['estado'];
-				$endereço->cidade = $dados['cidade'];
-				$endereço->bairro = $dados['bairro'];
-				$endereço->logradouro = $dados['logradouro'];
-				$endereço->complemento = $dados['complemento'];
-				$endereço->cep = $dados['cep'];
-				//$endereço->ativo = true;
-				$endereço->update();
+			// passa os dados do formulario de endereco
+			$arrayE = array_filter($_POST["enderecoForm"]);
+			// array que guardará cada endereco
+			$endereco = array();
+			// verificar se tem valor para registrar endereco
+			$enderecoBanco = Endereco::where('idEntidade', '=', $idEnt)->get();
+			// organiza cada elemento em um unico array com chaves, para cada novo endereco
+			foreach ($arrayE as $chave1 => $arrayI) {
+				foreach ($arrayI as $chave2 => $valor) {
+					if(!empty($valor)){
+						$endereco[$chave2][$chave1] = $valor;
+					}
+				}
+			}
+			// add o endereco
+			foreach ($endereco as $k => $arrayInterno) {
+				// se nao existe no banco, entao é um novo
+				if($enderecoBanco->isEmpty()){
+					$NovoEndereco = new Endereco();
+					$NovoEndereco->cep = isset($arrayInterno['cep']) ? $arrayInterno['cep'] : null;
+					$NovoEndereco->logradouro = isset($arrayInterno['logradouro']) ? $arrayInterno['logradouro'] : null;
+					$NovoEndereco->numero = isset($arrayInterno['numero']) ? $arrayInterno['numero'] : null;
+					$NovoEndereco->complemento = isset($arrayInterno['complemento']) ? $arrayInterno['complemento'] : null;
+					$NovoEndereco->estado = isset($arrayInterno['estado']) ? $arrayInterno['estado'] : null;
+					$NovoEndereco->cidade = isset($arrayInterno['cidade']) ? $arrayInterno['cidade'] : null;
+					$NovoEndereco->bairro = isset($arrayInterno['bairro']) ? $arrayInterno['bairro'] : null;
+					$NovoEndereco->descricao = isset($arrayInterno['descricaoEndereco']) ? $arrayInterno['descricaoEndereco'] : null;
+					$NovoEndereco->idEntidade = $entidade->idEntidade;
+					$NovoEndereco->ativo = true;
+					$NovoEndereco->save();
+				}
+				//passa pelo array do banco
+				foreach ($enderecoBanco as $key => $value) {
+					// se existe entao atualiza, se nao, é um novo contato
+					if (isset($enderecoBanco[$k])) {
+						$enderecoBanco[$k]->cep = isset($arrayInterno['cep']) ? $arrayInterno['cep'] : null;
+						$enderecoBanco[$k]->logradouro = isset($arrayInterno['logradouro']) ? $arrayInterno['logradouro'] : null;
+						$enderecoBanco[$k]->numero = isset($arrayInterno['numero']) ? $arrayInterno['numero'] : null;
+						$enderecoBanco[$k]->complemento = isset($arrayInterno['complemento']) ? $arrayInterno['complemento'] : null;
+						$enderecoBanco[$k]->estado = isset($arrayInterno['estado']) ? $arrayInterno['estado'] : null;
+						$enderecoBanco[$k]->cidade = isset($arrayInterno['cidade']) ? $arrayInterno['cidade'] : null;
+						$enderecoBanco[$k]->bairro = isset($arrayInterno['bairro']) ? $arrayInterno['bairro'] : null;
+						$enderecoBanco[$k]->descricao = isset($arrayInterno['descricaoEndereco']) ? $arrayInterno['descricaoEndereco'] : null;
+						$enderecoBanco[$k]->update();
+					}else{
+						$NovoEndereco = new Endereco();
+						$NovoEndereco->cep = isset($arrayInterno['cep']) ? $arrayInterno['cep'] : null;
+						$NovoEndereco->logradouro = isset($arrayInterno['logradouro']) ? $arrayInterno['logradouro'] : null;
+						$NovoEndereco->numero = isset($arrayInterno['numero']) ? $arrayInterno['numero'] : null;
+						$NovoEndereco->complemento = isset($arrayInterno['complemento']) ? $arrayInterno['complemento'] : null;
+						$NovoEndereco->estado = isset($arrayInterno['estado']) ? $arrayInterno['estado'] : null;
+						$NovoEndereco->cidade = isset($arrayInterno['cidade']) ? $arrayInterno['cidade'] : null;
+						$NovoEndereco->bairro = isset($arrayInterno['bairro']) ? $arrayInterno['bairro'] : null;
+						$NovoEndereco->descricao = isset($arrayInterno['descricaoEndereco']) ? $arrayInterno['descricaoEndereco'] : null;
+						$NovoEndereco->idEntidade = $entidade->idEntidade;
+						$NovoEndereco->ativo = true;
+						$NovoEndereco->save();
+					}
+					break;
+				}
 			}
 
+			// passa os dados do formulario de contato
+			$array = array_filter($_POST["contatoForm"]);
+			// array que guardará cada contato
+			$contato = array();
 			// verificar se tem valor para registrar contato
-			if(!$idCont){
-				$contato = Contato::find($idCont);	
-				$contato->numero = $dados['numeroContato'];
-				$contato->identificacao = $dados['identificacao'];
-				$contato->ddd = $dados['ddd'];
-				$contato->Email = $dados['emailContato'];
-				//$contato->ativo = true;
-				$contato->update();
+			$contatoBanco = Contato::where('idEntidade', '=', $idEnt)->get();
+			// organiza cada elemento em um unico array com chaves, para cada novo contato
+			foreach ($array as $chave1 => $arrayI) {
+				foreach ($arrayI as $chave2 => $valor) {
+					if(!empty($valor)){
+						$contato[$chave2][$chave1] = $valor;
+					}
+				}
+			}
+
+			// add o contato
+			foreach ($contato as $k => $arrayInterno) {
+				// se nao existe no banco, entao é um novo
+				if($contatoBanco->isEmpty()){
+					$NovoContato = new Contato();
+					$NovoContato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
+					$NovoContato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
+					$NovoContato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
+					$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+					$NovoContato->idEntidade = $entidade->idEntidade;
+					$NovoContato->ativo = true;
+					$NovoContato->save();	
+				}
+				//passa pelo array do banco
+				foreach ($contatoBanco as $key => $value) {
+					// se existe entao atualiza, se nao, é um novo contato
+					if (isset($contatoBanco[$k])) {
+						$contatoBanco[$k]->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
+						$contatoBanco[$k]->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
+						$contatoBanco[$k]->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
+						$contatoBanco[$k]->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+						$contatoBanco[$k]->update();
+					}else{
+						$NovoContato = new Contato();
+						$NovoContato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
+						$NovoContato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
+						$NovoContato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
+						$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+						$NovoContato->idEntidade = $entidade->idEntidade;
+						$NovoContato->ativo = true;
+						$NovoContato->save();						
+					}
+					break;
+				}
 			}
 
 			// atualiza o plano desse cliente
@@ -207,16 +320,16 @@ class ClienteController extends Controller
 		
 		$entidade = Entidade::find($idEnt);
 
-		$endereco = Endereco::where('idEntidade', '=', $cliente->idEntidade)->first();
+		$enderecos = Endereco::where('idEntidade', '=', $cliente->idEntidade)->get();
 
-		if(!$endereco){
-			 $endereco = null;
+		if(!$enderecos){
+			 $enderecos = null;
 		}
 
-		$contato = Contato::where('idEntidade', '=', $cliente->idEntidade)->first();
+		$contatos = Contato::where('idEntidade', '=', $cliente->idEntidade)->get();
 
-		if(!$contato){
-			 $contato = null;
+		if(!$contatos){
+			$contatos = null;
 		}
 
 		$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
@@ -231,7 +344,33 @@ class ClienteController extends Controller
 			$plano = null;
 		}
 		
-		return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'endereco', 'contato'));
+		return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
+	}
+
+	public static function deleteContato(Request $request)
+	{
+		$idContato = $request->idContato; //
+		try {
+			$contato = Contato::find($idContato)->delete();
+			if ($contato) {
+				return "deletado com sucesso";
+			}
+		} catch (Exception $e) {
+			return $e;
+		}
+	}
+
+	public static function deleteEndereco(Request $request)
+	{
+		$idEndereco = $request->idEndereco; //
+		try {
+			$endereco = Endereco::find($idEndereco)->delete();
+			if ($endereco) {
+				return "deletado com sucesso";
+			}
+		} catch (Exception $e) {
+			return $e;
+		}
 	}
 
 	public function GetCod(){

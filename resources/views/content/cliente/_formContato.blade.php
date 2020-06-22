@@ -4,23 +4,33 @@
 	use App\Servico;
 ?>
 <h2>CONTATO</h2>
-
+<?php
+if(isset($contato->idContato)){
+?>
+<button type="button" class="btnDel" onclick="delContato({{$contato->idContato}})">EXCLUIR</button>
+<?php
+}else{
+?>
+<button type="button" class="btnDel" onclick="delFormContato()">EXCLUIR</button>
+<?php
+}
+?>
 <div class="input-field">
-	<input type="text" name="ddd" class="validade" value="{{ isset($contato->ddd) ? $contato->ddd : old('ddd') }}">
+	<input type="text" name="contatoForm[ddd][]" class="validade inputContato" value="{{ isset($contato->ddd) ? $contato->ddd : old('ddd') }}">
 	<label>DDD</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="numeroContato" class="validade" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
+	<input type="text" name="contatoForm[numeroContato][]" class="validade inputContato" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
 	<label>Número</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="emailContato" class="validade" value="{{ isset($contato->email) ? $contato->email : old('emailContato') }}">
+	<input type="text" name="contatoForm[emailContato][]" class="validade inputContato" value="{{ isset($contato->email) ? $contato->email : old('emailContato') }}">
 	<label>E-mail</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="identificacao" class="validade" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
+	<input type="text" name="contatoForm[identificacao][]" class="validade inputContato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
 	<label>Identificação</label>
 </div>

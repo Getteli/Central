@@ -3,24 +3,24 @@
 	use App\Entidades\TiposIdentificacao;
 ?>
 <div class="input-field">
-	<input type="text" name="primeiroNome" class="validade" value="{{ isset($entidade->primeiroNome) ? $entidade->primeiroNome : old('primeiroNome') }}">
-	<label>Primeiro Nome</label>
+	<input type="text" name="primeiroNome" class="validade" value="{{ isset($entidade->primeiroNome) ? $entidade->primeiroNome : old('primeiroNome') }}" required>
+	<label>Primeiro Nome <strong style="color: red">*</strong></label>
 </div>
 <div class="input-field">
 	<input type="text" name="sobrenome" class="validade" value="{{ isset($entidade->sobrenome) ? $entidade->sobrenome : old('sobrenome') }}">
 	<label>Sobrenome</label>
 </div>
 <div class="input-field">
-	<input type="email" name="email" class="validade" value="{{ isset($entidade->email) ? $entidade->email : old('email') }}">
-	<label>Email</label>
+	<input type="email" name="email" class="validade" value="{{ isset($entidade->email) ? $entidade->email : old('email') }}" required>
+	<label>Email <strong style="color: red">*</strong></label>
+</div>
+<div class="input-field">
+	<input type="text" name="apelido" class="validade" value="{{ isset($entidade->apelido) ? $entidade->apelido : old('apelido') }}" required>
+	<label>Apelido <strong style="color: red">*</strong></label>
 </div>
 <div class="input-field">
 	<input type="text" name="razaoSocial" class="validade" value="{{ isset($cliente->razaoSocial) ? $cliente->razaoSocial : old('razaoSocial') }}">
 	<label>Razão Social</label>
-</div>
-<div class="input-field">
-	<input type="text" name="apelido" class="validade" value="{{ isset($entidade->apelido) ? $entidade->apelido : old('apelido') }}">
-	<label>Apelido</label>
 </div>
 <div class="input-field">
 	<select name="sexo" class="validade">
@@ -31,7 +31,6 @@
 	</select>
 	<label>Sexo</label>
 </div>
-
 <div class="input-field">
 	<input type="text" name="cpf" class="validade" value="{{ isset($entidade->cpf) ? $entidade->cpf : old('cpf') }}">
 	<label>Cpf</label>
@@ -68,9 +67,3 @@
 	<input type="text" name="link" class="validade" value="{{ isset($cliente->link) ? $cliente->link : old('link') }}">
 	<label>Link's</label>
 </div>
-
-<!-- <div class="input-field">
-	<input type="date" name="dataPagamento" class="validade" value="{{ isset($cliente->dataPagamento) ? $cliente->dataPagamento : '' }}">
-	<label>Data de Pagamento (SOME E ELE RECEBE O MESMO VALOR DO PLANO ou vice e versa??)</label>
-</div>
- -->

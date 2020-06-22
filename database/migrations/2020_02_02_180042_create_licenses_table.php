@@ -16,7 +16,7 @@ class CreateLicensesTable extends Migration
         Schema::connection('mysql_two')->create('licenses', function (Blueprint $table) {
             $table->Increments('idLicense');
             $table->string("codLicense",100)->unique();
-            $table->dateTime("dataLicense");
+            $table->tinyInteger("dataLicense");
             $table->char("codCliente",5);
             $table->string("observacao",100)->nullable();
             $table->string("special",10)->nullable();

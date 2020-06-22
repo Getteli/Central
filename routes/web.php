@@ -33,7 +33,7 @@ Route::get('/cliente/adicionar',['as'=>'cliente.adicionar', function () {
 
 Route::get('/clientes',['as'=>'clientes', 'uses'=>'ClienteController@list']);
 
-Route::get('/clientes/{idCliente}/{idEntidade}',['as'=>'cliente.editar', 'uses'=>'ClienteController@editar']);
+Route::get('/cliente/{idCliente}/{idEntidade}',['as'=>'cliente.editar', 'uses'=>'ClienteController@editar']);
 
 // segmento
 Route::get('/segmento/adicionar',['as'=>'segmento.adicionar', function () {
@@ -70,7 +70,9 @@ Route::group(['middleware'=>'auth'], function(){
 
 	// cliente
 	Route::post('/cliente/salvar',['as'=>'cliente.salvar', 'uses'=>'ClienteController@adicionar']);
-	Route::post('/clientes/atualizar/{idEntidade}/{idPlano}/{idCliente}/{idEndereco?}/{idContato?}',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
+	Route::post('/cliente/atualizar/{idEntidade}/{idPlano}/{idCliente}',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
+	Route::post('/cliente/deleteContato',['as'=>'cliente.deleteContato', 'uses'=>'ClienteController@deleteContato']);
+	Route::post('/cliente/deleteEndereco',['as'=>'cliente.deleteEndereco', 'uses'=>'ClienteController@deleteEndereco']);	
 
 	// segmento
 	Route::post('/segmento/salvar',['as'=>'segmento.salvar', 'uses'=>'SegmentoController@adicionar']);
