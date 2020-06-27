@@ -19,9 +19,9 @@ class CreateEntidadesTable extends Migration
             $table->string("naturalidade",25)->nullable();
             $table->dateTime("dataNascimento")->nullable();
             $table->string("orgaoEmissor",15)->nullable();
-            $table->char("rg",13)->nullable();
+            $table->char("rg",60)->nullable();
             $table->string("nacionalidade",25)->nullable();
-            $table->char("cpf",15)->nullable();
+            $table->char("cpf",60)->nullable();
             $table->boolean("deletado")->nullable();
             $table->boolean("ativo");
             $table->char("sexo",1)->nullable();

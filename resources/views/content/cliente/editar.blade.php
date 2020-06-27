@@ -174,6 +174,5 @@
 			})
 			$('select').formSelect();
 		}
-		populaEstadoCidade();
 	</script>
 @endsection

@@ -17,22 +17,22 @@ if(isset($endereco->idEndereco)){
 }
 ?>
 <div class="input-field">
-	<input type="text" name="enderecoForm[cep][]" class="validade inputEndereco" value="{{ isset($endereco->cep) ? $endereco->cep : old('cep') }}">
+	<input type="text" maxlength="10" name="enderecoForm[cep][]" class="validade cep inputEndereco" value="{{ isset($endereco->cep) ? $endereco->cep : old('cep') }}">
 	<label>CEP <strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="enderecoForm[logradouro][]" class="validade inputEndereco" value="{{ isset($endereco->logradouro) ? $endereco->logradouro : old('logradouro') }}">
+	<input type="text" name="enderecoForm[logradouro][]" maxlength="90" class="validade inputEndereco" value="{{ isset($endereco->logradouro) ? $endereco->logradouro : old('logradouro') }}">
 	<label>Logradouro <strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="enderecoForm[numero][]" class="validade inputEndereco" value="{{ isset($endereco->numero) ? $endereco->numero : old('numero') }}">
+	<input type="text" name="enderecoForm[numero][]" maxlength="10" class="validade inputEndereco" value="{{ isset($endereco->numero) ? $endereco->numero : old('numero') }}">
 	<label>Número <strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="enderecoForm[complemento][]" class="validade inputEndereco" value="{{ isset($endereco->complemento) ? $endereco->complemento : old('complemento') }}">
+	<input type="text" name="enderecoForm[complemento][]" maxlength="45" class="validade inputEndereco" value="{{ isset($endereco->complemento) ? $endereco->complemento : old('complemento') }}">
 	<label>Complemento</label>
 </div>
 
@@ -51,11 +51,21 @@ if(isset($endereco->idEndereco)){
 </div>
 
 <div class="input-field">
-	<input type="text" name="enderecoForm[bairro][]" class="validade inputEndereco" value="{{ isset($endereco->bairro) ? $endereco->bairro : old('bairro') }}">
+	<input type="text" name="enderecoForm[bairro][]" maxlength="45" class="validade inputEndereco" value="{{ isset($endereco->bairro) ? $endereco->bairro : old('bairro') }}">
 	<label>Bairro <strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="enderecoForm[descricaoEndereco][]" class="validade inputEndereco" value="{{ isset($endereco->descricao) ? $endereco->descricao : old('descricaoEndereco') }}">
+	<input type="text" name="enderecoForm[descricaoEndereco][]" maxlength="45" class="validade inputEndereco" value="{{ isset($endereco->descricao) ? $endereco->descricao : old('descricaoEndereco') }}">
 	<label>Descrição</label>
 </div>
+<script type="text/javascript">
+	$('.cep').mask('00000-000', {reverse: true});
+	new dgCidadesEstados({
+		cidade: document.getElementsByClassName('cid')[document.getElementsByClassName('cid').length-1],
+		estado: document.getElementsByClassName('uf')[document.getElementsByClassName('uf').length-1],
+		// para setar um valor:
+		estadoVal: "{{ isset($endereco->estado) ? $endereco->estado : old('estado') }}",
+		cidadeVal: "{{ isset($endereco->cidade) ? $endereco->cidade : old('cidade') }}"
+	})
+</script>

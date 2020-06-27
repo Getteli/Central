@@ -57,8 +57,46 @@ class ServicoController extends Controller
 
 	public function list()
 	{
-		$servicos = Servico::all();
+		$servicos = Servico::all()->where('ativo', 1);
 		return view('content.servico.servicos',compact('servicos'));
+	}
+
+	public function filter(Request $request)
+	{
+		$filtrar = $request->all();
+
+		// cria o objeto para a busca
+		$servicos = new Servico;
+
+		// busca do usuario
+		if (isset($filtrar['texto'])) {
+			$servicos = $servicos->Where(function ($query) use($filtrar) {
+				$query->where('servico','LIKE','%'. $filtrar['texto'] .'%')
+				->orWhere('descricao','LIKE','%'. $filtrar['texto'] .'%');
+			});
+		}
+		if (isset($filtrar['status'])) {
+			$servicos = $servicos->where('ativo','=',$filtrar['status']);
+		}
+		if (isset($filtrar['segmento'])) {
+			$servicos = $servicos->where('idSegmento','=',$filtrar['segmento']);
+		}
+
+		//padrao, buscar o que nao pode ser deletado E pega tudo em array
+		$servicos = $servicos->Where(function ($query) {
+			$query->where('deletado', '=', 0)
+			->orWhere('deletado','=',null)
+			->orWhere('deletado','!=',1);
+		});
+		$servicos = $servicos->get();
+
+		if ($servicos->isEmpty() || $servicos->count() == 0) {
+			\Session::flash('mensagem',['msg'=>'Sem resultados!','class'=>'green white-text']);
+		}else{
+			\Session::flash('mensagem', null);
+		}
+
+		return view('content.servico.servicos',compact('servicos','filtrar'));
 	}
 
 	public function editar($idServ)
@@ -67,6 +105,60 @@ class ServicoController extends Controller
 		
 		return view('content.servico.editar', compact('servico'));
 	}
+
+
+	public function desativarServico($idServ)
+	{
+		try {
+			$servico = Servico::find($idServ);
+			$servico->ativo = false;
+			$servico->update();
+
+			if ($servico) {
+				\Session::flash('mensagem',['msg'=>'Serviço desativado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('servicos');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
+		}
+	}
+
+	public function ativarServico($idServ)
+	{
+		try {
+			$servico = Servico::find($idServ);
+			$servico->ativo = true;
+			$servico->update();
+
+			if ($servico) {
+				\Session::flash('mensagem',['msg'=>'Serviço ativado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('servicos');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
+		}
+	}
+
+	public function deleteServico($idServ)
+	{
+		try {
+			$servico = Servico::find($idServ);
+			$servico->ativo = false;
+			$servico->deletado = true;
+			$servico->update();
+
+			if ($servico) {
+				\Session::flash('mensagem',['msg'=>'Serviço deletado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('servicos');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
+		}
+	}
+
 
 	public static function listagemComSegmento(Request $request)
 	{

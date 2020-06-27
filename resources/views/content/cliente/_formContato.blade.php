@@ -16,21 +16,24 @@ if(isset($contato->idContato)){
 }
 ?>
 <div class="input-field">
-	<input type="text" name="contatoForm[ddd][]" class="validade inputContato" value="{{ isset($contato->ddd) ? $contato->ddd : old('ddd') }}">
+	<input type="number" maxlength="2" min="0" name="contatoForm[ddd][]" class="validade inputContato" value="{{ isset($contato->ddd) ? $contato->ddd : old('ddd') }}">
 	<label>DDD</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="contatoForm[numeroContato][]" class="validade inputContato" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
-	<label>Número</label>
+	<input type="text" maxlength="12" name="contatoForm[numeroContato][]" class="validade numero inputContato" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
+	<label>Número (se for numero residencial sem o digito 9 na frente, coloque o numero 0)</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="contatoForm[emailContato][]" class="validade inputContato" value="{{ isset($contato->email) ? $contato->email : old('emailContato') }}">
+	<input type="text" maxlength="45" name="contatoForm[emailContato][]" class="validade inputContato" value="{{ isset($contato->email) ? $contato->email : old('emailContato') }}">
 	<label>E-mail</label>
 </div>
 
 <div class="input-field">
-	<input type="text" name="contatoForm[identificacao][]" class="validade inputContato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
+	<input type="text" maxlength="30" name="contatoForm[identificacao][]" class="validade inputContato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
 	<label>Identificação</label>
 </div>
+<script type="text/javascript">
+	$('.numero').mask('0 0000-0000', {reverse: true});
+</script>

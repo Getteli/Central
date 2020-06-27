@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Cliente;
 use App\Entidade;
@@ -25,8 +26,8 @@ class ClienteController extends Controller
 			$entidade->primeiroNome = $dados['primeiroNome'];
 			$entidade->sobrenome = $dados['sobrenome'];
 			$entidade->email = $dados['email'];
-			$entidade->cpf = $dados['cpf'];
-			$entidade->rg = $dados['rg'];
+			$entidade->cpf = Hash::make($dados['cpf']);
+			$entidade->rg = Hash::make($dados['rg']);
 			$entidade->ativo = true;
 			$entidade->orgaoEmissor = $dados['orgaoEmissor'];
 			$entidade->dataExpedicao = $dados['dataExpedicao'];
@@ -144,8 +145,14 @@ class ClienteController extends Controller
 			$entidade->primeiroNome = $dados['primeiroNome'];
 			$entidade->sobrenome = $dados['sobrenome'];
 			$entidade->email = $dados['email'];
-			$entidade->cpf = $dados['cpf'];
-			$entidade->rg = $dados['rg'];
+			// só atualiza se tiver add um novo
+			if ($dados['cpf'] && $dados['cpf'] != null && $dados['cpf'] != "" && !empty($dados['cpf'])) {
+				$entidade->cpf = Hash::make($dados['cpf']);
+			}
+			// só atualiza se tiver add um novo
+			if ($dados['rg'] && $dados['rg'] != null && $dados['rg'] != "" && !empty($dados['rg'])) {
+				$entidade->rg = Hash::make($dados['rg']);
+			}
 			$entidade->ativo = true;
 			$entidade->orgaoEmissor = $dados['orgaoEmissor'];
 			$entidade->dataExpedicao = $dados['dataExpedicao'];
@@ -161,7 +168,7 @@ class ClienteController extends Controller
 			// array que guardará cada endereco
 			$endereco = array();
 			// verificar se tem valor para registrar endereco
-			$enderecoBanco = Endereco::where('idEntidade', '=', $idEnt)->get();
+			$enderecoBanco = Endereco::where('idEntidade', '=', $idEnt)->where('ativo', '=', 1)->get();
 			// organiza cada elemento em um unico array com chaves, para cada novo endereco
 			foreach ($arrayE as $chave1 => $arrayI) {
 				foreach ($arrayI as $chave2 => $valor) {
@@ -310,48 +317,215 @@ class ClienteController extends Controller
 
 	public function list()
 	{
-		$clientes = Cliente::all();
+		$clientes = Cliente::all()->where('ativo', 1);
 		return view('content.cliente.clientes',compact('clientes'));
+	}
+
+	public function filter(Request $request)
+	{
+		$filtrar = $request->all();
+
+		// faz a busca do objeto com um join na entidade
+		$clientes = Cliente::join('entidades', 'clientes.idEntidade', '=', 'entidades.idEntidade');
+
+		// busca do usuario
+		if (isset($filtrar['texto'])) {
+			$clientes = $clientes->Where(function ($query) use($filtrar) {
+				$query->where('codCliente','=',$filtrar['texto'])
+				->orWhere('razaoSocial','LIKE','%'. $filtrar['texto'] .'%')
+				->orWhere('primeiroNome','LIKE','%'. $filtrar['texto'] .'%')
+				->orWhere('email','LIKE','%'. $filtrar['texto'] .'%')
+				->orWhere('apelido','LIKE','%'. $filtrar['texto'] .'%')
+				->orWhere('cnpj','=',$filtrar['texto']);
+			});
+		}
+		if (isset($filtrar['status'])) {
+			$clientes = $clientes->where('clientes.ativo','=',$filtrar['status']);
+		}
+
+		//padrao, buscar o que nao pode ser deletado E pega tudo em array
+		$clientes = $clientes->Where(function ($query) {
+			$query->where('clientes.deletado', '=', 0)
+			->orWhere('clientes.deletado','=',null)
+			->orWhere('clientes.deletado','!=',1);
+		});
+		$clientes = $clientes->get();
+
+		if ($clientes->isEmpty() || $clientes->count() == 0) {
+			\Session::flash('mensagem',['msg'=>'Sem resultados!','class'=>'green white-text']);
+		}else{
+			\Session::flash('mensagem', null);
+		}
+
+		return view('content.cliente.clientes',compact('clientes','filtrar'));
 	}
 
 	public function editar($idCli, $idEnt)
 	{
-		$cliente = Cliente::find($idCli);
-		
-		$entidade = Entidade::find($idEnt);
+		try{
+			$cliente = Cliente::find($idCli);
+			
+			$entidade = Entidade::find($idEnt);
 
-		$enderecos = Endereco::where('idEntidade', '=', $cliente->idEntidade)->get();
+			$enderecos = Endereco::where('idEntidade', '=', $cliente->idEntidade)->where('ativo', '=', 1)->get();
 
-		if(!$enderecos){
-			 $enderecos = null;
+			if(!$enderecos){
+				 $enderecos = null;
+			}
+
+			$contatos = Contato::where('idEntidade', '=', $cliente->idEntidade)->where('ativo', '=', 1)->get();
+
+			if(!$contatos){
+				$contatos = null;
+			}
+
+			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->where('ativo', '=', 1)->first();
+
+			if(!$license){
+				 $license = null;
+			}
+
+			if(isset($cliente->idPlano)){
+				$plano = Plano::find($cliente->idPlano);
+			}else{
+				$plano = null;
+			}
+			return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
+		}catch(\Exception $e){
+			//$e->getMessage();
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->route('clientes');
 		}
+	}
 
-		$contatos = Contato::where('idEntidade', '=', $cliente->idEntidade)->get();
+	public function desativarEntidade($idEnt)
+	{
+		$idEntidade = $idEnt; //
+		try {
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = false;
+			$entidade->update();
 
-		if(!$contatos){
-			$contatos = null;
-		}
+			$cliente = Cliente::where("idEntidade","=",$entidade->idEntidade)->first();
+			$cliente->ativo = false;
+			$cliente->update();
 
-		$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
+			$contatos = Contato::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = false;
+				$contato->update();
+			}
 
-		if(!$license){
-			 $license = null;
-		}
+			$enderecos = Endereco::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = false;
+				$endereco->update();
+			}
 
-		if(isset($cliente->idPlano)){
 			$plano = Plano::find($cliente->idPlano);
-		}else{
-			$plano = null;
+			$plano->ativo = false;
+			$plano->update();
+
+			if ($entidade && $cliente && $contatos && $enderecos) {
+				\Session::flash('mensagem',['msg'=>'Cliente desativado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('clientes');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
 		}
-		
-		return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
+	}
+
+	public function ativarEntidade($idEnt)
+	{
+		$idEntidade = $idEnt; //
+		try {
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = true;
+			$entidade->update();
+
+			$cliente = Cliente::where("idEntidade","=",$entidade->idEntidade)->first();
+			$cliente->ativo = true;
+			$cliente->update();
+
+			$contatos = Contato::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = true;
+				$contato->update();
+			}
+
+			$enderecos = Endereco::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = true;
+				$endereco->update();
+			}
+
+			$plano = Plano::find($cliente->idPlano);
+			$plano->ativo = true;
+			$plano->update();
+
+			if ($entidade && $cliente && $contatos && $enderecos) {
+				\Session::flash('mensagem',['msg'=>'Cliente ativado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('clientes');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
+		}
+	}
+
+	public function deleteEntidade($idEnt)
+	{
+		$idEntidade = $idEnt; //
+		try {
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = false;
+			$entidade->deletado = true;
+			$entidade->update();
+
+			$cliente = Cliente::where("idEntidade","=",$entidade->idEntidade)->first();
+			$cliente->ativo = false;
+			$cliente->deletado = true;
+			$cliente->update();
+
+			$contatos = Contato::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = false;
+				$contato->deletado = true;
+				$contato->update();
+			}
+
+			$enderecos = Endereco::where("idEntidade","=",$entidade->idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = false;
+				$endereco->deletado = true;
+				$endereco->update();
+			}
+
+			$plano = Plano::find($cliente->idPlano);
+			$plano->ativo = false;
+			$plano->deletado = true;
+			$plano->update();
+
+			if ($entidade && $cliente && $contatos && $enderecos) {
+				\Session::flash('mensagem',['msg'=>'Cliente deletado com sucesso.','class'=>'green white-text']);
+				return redirect()->route('clientes');
+			}
+		} catch (Exception $e) {
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput();
+		}
 	}
 
 	public static function deleteContato(Request $request)
 	{
 		$idContato = $request->idContato; //
 		try {
-			$contato = Contato::find($idContato)->delete();
+			$contato = Contato::find($idContato);
+			$contato->ativo = false;
+			$contato->deletado = true;
+			$contato->update();
+			
 			if ($contato) {
 				return "deletado com sucesso";
 			}
@@ -364,7 +538,11 @@ class ClienteController extends Controller
 	{
 		$idEndereco = $request->idEndereco; //
 		try {
-			$endereco = Endereco::find($idEndereco)->delete();
+			$endereco = Endereco::find($idEndereco);
+			$endereco->ativo = false;
+			$endereco->deletado = true;
+			$endereco->update();
+			
 			if ($endereco) {
 				return "deletado com sucesso";
 			}
@@ -378,6 +556,7 @@ class ClienteController extends Controller
 		$cod = $codP->CreateCod(5);
 		return $cod;
 	}
+
 	public function GetCodLicense($codCli){
 		$codP = new CodeRandom;
 		$cod = $codP->CreateCodLicense($codCli);

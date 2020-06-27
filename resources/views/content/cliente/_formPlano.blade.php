@@ -8,7 +8,7 @@
 <div class="input-field">
 	<select multiple name="idServico" id="idServico" class="validade">
 		<option value="" disabled>Selecione</option>
-		@foreach(Servico::all() as $Servico )
+		@foreach(Servico::all()->where('ativo', 1) as $Servico )
 			<option value="{{ $Servico->preco }}">{{ $Servico->servico }}</option>
 		@endforeach
 	</select>
@@ -16,13 +16,13 @@
 </div>
 
 <div class="input-field {{ isset($plano->descricao) || !empty(old('descricao')) ? '' : 'none' }}">
-	<input type="text" name="descricao" id="descricao" class="validade" value="{{ isset($plano->descricao) ? $plano->descricao : old('descricao') }}">
+	<input type="text" name="descricao" maxlength="350" id="descricao" class="validade" value="{{ isset($plano->descricao) ? $plano->descricao : old('descricao') }}">
 	<label>Descrição</label>
 </div>
 
 <div class="input-field">
-	<input type="number" name="preco" id="preco" class="validade" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
-	<label>preco <strong style="color: red">*</strong></label>
+	<input type="text" name="preco" min="0" class="validade preco" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
+	<label>preco ( R$ )<strong style="color: red">*</strong></label>
 </div>
 
 <div class="input-field">
@@ -57,7 +57,7 @@
 </div>
 
 <div class="input-field">
-	<input type="text" name="observacaoLicense" class="validade" value="{{ isset($license->observacao) ? $license->observacao : old('observacaoLicense') }}">
+	<input type="text" name="observacaoLicense" maxlength="100" class="validade" value="{{ isset($license->observacao) ? $license->observacao : old('observacaoLicense') }}">
 	<label>Observação</label>
 </div>
 
@@ -66,6 +66,7 @@
 	<label>Código de licença</label>
 </div>
 <script>
+	$('.preco').mask('000000.00', {reverse: true});
 	// var aux
 	var valor = 0;
 	var desc = "";
