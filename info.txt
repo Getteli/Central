@@ -1,0 +1,43 @@
+LEMBRETE + info root
+version #
+data 12/06/20
+
+INFO:
+	. Este info serve para lembrete do que falta fazer
+	. Site para calcular dias - http://www.webcid.com.br/calendario/calcular-dias
+	. Site para calcular tempo CRONJOB - https://crontab.guru/
+	. Site para minificar e ofuscar - https://php-minify.com
+
+ATUALIZAÇÃO:
+	. Arrumar os projetos, qis, athena
+		(colocar seus bds) e subir p/ publikando e por nos cases
+
+COMO SUBIR:
+	. Para fazer o deploy do projeto para o servidor, siga esses passos
+	. mova os itens (ate itens ocultos, verifique isso) da pasta public para o index (pasta anterior)
+	. altere o index.php e serve.php, dentro deles os caminhos estao indicando ou a pasta public ou "..", entao remova para ele indicar o index e pastas do mesmo local.
+	. altere o .env para o .env do server
+	. se NÃO exibir veja a pasta bootstrap, se está com o app.php, e a pasta cache
+
+PERGUNTAS:
+
+A FAZER:
+	. criar uma busca de endereços pertos de tal CEP, provavelmente api do google
+	. Criar script para bloquear site ou algo do tipo de cliente que passou do dia do pagamento. (de certa forma todos os clientes teriam que ser com index.php para receber este script. fazer testes, muitos teste..).
+	. Cron para enviar email, sobre pagamento e etc.
+	. Testar tudo em nós mesmo (criar subdominio, admin. ..., fazer rodapé padrao feito por publikando e etc)
+	. no subdominio de pagamento (payment) vai receber o codigo de licença e vai pegar as coisas do cliente, ter um checkbox para pagamento. uma pagina parecido com nosso site, e no topo 3 logos (como a loja teste do pagseguro), agencia p, ilion e o pagseguro. Enviar esse link para o cliente e um link de pagamento direto pelo site do pagseguro.
+	. criar as rotas para cada pagina/acao
+	. enviar emails
+	. design
+
+TRABALHOS:
+	. fazer listagem de planos
+	. ver com matheus como anda a api do pagseguro de pagamento
+	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
+	
+HORARIOS / DATAS:
+
+CLIENTES (Agência Publikando):
+	mtzbiologistica.com.br
+	cliente02.ap_0911
