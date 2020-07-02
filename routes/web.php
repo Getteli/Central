@@ -11,52 +11,27 @@
 |
 */
 
-#region ROTAS PADROES
+// ROTAS PADROES
+
 // rota padrao de login
 //Auth::routes();
+//Route::get('/home', 'HomeController@index')->name('home');
+
+// ROTAS
 
 // Cancela a rota de registro
 Auth::routes(['register' => false]);
 
-// rota padrao para ir ao dashboard
-//Route::get('/home', 'HomeController@index')->name('home');
-#endregion
-
-// rotas auth's
+// auth's
 Route::post('/login',['as'=>'login', 'uses'=>'AuthController@login']);
 
-// ROTAS
-// cliente
-Route::get('/cliente/adicionar',['as'=>'cliente.adicionar', function () {
-	return view('content.cliente.adicionar');
-}]);
-
-Route::get('/clientes',['as'=>'clientes', 'uses'=>'ClienteController@list']);
-
-// segmento
-Route::get('/segmento/adicionar',['as'=>'segmento.adicionar', function () {
-	return view('content.segmento.adicionar');
-}]);
-
-Route::get('/segmentos',['as'=>'segmentos', 'uses'=>'SegmentoController@list']);
-
-Route::get('/segmentos/{idSegmento}',['as'=>'segmento.editar', 'uses'=>'SegmentoController@editar']);
-
-// servicos
-Route::get('/servico/adicionar',['as'=>'servico.adicionar', function () {
-	return view('content.servico.adicionar');
-}]);
-
-Route::get('/servicos',['as'=>'servicos', 'uses'=>'ServicoController@list']);
-
-Route::get('/servicos/{idServico}',['as'=>'servico.editar', 'uses'=>'ServicoController@editar']);
-
-// license
+// rota para coisas que sejam de fora do sistema
+// license (acessado pela url do cliente para saber se pode acessar)
 Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>'LicenseController@blockall']);
 
-// rotas only AUTH TRUE
+// rotas only AUTH TRUE, somente logado
 Route::group(['middleware'=>'auth'], function(){
-	// rotas auth's
+	// rotas auth's, logout
 	Route::get('/logout',['as'=>'logout', 'uses'=>'AuthController@logout']);
 
 	// dashboard
@@ -64,9 +39,13 @@ Route::group(['middleware'=>'auth'], function(){
 		return view('dashboard');
 	}]);
 
-	// rotas adicionar e atualizar
+	// ROTAS
 
 	// cliente
+	Route::get('/cliente/adicionar',['as'=>'cliente.adicionar', function () {
+		return view('content.cliente.adicionar');
+	}]);
+	Route::get('/clientes',['as'=>'clientes', 'uses'=>'ClienteController@list']);
 	Route::get('/cliente/{idCliente}/{idEntidade}',['as'=>'cliente.editar', 'uses'=>'ClienteController@editar']);
 	Route::post('/cliente/salvar',['as'=>'cliente.salvar', 'uses'=>'ClienteController@adicionar']);
 	Route::post('/cliente/atualizar/{idEntidade}/{idPlano}/{idCliente}',['as'=>'cliente.atualizar', 'uses'=>'ClienteController@atualizar']);
@@ -76,16 +55,28 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/clientes/desativarEntidade/{idEntidade}',['as'=>'cliente.desativarEntidade', 'uses'=>'ClienteController@desativarEntidade']);
 	Route::get('/clientes/ativarEntidade/{idEntidade}',['as'=>'cliente.ativarEntidade', 'uses'=>'ClienteController@ativarEntidade']);
 	Route::get('/clientes/filtro/buscar',['as'=>'cliente.filter', 'uses'=>'ClienteController@filter']);
-
+	// -------------------------------------------------------------------------
+	
 	// segmento
+	Route::get('/segmento/adicionar',['as'=>'segmento.adicionar', function () {
+		return view('content.segmento.adicionar');
+	}]);
+	Route::get('/segmentos',['as'=>'segmentos', 'uses'=>'SegmentoController@list']);
+	Route::get('/segmentos/{idSegmento}',['as'=>'segmento.editar', 'uses'=>'SegmentoController@editar']);
 	Route::post('/segmento/salvar',['as'=>'segmento.salvar', 'uses'=>'SegmentoController@adicionar']);
 	Route::post('/segmentos/atualizar/{idSegmento}',['as'=>'segmento.atualizar', 'uses'=>'SegmentoController@atualizar']);
 	Route::get('/segmentos/deletarSegmento/{idSegmento}',['as'=>'segmento.deleteSegmento', 'uses'=>'SegmentoController@deleteSegmento']);
 	Route::get('/segmentos/desativarSegmento/{idSegmento}',['as'=>'segmento.desativarSegmento', 'uses'=>'SegmentoController@desativarSegmento']);
 	Route::get('/segmentos/ativarSegmento/{idSegmento}',['as'=>'segmento.ativarSegmento', 'uses'=>'SegmentoController@ativarSegmento']);
 	Route::get('/segmentos/filtro/buscar',['as'=>'segmento.filter', 'uses'=>'SegmentoController@filter']);
+	// -------------------------------------------------------------------------
 
 	// servico
+	Route::get('/servico/adicionar',['as'=>'servico.adicionar', function () {
+		return view('content.servico.adicionar');
+	}]);
+	Route::get('/servicos',['as'=>'servicos', 'uses'=>'ServicoController@list']);
+	Route::get('/servicos/{idServico}',['as'=>'servico.editar', 'uses'=>'ServicoController@editar']);
 	Route::post('/servico/salvar',['as'=>'servico.salvar', 'uses'=>'ServicoController@adicionar']);
 	Route::post('/servicos/atualizar/{idServico}',['as'=>'servico.atualizar', 'uses'=>'ServicoController@atualizar']);
 	// listagem de serviços sobre um segmento
@@ -94,4 +85,10 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/servicos/desativarServico/{idServico}',['as'=>'servico.desativarServico', 'uses'=>'ServicoController@desativarServico']);
 	Route::get('/servicos/ativarServico/{idServico}',['as'=>'servico.ativarServico', 'uses'=>'ServicoController@ativarServico']);
 	Route::get('/servicos/filtro/buscar',['as'=>'servico.filter', 'uses'=>'ServicoController@filter']);
+	// -------------------------------------------------------------------------
+
+	// plano
+	Route::get('/planos',['as'=>'planos', 'uses'=>'PlanoController@list']);
+	Route::get('/planos/{idPlano}',['as'=>'plano.editar', 'uses'=>'PlanoController@editar']);
+	Route::get('/planos/filtro/buscar',['as'=>'plano.filter', 'uses'=>'PlanoController@filter']);
 });

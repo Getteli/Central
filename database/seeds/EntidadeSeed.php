@@ -19,7 +19,7 @@ class EntidadeSeed extends Seeder
             $Entidade = new Entidade();
 
             $Entidade->primeiroNome = "Admin";
-            $Entidade->email = "agenc921_admin@publikando.com";
+            $Entidade->email = "agenc921_admin@agenciapublikando.com.br";
             $Entidade->apelido = "Admin";
             $Entidade->ativo = true;
             $Entidade->save();
@@ -30,7 +30,7 @@ class EntidadeSeed extends Seeder
         //
         $this->command->info('Seed usuario-entidade -- Central');
 
-        if(!User::where('email','=','agenc921_admin@publikando.com')->count()){
+        if(!User::where('email','=','agenc921_admin@agenciapublikando.com.br')->count()){
             $User = new User();
 
             $User->name = "Admin";

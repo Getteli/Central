@@ -4,17 +4,17 @@
 @section('title', 'Dashboard - Central')
 <!-- conteudo -->
 @section('content')
-    <div>
-        <div>
-            <div>
-                <h1>Dashboard</h1>
-            </div>
+	<div>
+		<div>
+			<div>
+				<h1>Dashboard</h1>
+			</div>
 
-            @if(Session::has('mensagem'))
-                <div>
-                    {{ Session::get('mensagem')['msg'] }}
-                </div>
-            @endif
-        </div>
-    </div>
+			@if(Session::has('mensagem'))
+				<div>
+					{{ Session::get('mensagem')['msg'] }}
+				</div>
+			@endif
+		</div>
+	</div>
 @endsection

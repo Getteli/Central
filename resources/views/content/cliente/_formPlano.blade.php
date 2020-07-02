@@ -21,7 +21,7 @@
 </div>
 
 <div class="input-field">
-	<input type="text" name="preco" min="0" class="validade preco" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
+	<input type="text" name="preco" id="preco" min="0" class="validade preco" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
 	<label>preco ( R$ )<strong style="color: red">*</strong></label>
 </div>
 
@@ -87,9 +87,6 @@
 		// add aos inputs
 		preco.focus();
 		preco.value = valor;
-		preco.blur();
-
-		descricao.focus();
 		descricao.value = desc;
 		preco.blur();
 

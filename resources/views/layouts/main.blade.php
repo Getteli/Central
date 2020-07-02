@@ -51,8 +51,6 @@
 								<li class="divider"></li>
 								<li><a href="#">Usuários</a></li>
 								<li><a href="#">Adicionar usuários</a></li>
-								<li class="divider"></li>
-								<li><a href="#">Listar planos</a></li>
 							</ul>
 						</li>
 						<!-- servicos -->
@@ -82,6 +80,8 @@
 								<li><a href="#">Adicionar uma despesa</a></li>
 								<li class="divider"></li>
 								<li><a href="#">Recebidos</a></li>
+								<li class="divider"></li>
+								<li><a href="{{route('planos')}}">Listar planos</a></li>
 							</ul>
 						</li>
 						<!-- calendario -->
@@ -142,8 +142,6 @@
 					<li class="divider"></li>
 					<li><a href="#">Usuários</a></li>
 					<li><a href="#">Adicionar usuários</a></li>
-					<li class="divider"></li>
-					<li><a href="#">Listar planos</a></li>
 				</ul>
 			</li>
 			<!-- servicos -->
@@ -173,6 +171,8 @@
 					<li><a href="#">Adicionar uma despesa</a></li>
 					<li class="divider"></li>
 					<li><a href="#">Recebidos</a></li>
+					<li class="divider"></li>
+					<li><a href="{{route('planos')}}">Listar planos</a></li>
 				</ul>
 			</li>
 			<!-- calendario -->

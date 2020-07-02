@@ -9,6 +9,13 @@
 			<h1>listagem de clientes</h1>
 		</div>
 		<div class="row">
+			<div class="col s12">
+				<a href="{{route('cliente.adicionar')}}">
+				<button class="btn blue">Adicionar cliente</button>
+				</a>
+			</div>
+		</div>
+		<div class="row">
 			<form method="GET" action="{{ route('cliente.filter') }}">
 				<div class="col l3 m4 s4">
 					<input type="text" placeholder="razao social,nome, cnpj, cod. do cliente, email..." name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>

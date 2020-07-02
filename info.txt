@@ -1,6 +1,6 @@
 LEMBRETE + info root
 version #
-data 12/06/20
+data 29/06/20
 
 INFO:
 	. Este info serve para lembrete do que falta fazer
@@ -32,7 +32,10 @@ A FAZER:
 	. design
 
 TRABALHOS:
-	. fazer listagem de planos
+	. Organizar a planilha de valores
+	. add a nova cliente no sistema
+
+	. Tentar colocar no model das classes. Métodos como pegar o nome da forma de pagamento, deixar formato o valor pra preço em set.. e etc
 	. ver com matheus como anda a api do pagseguro de pagamento
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 	
