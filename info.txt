@@ -32,11 +32,12 @@ A FAZER:
 	. design
 
 TRABALHOS:
+	. Fazer request em todas as classes com coisas obrigatorias vindas do form, e as outras crie e deixe vazia. (e alterar a chamada request nos metodos do controller)
+	. Por nos models a variavel guarded para impedir q add caso alguem tente invadir
+	. por relacionamento entre as classes (navigation) nos models
 	. Organizar a planilha de valores
 	. add a nova cliente no sistema
-
 	. Tentar colocar no model das classes. Métodos como pegar o nome da forma de pagamento, deixar formato o valor pra preço em set.. e etc
-	. ver com matheus como anda a api do pagseguro de pagamento
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 	
 HORARIOS / DATAS:

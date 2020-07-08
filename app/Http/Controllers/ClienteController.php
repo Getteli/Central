@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClienteRequest;
 use App\Cliente;
 use App\Entidade;
 use App\Endereco;
@@ -16,7 +17,7 @@ use App\Licenses;
 class ClienteController extends Controller
 {
 
-	public function adicionar(Request $request)
+	public function adicionar(ClienteRequest $request)
 	{
 		try{
 			$dados = $request->all();

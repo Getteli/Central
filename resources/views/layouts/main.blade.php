@@ -223,6 +223,15 @@
 			</main>
 		</div>
 
+		<!-- error mensage -->
+		@if(isset($errors) && count($errors)>0)
+			<div class="">
+				@foreach($errors->all() as $erro)
+					{{$erro}}<br>
+				@endforeach
+			</div>
+		@endif
+
 		<!-- scripts -->
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
