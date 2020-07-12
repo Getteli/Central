@@ -8,80 +8,82 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+	use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'name', 'email', 'password', 'funcao'
+	];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+	/**
+	 * The attributes that should be hidden for arrays.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		'password', 'remember_token',
+	];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+	];
 
-    // pegar a sua relacao com a entidade
-    public function entidade()
-    {
-        return $this->belongsToMany(Entidade::class);
-    }
+	protected $guarded = ['id', 'created_at', 'update_at'];
 
-    // add um papel
-    public function adicionaPapel($papel)
-    {
-        if(is_string($papel)){
-            return $this->papeis()->save(
-                    Papel::where('nome','=',$papel)->firstOrFail()
-                );
-        }
-        return $this->papeis()->save(
-                Papel::where('nome','=',$papel->nome)->firstOrFail()
-            );
-    }
+	// pegar a sua relacao com a entidade
+	public function entidade()
+	{
+		return $this->belongsToMany(Entidade::class);
+	}
 
-    // remover papel
-    public function removePapel($papel)
-    {
-        if(is_string($papel)){
-            return $this->papeis()->detach(
-                    Papel::where('nome','=',$papel)->firstOrFail()
-                );
-        }
-        return $this->papeis()->detach(
-                Papel::where('nome','=',$papel->nome)->firstOrFail()
-            );
-    }
+	// add um papel
+	public function adicionaPapel($papel)
+	{
+		if(is_string($papel)){
+			return $this->papeis()->save(
+					Papel::where('nome','=',$papel)->firstOrFail()
+				);
+		}
+		return $this->papeis()->save(
+				Papel::where('nome','=',$papel->nome)->firstOrFail()
+			);
+	}
 
-    // verifica se existe um papel
-    public function existePapel($papel)
-    {
-        if(is_string($papel)){
-            return $this->papeis->contains('nome',$papel);
-        }
+	// remover papel
+	public function removePapel($papel)
+	{
+		if(is_string($papel)){
+			return $this->papeis()->detach(
+					Papel::where('nome','=',$papel)->firstOrFail()
+				);
+		}
+		return $this->papeis()->detach(
+				Papel::where('nome','=',$papel->nome)->firstOrFail()
+			);
+	}
 
-        return $papel->intersect($this->papeis)->count();
-    }
+	// verifica se existe um papel
+	public function existePapel($papel)
+	{
+		if(is_string($papel)){
+			return $this->papeis->contains('nome',$papel);
+		}
 
-    // se for admin
-    public function existeAdmin()
-    {
-        return $this->existePapel('admin');
-    }
+		return $papel->intersect($this->papeis)->count();
+	}
+
+	// se for admin
+	public function existeAdmin()
+	{
+		return $this->existePapel('admin');
+	}
 }

@@ -45,9 +45,16 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 		//'email_verified_at' => 'datetime',
 	];
 
-	// NAVIGATION relacionamento
-	public function relEntidade()
+	protected $guarded = ['idCliente', 'created_at', 'update_at'];
+
+	// NAVIGATION
+	public function Entidade()
 	{
-		return $this->hasMany('App\Entidade','idCliente');
+		return $this->belongsTo('App\Entidade','idEntidade');
+	}
+
+	public function Plano()
+	{
+		return $this->belongsTo('App\Plano','idPlano');
 	}
 }

@@ -46,4 +46,6 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
     protected $casts = [
         //'email_verified_at' => 'datetime',
     ];
+
+    protected $guarded = ['idLicense', 'created_at', 'update_at'];
 }

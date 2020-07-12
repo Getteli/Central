@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SegmentoRequest;
 use App\Segmento;
 use App\Servico;
 
 class SegmentoController extends Controller
 {
-	public function adicionar(Request $request)
+	public function adicionar(SegmentoRequest $request)
 	{
 		try{
 			$dados = $request->all();
@@ -31,7 +32,7 @@ class SegmentoController extends Controller
 		}
 	}
 
-	public function atualizar(Request $request, $idSeg)
+	public function atualizar(SegmentoRequest $request, $idSeg)
 	{
 		try{
 			$dados = $request->all();

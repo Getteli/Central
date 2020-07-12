@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ServicoRequest;
 use App\Servico;
 
 class ServicoController extends Controller
 {
-	public function adicionar(Request $request)
+	public function adicionar(ServicoRequest $request)
 	{
 		try{
 			$dados = $request->all();
@@ -32,7 +33,7 @@ class ServicoController extends Controller
 		}
 	}
 
-	public function atualizar(Request $request, $idServ)
+	public function atualizar(ServicoRequest $request, $idServ)
 	{
 		try{
 			$dados = $request->all();

@@ -1,5 +1,6 @@
 <?php
 	use App\Servicos\FormasPagamento;
+	use App\Entidades\TiposIdentificacao;
 	use App\Segmento;
 	use App\Servico;
 ?>
@@ -21,8 +22,8 @@ if(isset($contato->idContato)){
 </div>
 
 <div class="input-field">
-	<input type="text" maxlength="12" name="contatoForm[numeroContato][]" class="validade numero inputContato" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
-	<label>Número (se for numero residencial sem o digito 9 na frente, coloque o numero 0)</label>
+	<input type="text" id="numContatoLabel" maxlength="12" name="contatoForm[numeroContato][]" class="validade numero inputContato" value="{{ isset($contato->numero) ? $contato->numero : old('numeroContato') }}">
+	<label for="numContatoLabel">Número (se for numero residencial sem o digito 9 na frente, coloque o numero 0)</label>
 </div>
 
 <div class="input-field">
@@ -31,9 +32,29 @@ if(isset($contato->idContato)){
 </div>
 
 <div class="input-field">
-	<input type="text" maxlength="30" name="contatoForm[identificacao][]" class="validade inputContato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
 	<label>Identificação</label>
+
+	<select name="contatoForm[identificacao][]" id="identificacaoContato" class="validade inputContato" maxlength="30">
+		<option value="">Selecione</option>
+		@foreach(TiposIdentificacao::getAll() as $tipo => $key )
+		<option value="{{ $tipo }}" {{ (isset($contato->identificacao) && $contato->identificacao == $tipo) || (old('identificacao') == $tipo) ? 'selected' : '' }}>{{ $tipo }}</option>
+		@endforeach
+	</select>
+
+	<input type="text" disabled="disabled" id="identContatoManual" maxlength="30" name="contatoForm[identificacao][]" class="validade inputContato none" placeholder="Digite a Identificação do contato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
 </div>
+
 <script type="text/javascript">
 	$('.numero').mask('0 0000-0000', {reverse: true});
+
+	document.getElementById("identificacaoContato").addEventListener("change", function(){
+		if (this.selectedIndex == 8) {
+			$("#identContatoManual").removeClass("none");
+			$("#identContatoManual").removeAttr("disabled");
+		}
+		if (this.selectedIndex != 8) {
+			$("#identContatoManual").addClass("none");
+			$("#identContatoManual").attr("disabled", "disabled");
+		}
+	});
 </script>

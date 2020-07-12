@@ -73,7 +73,7 @@
 	var descricao = document.getElementById("descricao");
 	var preco = document.getElementById("preco");
 
-	document.getElementById("idServico").addEventListener("change", function(){	
+	document.getElementById("idServico").addEventListener("change", function(){
 		// passa por todos os options selecionados
 		for(var i = 1; i < this.options.length; i++)
 		{

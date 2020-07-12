@@ -57,10 +57,19 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 		//'email_verified_at' => 'datetime',
 	];
 
-	// NAVIGATION relacionamento
-	public function relCliente()
+	// NAVIGATION
+	public function Cliente()
 	{
 		return $this->hasMany('App\Cliente','idEntidade');
 	}
 
+	public function Contato()
+	{
+		return $this->hasMany('App\Contato','idEntidade');
+	}
+
+	public function Endereco()
+	{
+		return $this->hasMany('App\Endereco','idEntidade');
+	}
 }
