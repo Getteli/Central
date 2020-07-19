@@ -21,7 +21,7 @@
 </div>
 
 <div class="input-field">
-	<input type="text" name="preco" id="preco" min="0" class="validade preco" value="{{ isset($plano->preco) ? $plano->preco : old('preco') }}" required>
+	<input type="text" name="preco" id="preco" min="0" class="validade preco" value="{{ isset($plano->preco) ? $plano->preco : old('preco') != null ? old('preco') : 0 }}" required>
 	<label>preco ( R$ )<strong style="color: red">*</strong></label>
 </div>
 
@@ -36,7 +36,7 @@
 </div>
 
 <div class="input-field">
-	<input type="number" min="1" max="31" name="dataPagamentoPlano" id="dataPagamento" class="validade" value="{{ isset($plano->dataPagamento) ? $plano->dataPagamento : old('dataPagamentoPlano') }}" required>
+	<input type="text" min="1" max="31" name="dataPagamentoPlano" id="dataPagamento" class="validade" value="{{ isset($plano->dataPagamento) ? $plano->dataPagamento : old('dataPagamentoPlano') }}" required>
 	<label>DIA (Data de pagamento) <strong style="color: red">*</strong></label>
 </div>	
 
@@ -66,7 +66,7 @@
 	<label>Código de licença</label>
 </div>
 <script>
-	$('.preco').mask('000000.00', {reverse: true});
+	$('.preco').mask('#########.##', {reverse: true});
 	// var aux
 	var valor = 0;
 	var desc = "";
@@ -80,13 +80,13 @@
 			if(this.options[i].selected == true)
 			{
 				// coloca os valores e os nomes dos serviços
-				valor += parseInt(this.options[i].value);
+				valor += Number(this.options[i].value);
 				desc += this.options[i].text + "; ";
 			}
 		}
 		// add aos inputs
 		preco.focus();
-		preco.value = valor;
+		preco.value = valor.toFixed(2);
 		descricao.value = desc;
 		preco.blur();
 

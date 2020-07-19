@@ -39,7 +39,7 @@ class User extends Authenticatable
 
 	protected $guarded = ['id', 'created_at', 'update_at'];
 
-	// pegar a sua relacao com a entidade
+	// NAVIGATION
 	public function entidade()
 	{
 		return $this->belongsToMany(Entidade::class);
@@ -48,42 +48,65 @@ class User extends Authenticatable
 	// add um papel
 	public function adicionaPapel($papel)
 	{
-		if(is_string($papel)){
+		try{
+			if(is_string($papel)){
+				return $this->papeis()->save(
+						Papel::where('nome','=',$papel)->firstOrFail()
+					);
+			}
 			return $this->papeis()->save(
-					Papel::where('nome','=',$papel)->firstOrFail()
+					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
+		}catch(\Exception $e){
+			//$e->getMessage();
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput($request->all);
 		}
-		return $this->papeis()->save(
-				Papel::where('nome','=',$papel->nome)->firstOrFail()
-			);
 	}
 
 	// remover papel
 	public function removePapel($papel)
 	{
-		if(is_string($papel)){
+		try{
+			if(is_string($papel)){
+				return $this->papeis()->detach(
+						Papel::where('nome','=',$papel)->firstOrFail()
+					);
+			}
 			return $this->papeis()->detach(
-					Papel::where('nome','=',$papel)->firstOrFail()
+					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
+		}catch(\Exception $e){
+			//$e->getMessage();
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput($request->all);
 		}
-		return $this->papeis()->detach(
-				Papel::where('nome','=',$papel->nome)->firstOrFail()
-			);
 	}
 
 	// verifica se existe um papel
 	public function existePapel($papel)
 	{
-		if(is_string($papel)){
-			return $this->papeis->contains('nome',$papel);
+		try{
+			if(is_string($papel)){
+				return $this->papeis->contains('nome',$papel);
+			}
+			return $papel->intersect($this->papeis)->count();
+		}catch(\Exception $e){
+			//$e->getMessage();
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput($request->all);
 		}
-
-		return $papel->intersect($this->papeis)->count();
 	}
 
-	// se for admin
+	// verifica se for admin
 	public function existeAdmin()
 	{
-		return $this->existePapel('admin');
+		try{
+			return $this->existePapel('admin');
+		}catch(\Exception $e){
+			//$e->getMessage();
+			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			return redirect()->back()->withInput($request->all);
+		}
 	}
 }
