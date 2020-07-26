@@ -29,6 +29,8 @@ Route::post('/login',['as'=>'login', 'uses'=>'AuthController@login']);
 // license (acessado pela url do cliente para saber se pode acessar)
 Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>'LicenseController@blockall']);
 
+Route::get('/licenses/UpdatePaymenteCliente/{codLicense}',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
+
 // rotas only AUTH TRUE, somente logado
 Route::group(['middleware'=>'auth'], function(){
 	// rotas auth's, logout

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EntidadeRequest;
+use App\Mail\Emails;
 
 class Endereco extends Authenticatable implements MustVerifyEmailContract
 {
@@ -99,8 +100,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateEnderecoCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -173,8 +176,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateEnderecoCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -194,8 +199,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			return $enderecos;
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarEnderecos",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->with('isErrorEnd',1);
 		}
 	}
@@ -211,8 +218,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEnderecos",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -228,8 +237,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEnderecos",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -246,8 +257,10 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEnderecos",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -266,6 +279,9 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 				return "deletado com sucesso";
 			}
 		} catch (\Exception $e) {
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEnderecoPorId",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return $e;
 		}
 	}

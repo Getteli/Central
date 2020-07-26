@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Mail\Emails;
 
 class User extends Authenticatable
 {
@@ -58,8 +59,10 @@ class User extends Authenticatable
 					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Adicionar","adicionaPapel",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -77,8 +80,10 @@ class User extends Authenticatable
 					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Remover","removePapel",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -92,8 +97,10 @@ class User extends Authenticatable
 			}
 			return $papel->intersect($this->papeis)->count();
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Verificar","existePapel",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -104,8 +111,10 @@ class User extends Authenticatable
 		try{
 			return $this->existePapel('admin');
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Verificar","existeAdmin",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}

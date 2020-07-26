@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        config(['app.locale' => \Config::get('app.locale')]);
+        \Carbon\Carbon::setLocale(LC_TIME,\Config::get('app.locale'));
     }
 
     /**
@@ -24,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Carbon::setlocale(LC_TIME,\Config::get('app.locale'));
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ServicoRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Servico as Authenticatable;
+use App\Mail\Emails;
 
 class Servico extends Authenticatable implements MustVerifyEmailContract
 {
@@ -75,8 +76,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 
 			return redirect()->back()->withInput($request->all);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateServico",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -98,8 +101,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			
 			return redirect()->route('servicos');
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateServico",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -110,8 +115,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			$servicos = Servico::all()->where('ativo', 1)->where('desativado', 0);
 			return view('content.servico.servicos',compact('servicos'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -154,8 +161,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 
 			return view('content.servico.servicos',compact('servicos','filtrar'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Filtrar","Filtro",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -167,8 +176,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			
 			return view('content.servico.editar', compact('servico'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","Editar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -186,6 +197,9 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","Desativar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}
@@ -203,6 +217,9 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","Ativar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}
@@ -221,6 +238,9 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","Deletar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}
@@ -241,8 +261,10 @@ class Servico extends Authenticatable implements MustVerifyEmailContract
 			// retorna o array encapsulado como um json para o javascript
 			return json_encode($arrayServicos);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","ListagemComSegmento",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 

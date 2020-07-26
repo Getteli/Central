@@ -32,10 +32,9 @@ A FAZER:
 	. design
 
 TRABALHOS:
-	. ver o metodo de email do laravel padrao e testar
-	. Organizar a planilha de valores
+	. colocar para enviar email pro cliente se nao tiver pago e renovado a licença
+	. colocar para enviar email pro cliente quando o pagamento for efetuado com sucesso
 	. add a nova cliente no sistema
-	. Tentar colocar no model das classes. Métodos como pegar o nome da forma de pagamento, deixar formato o valor pra preço em set.. e etc
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 
 HORARIOS / DATAS:

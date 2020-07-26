@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EntidadeRequest;
 use App\Entidade;
 use App\CodeRandom;
+use App\Mail\Emails;
 
 class Cliente extends Authenticatable implements MustVerifyEmailContract
 {
@@ -84,8 +85,10 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 
 			return $cliente->codCliente;
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -105,8 +108,10 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 
 			return $cliente->codCliente;
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -117,8 +122,10 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			$clientes = Cliente::all()->where('ativo', 1)->where('deletado', 0);
 			return view('content.cliente.clientes',compact('clientes'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -162,8 +169,10 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 
 			return view('content.cliente.clientes',compact('clientes','filtrar'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Filtrar","Filtro",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -184,8 +193,10 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 				throw new \Exception("Cliente não encontrado ou não disponivel");
 			}
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -200,6 +211,9 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			return $cliente;
 		} catch (Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -214,6 +228,9 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			return $cliente;
 		} catch (Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -229,6 +246,9 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			return $cliente;
 		} catch (Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}

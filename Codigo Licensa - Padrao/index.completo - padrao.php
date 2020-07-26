@@ -24,7 +24,7 @@
 		curl_close($cUrl);
 		// result
 		if ($result === "true") {
-			header("Location: inicio.html");
+			// continua na página
 		}else{
 			header("Location: ops.html");
 		}

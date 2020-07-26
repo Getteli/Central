@@ -47,7 +47,7 @@
 				@foreach($planos as $plano)
 					<tr>
 						<td>{{ $plano->dataPagamento }}</td>
-						<td>{{ FormasPagamento::formaPagamentoPorNome($plano->formaPagamento) }}</td>
+						<td>{{ FormasPagamento::getNameFPagamento($plano->formaPagamento) }}</td>
 						<td>{{ $plano->descricao }}</td>
 						<td>{{ "R$ ". number_format($plano->preco, 2) }}</td>
 						<td>

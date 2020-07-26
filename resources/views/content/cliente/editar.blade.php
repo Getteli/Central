@@ -19,7 +19,7 @@
 						<button type="button" id="btnAddEndereco">Add mais endereco</button>
 						<div class="row" id="divEndereco" style="border-style: dotted;">
 						<?php
-						if (!$enderecos->isEmpty()) {
+						if ($enderecos != null) {
 						foreach ($enderecos as $key => $endereco) {
 						?>
 							<div class="containerEndereco" id="{{$endereco->idEndereco}}">
@@ -40,7 +40,7 @@
 						<button type="button" id="btnAddContato">Add mais contato</button>
 						<div class="row" id="divContato" style="border-style: dotted;">
 						<?php
-						if (!$contatos->isEmpty()) {
+						if ($contatos != null) {
 						foreach ($contatos as $key => $contato) {
 						?>
 							<div class="containerContato" id="{{$contato->idContato}}">

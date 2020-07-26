@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Segmento as Authenticatable;
 use App\Http\Requests\SegmentoRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Emails;
 
 class Segmento extends Authenticatable implements MustVerifyEmailContract
 {
@@ -74,6 +76,9 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 
 		}catch(\Exception $e){
 			\Session::flash('mensagem',['msg'=>'Erro ao adicionar o novo Segmento, verifique com o suporte.','class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateSegmento",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -94,8 +99,10 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			
 			return redirect()->back()->withInput($request->all);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateSegmento",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -106,8 +113,10 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmentos = Segmento::all()->where('ativo', 1)->where('desativado', 0);
 			return view('content.segmento.segmentos',compact('segmentos'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -147,8 +156,10 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 
 			return view('content.segmento.segmentos',compact('segmentos','filtrar'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("filtrar","Filtro",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -159,8 +170,10 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmento = Segmento::find($idSeg);
 			return view('content.segmento.editar', compact('segmento'));
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarSegmento",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -184,6 +197,9 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","Desativar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}
@@ -207,6 +223,9 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","Ativar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}
@@ -232,6 +251,9 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","Deletar",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput();
 		}
 	}

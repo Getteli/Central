@@ -12,6 +12,7 @@ use App\Http\Requests\EntidadeRequest;
 use App\Cliente;
 use App\CodeRandom;
 use App\Exceptions\Handler;
+use App\Mail\Emails;
 
 class Entidade extends Authenticatable implements MustVerifyEmailContract
 {
@@ -106,8 +107,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			// volta a chave para continuar a criacao da entidade Cliente
 			return $entidade->idEntidade;
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateEntidadeCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -142,8 +145,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			return 'true';
 
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateEntidadeCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -165,8 +170,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			}
 
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarEntidade",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -180,8 +187,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEntidade",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -195,8 +204,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEntidade",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -211,8 +222,10 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEntidade",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}

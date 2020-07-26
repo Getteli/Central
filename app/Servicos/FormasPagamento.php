@@ -10,7 +10,7 @@ abstract class FormasPagamento
 
 	// metodo para buscar todas as opcoes
 	static function getAll(){
-		
+
 		$array = array(
 			"Cartao de Crédito" => 1,
 			"Cartao de Débito" => 2,
@@ -19,7 +19,7 @@ abstract class FormasPagamento
 		return $array;
 	}
 
-	static function formaPagamentoPorNome($idfp){
+	static function getNameFPagamento($idfp){
 		$formas = self::getAll();
 		$result = "Sem forma de Pagamento";
 		foreach ($formas as $key => $value) {

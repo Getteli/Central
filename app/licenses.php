@@ -2,16 +2,20 @@
 
 namespace App;
 
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\License as Authenticatable;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\EntidadeRequest;
-use App\Cliente;
-use App\Entidade;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+use App\Mail\PaymenteMail;
+use App\Mail\Emails;
 use App\CodeRandom;
+use App\Entidade;
+use App\Cliente;
+
 
 class Licenses extends Authenticatable implements MustVerifyEmailContract
 {
@@ -60,7 +64,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	public function VerifyLicense($codLicense)
 	{
 		// busca a licença pelo codigo
-		$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
+		$licenseCliente = Licenses::where([['codLicense','=',$codLicense],
+		['ativo','=',1]])
+		->Where(function ($query) {
+			$query->where('deletado','=',0)
+			->orWhere('deletado','=',null);
+		})
+		->first();
 		// verifica se existe o registro
 		if (!$licenseCliente) {
 			return "false";
@@ -75,10 +85,42 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 				$cliente = Cliente::where('codCliente','=',$codCliente)->first();
 				$entidade = Entidade::find($cliente->idEntidade);
 				//funcao de enviar email
+				// falando sobre o erro e mostrando outros dados
+				//Mail::to($entidade->email)->send(new Emails("Exibir","ListagemComSegmento",$e->getMessage(),'now'));
 				//$entidade->email
 				return "false";
 			}
 		}
+	}
+
+	// recebe do pagseguro para atualizar a licença do cliente e informar
+	public function PaymenteCliente($codLicense)
+	{
+		try{
+			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
+			// return $licenseCliente->codCliente;
+			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
+			$cliente = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first();
+
+			if($licenseCliente && $entidade && $cliente){
+				// coloca mais 1 mes
+				$licenseCliente->dias = $licenseCliente->dias + 31;
+				$licenseCliente->update();
+
+				// envia email pro cliente
+				//Mail::to("douglas_araujo018@outlook.com")->send(new PaymenteMail($cliente, $entidade));
+
+			}else{
+				throw new Exception("Erro ao acessar a licença e o cliente.");
+			}
+
+		}catch(\Exception $e){
+			// envia email pro suporte
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymenteCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
+			return 'error';
+		}
+
 	}
 
 	public function CreateLicenseCliente(EntidadeRequest $request, $codCliente)
@@ -102,8 +144,10 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			return redirect()->route('clientes');
 
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -126,8 +170,10 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			\Session::flash('mensagem',['msg'=>'Cliente atualizado com sucesso!','class'=>'green white-text']);
 			return redirect()->back()->withInput($request->all);
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->withInput($request->all);
 		}
 	}
@@ -148,8 +194,10 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			
 			return $license;
 		}catch(\Exception $e){
-			//$e->getMessage();
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back()->with('isErrorL',1);
 		}
 	}
@@ -165,6 +213,9 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			return redirect()->back();
 		} catch (\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -180,6 +231,9 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			return redirect()->back();
 		}catch(\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
@@ -196,6 +250,9 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			return redirect()->back();
 		} catch (\Exception $e) {
 			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarLicenseCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
 			return redirect()->back();
 		}
 	}
