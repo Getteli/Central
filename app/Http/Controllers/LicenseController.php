@@ -17,7 +17,7 @@ class LicenseController extends Controller
 	public function UpdatePaymenteCliente($codLicense)
 	{
 		$license = new Licenses();
-		$license = $license->PaymenteCliente($codLicense);
+		$license = $license->PaymentCliente($codLicense);
 		return $license;
 	}
 }

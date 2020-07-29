@@ -10,7 +10,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
-use App\Mail\PaymenteMail;
+use App\Mail\PaymentMail;
 use App\Mail\Emails;
 use App\CodeRandom;
 use App\Entidade;
@@ -33,10 +33,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	 * @var array
 	 */
 	protected $fillable = [
-		'Segmento',
-		'Descricao',
-		'Ativo',
-		'Deletado',
+		'codLicense',
+		'codCliente',
+		'observacao',
+		'special',
+		'dias',
+		'deletado',
+		'ativo',
 	];
 
 	/**
@@ -94,7 +97,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	}
 
 	// recebe do pagseguro para atualizar a licença do cliente e informar
-	public function PaymenteCliente($codLicense)
+	public function PaymentCliente($codLicense)
 	{
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
@@ -108,7 +111,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 				$licenseCliente->update();
 
 				// envia email pro cliente
-				//Mail::to("douglas_araujo018@outlook.com")->send(new PaymenteMail($cliente, $entidade));
+				Mail::to($entidade->email)->send(new PaymentMail($cliente, $entidade, $licenseCliente));
 
 			}else{
 				throw new Exception("Erro ao acessar a licença e o cliente.");
@@ -116,7 +119,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 
 		}catch(\Exception $e){
 			// envia email pro suporte
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymenteCliente",$e->getMessage(),'now'));
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
 			return 'error';
 		}

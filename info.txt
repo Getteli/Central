@@ -33,7 +33,6 @@ A FAZER:
 
 TRABALHOS:
 	. colocar para enviar email pro cliente se nao tiver pago e renovado a licença
-	. colocar para enviar email pro cliente quando o pagamento for efetuado com sucesso
 	. add a nova cliente no sistema
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 

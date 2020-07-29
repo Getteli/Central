@@ -8,8 +8,10 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Cliente;
 use App\Entidade;
+use App\Licenses;
+use Carbon\Carbon;
 
-class PaymenteMail extends Mailable
+class PaymentMail extends Mailable
 {
 	use Queueable, SerializesModels;
 
@@ -18,11 +20,13 @@ class PaymenteMail extends Mailable
 	 *
 	 * @return void
 	 */
-	public function __construct(Cliente $cliente, Entidade $entidade)
+	public function __construct(Cliente $cliente, Entidade $entidade, Licenses $licensecliente)
 	{
 		//
 		$this->cliente = $cliente;
 		$this->entidade = $entidade;
+		$this->license = $licensecliente;
+		$this->date = Carbon::now()->translatedFormat('Y j F, l, g:i a');
 	}
 
 	/**
@@ -33,10 +37,16 @@ class PaymenteMail extends Mailable
 	public function build()
 	{
 		return $this->from('contato@agenciapublikando.com.br')
+		->subject('Publikando informa: Pagamento confirmado')
 		->view('email.default.payment')
 		->with([
 			'codCliente' => $this->cliente->codCliente,
 			'entidadeEmail' => $this->entidade->email,
+			'nomeCliente' => $this->entidade->primeiroNome,
+			'codLicense' => $this->license->codLicense,
+			'servicoPrestado' => $this->cliente->Plano->descricao,
+			'valor' => $this->cliente->Plano->preco,
+			'date' => $this->date,
 		])
 		;
 	}

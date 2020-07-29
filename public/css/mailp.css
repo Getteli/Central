@@ -1,0 +1,22 @@
+body{
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+	background-image: url('../assets/bgmail.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	overflow-x: hidden;
+}
+
+main{
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: auto;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 5px 9px rgb(0 0 0 / 34%);
+}
