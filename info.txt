@@ -3,7 +3,7 @@ version #
 data 29/06/20
 
 INFO:
-	. Este info serve para lembrete do que falta fazer
+	. Este info serve para lembrete do que falta fazer sobre o sistema CENTRAL
 	. Site para calcular dias - http://www.webcid.com.br/calendario/calcular-dias
 	. Site para calcular tempo CRONJOB - https://crontab.guru/
 	. Site para minificar e ofuscar - https://php-minify.com
@@ -33,6 +33,13 @@ A FAZER:
 
 TRABALHOS:
 	. colocar para enviar email pro cliente se nao tiver pago e renovado a licença
+	. metodo para pegar cep sem caracter especial, direto no index do payment.
+	. metodo ou sei la, pra retirar a hr da data de nascimento ao trazer, ou só formatar msm.
+	. desenhar a tela, ver o que tem de required, por modal, e etc.
+	. por o codigo de busca do curl em um arquivo separado e chamar no index.
+	. eu mesmo criar o layout dos emails (desenhar ver corel e etc)
+	. fazer a pagina de cases
+	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. add a nova cliente no sistema
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 

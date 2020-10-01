@@ -86,7 +86,7 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 				$contato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
 				$contato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
 				$contato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
-				$contato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+				$contato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] != "Personalizado" ? $arrayInterno['identificacao'] : $arrayInterno['identificacaoManual'] : null;
 				$contato->idEntidade = $idEntidadeCliente;
 				$contato->ativo = true;
 				$contato->save();
@@ -130,7 +130,7 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 					$NovoContato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
 					$NovoContato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
 					$NovoContato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
-					$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+					$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] != "Personalizado" ? $arrayInterno['identificacao'] : $arrayInterno['identificacaoManual'] : null;
 					$NovoContato->idEntidade = $idEntidadeCliente;
 					$NovoContato->ativo = true;
 					$NovoContato->save();	
@@ -142,14 +142,14 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 						$contatoBanco[$k]->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
 						$contatoBanco[$k]->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
 						$contatoBanco[$k]->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
-						$contatoBanco[$k]->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+						$contatoBanco[$k]->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] != "Personalizado" ? $arrayInterno['identificacao'] : $arrayInterno['identificacaoManual'] : null;
 						$contatoBanco[$k]->update();
 					}else{
 						$NovoContato = new Contato();
 						$NovoContato->ddd = isset($arrayInterno['ddd']) ? $arrayInterno['ddd'] : null;
 						$NovoContato->numero = isset($arrayInterno['numeroContato']) ? $arrayInterno['numeroContato'] : null;
 						$NovoContato->Email = isset($arrayInterno['emailContato']) ? $arrayInterno['emailContato'] : null;
-						$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] : null;
+						$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] != "Personalizado" ? $arrayInterno['identificacao'] : $arrayInterno['identificacaoManual'] : null;
 						$NovoContato->idEntidade = $idEntidadeCliente;
 						$NovoContato->ativo = true;
 						$NovoContato->save();

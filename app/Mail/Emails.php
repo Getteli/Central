@@ -37,7 +37,7 @@ class Emails extends Mailable
 	 */
 	public function build()
 	{
-		return $this->from('central@agenciapublikando.com.br')
+		return $this->from('contato@agenciapublikando.com.br')
 		->subject('Sistema Central informa: Error')
 		->view('email.error.layout')
 		->with([

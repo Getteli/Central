@@ -1,7 +1,7 @@
 APP_NAME=Central
 APP_ENV=production
 APP_KEY=base64:HPj5bTeNf9Ywm46VExNAudbcOaPQ2vddyZYB4SKyAOg=
-APP_DEBUG=false
+APP_DEBUG=true
 APP_URL=https://central.agenciapublikando.com.br/
 
 LOG_CHANNEL=stack

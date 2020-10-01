@@ -41,7 +41,7 @@ if(isset($contato->idContato)){
 		@endforeach
 	</select>
 
-	<input type="text" disabled="disabled" id="identContatoManual" maxlength="30" name="contatoForm[identificacao][]" class="validade inputContato none" placeholder="Digite a Identificação do contato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
+	<input type="text" disabled="disabled" id="identContatoManual" maxlength="30" name="contatoForm[identificacaoManual][]" class="validade inputContato none" placeholder="Digite a Identificação do contato" value="{{ isset($contato->identificacao) ? $contato->identificacao : old('identificacao') }}">
 </div>
 
 <script type="text/javascript">

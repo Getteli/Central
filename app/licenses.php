@@ -14,6 +14,8 @@ use App\Mail\PaymentMail;
 use App\Mail\Emails;
 use App\CodeRandom;
 use App\Entidade;
+use App\Endereco;
+use App\Contato;
 use App\Cliente;
 
 
@@ -101,7 +103,6 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	{
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
-			// return $licenseCliente->codCliente;
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
 			$cliente = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first();
 
@@ -123,7 +124,62 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			// retorna ao cliente
 			return 'error';
 		}
+	}
 
+	// recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
+	public function GetDataCliente($codLicense)
+	{
+		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","GetDataCliente","erro teste",'now'));
+
+		return 'error';
+		/*
+		$dadosCliente = array();
+		try{
+			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
+			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
+			$cliente = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first();
+
+			if($licenseCliente && $entidade && $cliente){
+				// pega o primeiro endereco do cliente
+				$enderecoCliente = Endereco::where([['idEntidade','=',$entidade->idEntidade],
+				['ativo','=',1]])
+				->Where(function ($query) {
+					$query->where('deletado','=',0)
+					->orWhere('deletado','=',null);
+				})
+				->first();
+
+				// pega o primeiro contato do cliente
+				$contatoCliente = Contato::where([['idEntidade','=',$entidade->idEntidade],
+				['ativo','=',1]])
+				->Where(function ($query) {
+					$query->where('deletado','=',0)
+					->orWhere('deletado','=',null);
+				})
+				->first();
+
+				// cria o arrray com o que é necessário
+				$dadosCliente = array(
+					// key => value
+					'nomeCliente' => $entidade->primeiroNome . " " . $entidade->sobrenome,
+					'emailCliente' => $entidade->email,
+					'dataNascimentoCliente' => $entidade->dataNascimento,
+					'enderecoCliente' => $enderecoCliente,
+					'dddCliente' => $contatoCliente != null ? $contatoCliente->ddd : null,
+					'numeroCliente' => $contatoCliente != null ? $contatoCliente->numero : null,
+				);
+
+				return json_encode($dadosCliente);
+			}else{
+				throw new Exception("Erro ao acessar a licença e o cliente.");
+			}
+			*/
+		// }catch(\Exception $e){
+		// 	// envia email pro suporte
+		// 	Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","GetDataCliente",$e->getMessage(),'now'));
+		// 	// retorna ao cliente
+		// 	return 'error';
+		// }
 	}
 
 	public function CreateLicenseCliente(EntidadeRequest $request, $codCliente)
