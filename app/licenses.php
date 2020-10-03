@@ -14,6 +14,7 @@ use App\Mail\PaymentMail;
 use App\Mail\Emails;
 use App\CodeRandom;
 use App\Entidade;
+use App\Recebido;
 use App\Endereco;
 use App\Contato;
 use App\Cliente;
@@ -99,40 +100,55 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	}
 
 	// recebe do pagseguro para atualizar a licença do cliente e informar
-	public function PaymentCliente($codLicense)
+	public function PaymentCliente($codLicense, $status)
 	{
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
 			$cliente = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first();
+			$plano = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Plano;
 
-			if($licenseCliente && $entidade && $cliente){
+			if($licenseCliente && $entidade && $cliente && $plano){
+				// verifica o status do pagamento vindo do pagseguro
+				// switch ($status) {
+				// 	case 1:
+				// 		# code...
+				// 		break;
+					
+				// 	default:
+				// 		# code...
+				// 		break;
+				// }
+
+				// cria o registro informando o recebido
+				$recebido = new Recebido();
+				$check_recebido = $recebido->CreateRecebido($plano);
+
+				if(!$check_recebido){
+					throw new \Exception("Erro ao criar o registro de recebido.");
+				}
+
 				// coloca mais 1 mes
 				$licenseCliente->dias = $licenseCliente->dias + 31;
 				$licenseCliente->update();
 
-				// envia email pro cliente
-				Mail::to($entidade->email)->send(new PaymentMail($cliente, $entidade, $licenseCliente));
+				// envia email pro cliente se deu tudo certo
+				// envia o obj cliente, entidade, licensa e o status
+				Mail::to($entidade->email)->send(new PaymentMail($cliente, $entidade, $licenseCliente, $status));
 
 			}else{
-				throw new Exception("Erro ao acessar a licença e o cliente.");
+				throw new \Exception("Erro ao acessar a licença e o cliente.");
 			}
 
 		}catch(\Exception $e){
 			// envia email pro suporte
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return 'error';
 		}
 	}
 
 	// recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
 	public function GetDataCliente($codLicense)
 	{
-		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","GetDataCliente","erro teste",'now'));
-
-		return 'error';
-		/*
 		$dadosCliente = array();
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
@@ -173,13 +189,12 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			}else{
 				throw new Exception("Erro ao acessar a licença e o cliente.");
 			}
-			*/
-		// }catch(\Exception $e){
-		// 	// envia email pro suporte
-		// 	Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","GetDataCliente",$e->getMessage(),'now'));
-		// 	// retorna ao cliente
-		// 	return 'error';
-		// }
+		}catch(\Exception $e){
+			// envia email pro suporte
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","GetDataCliente",$e->getMessage(),'now'));
+			// retorna ao cliente
+			return 'error';
+		}
 	}
 
 	public function CreateLicenseCliente(EntidadeRequest $request, $codCliente)

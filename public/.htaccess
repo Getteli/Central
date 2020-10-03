@@ -1,24 +1,62 @@
+# .htaccess default para rodar o laravel no shared host
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+	<IfModule mod_negotiation.c>
+		Options -MultiViews -Indexes
+	</IfModule>
 
-    RewriteEngine On
+	RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	# Handle Authorization Header
+	RewriteCond %{HTTP:Authorization} .
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+	# Redirect Trailing Slashes If Not A Folder...
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} (.+)/$
+	RewriteRule ^ %1 [L,R=301]
 
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+	# Handle Front Controller...
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ index.php [L]
 
+	# block acess to file and folder
+	# default
+	#RedirectMatch 403 ^/folder/?$
+	#RedirectMatch 403 ^/file.ext$
 
-RewriteRule ^ (. *) $ Public / $ 1 [L]    
+	# files
+	RedirectMatch 403 ^/composer.json$
+	RedirectMatch 403 ^/webpack.mix.js$
+	RedirectMatch 403 ^/web.config$
+	RedirectMatch 403 ^/server.php$
+	RedirectMatch 403 ^/robots.txt$
+	RedirectMatch 403 ^/README.md$
+	RedirectMatch 403 ^/phpunit.xml$
+	RedirectMatch 403 ^/package.json$
+	RedirectMatch 403 ^/package-lock.json$
+	RedirectMatch 403 ^/mix-manifest.json$
+	RedirectMatch 403 ^/composer.lock$
+	RedirectMatch 403 ^/artisan$
+	RedirectMatch 403 ^/.styleci.yml$
+	RedirectMatch 403 ^/.htaccess$
+	RedirectMatch 403 ^/.env$
+	RedirectMatch 403 ^/.editorconfig$
+
+	# folder
+	RedirectMatch 403 ^/vendor/?$
+	RedirectMatch 403 ^/tests/?$
+	RedirectMatch 403 ^/storage/?$
+	RedirectMatch 403 ^/routes/?$
+	RedirectMatch 403 ^/resources/?$
+	RedirectMatch 403 ^/node_modules/?$
+	RedirectMatch 403 ^/js/?$
+	RedirectMatch 403 ^/database/?$
+	RedirectMatch 403 ^/css/?$
+	RedirectMatch 403 ^/config/?$
+	RedirectMatch 403 ^/bootstrap/?$
+	RedirectMatch 403 ^/assets/?$
+	RedirectMatch 403 ^/app/?$
+
+#RewriteRule ^ (. *) $ Public / $ 1 [L]
 </IfModule>

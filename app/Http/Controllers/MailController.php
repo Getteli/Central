@@ -14,7 +14,7 @@ use App\Mail\MailClient;
 
 class MailController extends Controller
 {
-	// Request $request
+
 	public function sendMailClient($request)
 	{
 		$data = urldecode($request);

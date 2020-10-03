@@ -11,8 +11,26 @@
 		<div class="row"> <!-- bottom-sheet -->
 			<div class="col l12 m12 s12 center">
 				<h4>Agência Publikando</h4>
-				<p>Olá {{ $nomeCliente }}, estamos passando para informar que o seu <b>pagamento</b> já foi confirmado ;)</p>
-				<p>Já pode aproveitar o nosso serviço e qualquer dúvida é só chamar !</p>
+				<p>Olá {{ $nomeCliente }}, estamos passando para informar que o seu <b>plano</b></p>
+				<?php
+				switch ($status) {
+					case 1:
+						echo "<p>
+						<b>FOI PAGO</b>
+						<p>Já pode aproveitar o nosso serviço e qualquer dúvida é só chamar !</p>
+						</p>";
+						break;
+					case 2:
+						echo "<p>
+						<b>FOI RECUSADO</b>
+						<p>Entre em contato conosco urgentemente pelos nossos meios de contato.</p>
+						</p>";
+						break;
+					default:
+						# code...
+						break;
+				}
+				?>
 				<hr/>
 			</div>
 			<div class="col l12 m12 s12 center">
@@ -27,7 +45,7 @@
 			</div>
 			<div class="col l12 m12 s12 center">
 				<hr/>
-				<p>Algum dado está errado? entre em contato conosco</p>
+				<p>Algum dado está errado? entre em contato conosco !</p>
 			</div>
 		</div>
 	</main>

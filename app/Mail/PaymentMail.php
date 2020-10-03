@@ -20,13 +20,14 @@ class PaymentMail extends Mailable
 	 *
 	 * @return void
 	 */
-	public function __construct(Cliente $cliente, Entidade $entidade, Licenses $licensecliente)
+	public function __construct(Cliente $cliente, Entidade $entidade, Licenses $licensecliente, $status)
 	{
 		//
 		$this->cliente = $cliente;
 		$this->entidade = $entidade;
 		$this->license = $licensecliente;
 		$this->date = Carbon::now()->translatedFormat('Y j F, l, g:i a');
+		$this->status = $status;
 	}
 
 	/**
@@ -37,7 +38,7 @@ class PaymentMail extends Mailable
 	public function build()
 	{
 		return $this->from('contato@agenciapublikando.com.br')
-		->subject('Publikando informa: Pagamento confirmado')
+		->subject('Publikando: Informações sobre a fatura.')
 		->view('email.default.payment')
 		->with([
 			'codCliente' => $this->cliente->codCliente,
@@ -47,6 +48,7 @@ class PaymentMail extends Mailable
 			'servicoPrestado' => $this->cliente->Plano->descricao,
 			'valor' => $this->cliente->Plano->preco,
 			'date' => $this->date,
+			'status' => $this->status,
 		])
 		;
 	}

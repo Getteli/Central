@@ -9,12 +9,18 @@ INFO:
 	. Site para minificar e ofuscar - https://php-minify.com
 
 ATUALIZAÇÃO:
-	. Arrumar os projetos, qis, athena
-		(colocar seus bds) e subir p/ publikando e por nos cases
+	. add a nova cliente no sistema
 
 COMO SUBIR:
-	. Para fazer o deploy do projeto para o servidor, siga esses passos
-	. mova os itens (ate itens ocultos, verifique isso) da pasta public para o index (pasta anterior)
+	. Para fazer o deploy do projeto para o servidor, siga esses passos:
+	. abra o cl git e digite esses comandos:
+		. composer dump-autoload
+		. php artisan config:cache
+		. php artisan clear-compiled
+		. php artisan config:clear
+		. php artisan cache:clear
+	. ZIP (e nao .rar !) o conteudo da pasta central (tirando os arquivos .gitgnore, info.txt, outros env's e etc.. )
+	. mova os itens (ate itens ocultos, verifique isso .htaccess ! nao esqueça) da pasta public para o index (pasta anterior)
 	. altere o index.php e serve.php, dentro deles os caminhos estao indicando ou a pasta public ou "..", entao remova para ele indicar o index e pastas do mesmo local.
 	. altere o .env para o .env do server
 	. se NÃO exibir veja a pasta bootstrap, se está com o app.php, e a pasta cache
@@ -23,12 +29,7 @@ PERGUNTAS:
 
 A FAZER:
 	. criar uma busca de endereços pertos de tal CEP, provavelmente api do google
-	. Criar script para bloquear site ou algo do tipo de cliente que passou do dia do pagamento. (de certa forma todos os clientes teriam que ser com index.php para receber este script. fazer testes, muitos teste..).
 	. Cron para enviar email, sobre pagamento e etc.
-	. Testar tudo em nós mesmo (criar subdominio, admin. ..., fazer rodapé padrao feito por publikando e etc)
-	. no subdominio de pagamento (payment) vai receber o codigo de licença e vai pegar as coisas do cliente, ter um checkbox para pagamento. uma pagina parecido com nosso site, e no topo 3 logos (como a loja teste do pagseguro), agencia p, ilion e o pagseguro. Enviar esse link para o cliente e um link de pagamento direto pelo site do pagseguro.
-	. criar as rotas para cada pagina/acao
-	. enviar emails
 	. design
 
 TRABALHOS:
@@ -36,12 +37,11 @@ TRABALHOS:
 	. metodo para pegar cep sem caracter especial, direto no index do payment.
 	. metodo ou sei la, pra retirar a hr da data de nascimento ao trazer, ou só formatar msm.
 	. desenhar a tela, ver o que tem de required, por modal, e etc.
-	. por o codigo de busca do curl em um arquivo separado e chamar no index.
 	. eu mesmo criar o layout dos emails (desenhar ver corel e etc)
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
-	. add a nova cliente no sistema
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
+	. ver a parte de planos, nao esta exibindo corretamente, apenas quando eu vou da listagem de planos
 
 HORARIOS / DATAS:
 

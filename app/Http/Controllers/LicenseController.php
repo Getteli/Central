@@ -20,10 +20,10 @@ class LicenseController extends Controller
 		echo $license->GetDataCliente($codLicense);
 	}
 
-	public function UpdatePaymenteCliente($codLicense)
+	public function UpdatePaymenteCliente($codLicense, $status)
 	{
 		$license = new Licenses();
-		$license = $license->PaymentCliente($codLicense);
+		$license = $license->PaymentCliente($codLicense, $status);
 		return $license;
 	}
 }
