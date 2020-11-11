@@ -41,7 +41,7 @@
 				<p><b>Código da licença</b>: {{ $codLicense }}</p>
 				<p><b>Serviço</b>: {{ $servicoPrestado }}</p>
 				<p><b>Valor:</b>: R$ {{ $valor }}</p>
-				<p><b>Data da confirmação do pagamento:</b>: R$ {{ $date }}</p>
+				<p><b>Data da confirmação do pagamento:</b>: {{ $date }}</p>
 			</div>
 			<div class="col l12 m12 s12 center">
 				<hr/>

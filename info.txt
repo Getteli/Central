@@ -34,14 +34,12 @@ A FAZER:
 
 TRABALHOS:
 	. colocar para enviar email pro cliente se nao tiver pago e renovado a licença
-	. metodo para pegar cep sem caracter especial, direto no index do payment.
-	. metodo ou sei la, pra retirar a hr da data de nascimento ao trazer, ou só formatar msm.
 	. desenhar a tela, ver o que tem de required, por modal, e etc.
 	. eu mesmo criar o layout dos emails (desenhar ver corel e etc)
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
-	. ver a parte de planos, nao esta exibindo corretamente, apenas quando eu vou da listagem de planos
+	. cliente controler, desativarEntidade, continua melhorando para retornar certinho com erro, pondo false e etc..
 
 HORARIOS / DATAS:
 

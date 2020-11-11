@@ -70,6 +70,9 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 
 			// passa os dados do formulario de contato
 			$array = array_filter($dados["contatoForm"]);
+			if(!$array){
+				return;
+			}
 			// array que guardará cada contato
 			$contato = array();
 			// organiza cada elemento em um unico array com chaves, para cada novo contato
@@ -92,13 +95,19 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 				$contato->save();
 				break;
 			}
-			return 'true';
+			return true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateContatoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -109,6 +118,9 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 
 			// passa os dados do formulario de contato
 			$array = array_filter($dados["contatoForm"]);
+			if(!$array){
+				return;
+			}
 			// array que guardará cada contato
 			$contato = array();
 			// verificar se tem valor para registrar contato
@@ -157,13 +169,19 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 					break;
 				}
 			}
-			return 'true';
+			return true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'atualizar cliente',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateContatoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -182,11 +200,17 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 			}
 			return $contatos;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarContatos",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->with('isErrorCont',1);
+			return false;
 		}
 	}
 
@@ -201,7 +225,13 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarContatos",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -220,7 +250,13 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarContatos",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -240,7 +276,13 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarContatos",$e->getMessage(),'now'));
 			// retorna ao cliente

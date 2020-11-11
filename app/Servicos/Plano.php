@@ -76,7 +76,14 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			}
 			return view('content.plano.planos',compact('planos','valorTotal'));
 		}catch(\Exception $e){;
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -120,14 +127,20 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			}
 
 			if ($planos->isEmpty() || $planos->count() == 0) {
-				\Session::flash('mensagem',['msg'=>'Sem resultados!','class'=>'green white-text']);
+				\Session::flash('resultado',['msg'=>'Sem resultados !']);
 			}else{
-				\Session::flash('mensagem', null);
+				\Session::flash('resultado', null);
 			}
 
 			return view('content.plano.planos',compact('planos','filtrar','valorTotal'));
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Filtrar","Filtro",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -168,7 +181,13 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			}
 			return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarPlano",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -190,13 +209,18 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano->dataPagamento = $dados['dataPagamentoPlano'];
 			$plano->save();
 			
-			return $plano->idPlano;
+			return $plano;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreatePlanoCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -214,13 +238,19 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano->dataPagamento = $dados['dataPagamentoPlano'];
 			$plano->update();
 
-			return 'true';
+			return true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdatePlanoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -228,7 +258,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 	{
 		try{
 			if(isset($idPlano)){
-				$plano = Cliente::where([['idPlano','=',$idPlano],
+				$plano = Plano::where([['idPlano','=',$idPlano],
 				['ativo','=',1]])
 				->Where(function ($query) {
 					$query->where('deletado','=',0)
@@ -239,12 +269,19 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 				$plano = null;
 			}
 			return $plano;
+
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarPlanoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->with('isErrorPlano',1);
+			return false;
 		}
 	}
 
@@ -257,7 +294,13 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarPlano",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -274,7 +317,13 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarPlano",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -292,7 +341,13 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Planos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarPlano",$e->getMessage(),'now'));
 			// retorna ao cliente

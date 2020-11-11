@@ -83,10 +83,9 @@
 				@endforeach
 				</tbody>
 			</table>
-
-			@if(Session::has('mensagem'))
+			@if(Session::has('resultado'))
 				<div>
-					{{ Session::get('mensagem')['msg'] }}
+					{{ Session::get('resultado')['msg'] }}
 				</div>
 			@endif
 		</div>

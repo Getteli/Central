@@ -31,7 +31,7 @@ Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>
 
 Route::get('/licenses/getDataCliente/{codLicense}',['as'=>'license.getDataCliente', 'uses'=>'LicenseController@getDataCliente']);
 
-Route::get('/licenses/UpdatePaymenteCliente/{codLicense}/{status}',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
+Route::get('/licenses/UpdatePaymenteCliente/',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
 
 Route::get('/mail/sendMailClient/{request}',['as'=>'mail.sendMailClient', 'uses'=>'MailController@sendMailClient']);
 

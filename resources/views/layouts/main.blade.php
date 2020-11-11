@@ -224,12 +224,26 @@
 		</div>
 
 		<!-- error mensage -->
-		@if(isset($errors) && count($errors)>0)
+		<!-- @if(isset($errors) && count($errors)>0)
 			<div class="">
 				@foreach($errors->all() as $erro)
 					{{$erro}}<br>
 				@endforeach
 			</div>
+		@endif -->
+
+		<!-- notification -->
+		@if(Session::has('mensagem'))
+			<div id="meu-modal" class="modal {{ Session::get('mensagem')['class'] }}">
+				<div class="modal-content">
+					<h4>{{ Session::get('mensagem')['title'] }}</h4>
+					<p>{{ Session::get('mensagem')['msg'] }}</p>
+				</div>
+				<div class="modal-footer {{ Session::get('mensagem')['class-mc'] }}">
+					<a href="#" id="modal-close" class="modal-close white-text" style="">Fechar</a>
+				</div>
+			</div>
+			<div class="sidenav-overlay {{ Session::get('mensagem')['class-so'] }}"></div>
 		@endif
 
 		<!-- scripts -->

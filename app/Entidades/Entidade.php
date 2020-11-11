@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Entidade as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\EntidadeRequest;
 use App\Cliente;
 use App\CodeRandom;
@@ -105,13 +106,18 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			$entidade->save();
 
 			// volta a chave para continuar a criacao da entidade Cliente
-			return $entidade->idEntidade;
+			return $entidade;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Criar um novo cliente',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateEntidadeCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -142,14 +148,19 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			$entidade->nacionalidade = $dados['nacionalidade'];
 			$entidade->update();
 
-			return 'true';
+			return true;
 
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Atualizar cliente',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateEntidadeCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -170,11 +181,17 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			}
 
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarEntidade",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back();
+			return false;
 		}
 	}
 
@@ -187,7 +204,13 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEntidade",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -204,7 +227,13 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEntidade",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -222,7 +251,13 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEntidade",$e->getMessage(),'now'));
 			// retorna ao cliente

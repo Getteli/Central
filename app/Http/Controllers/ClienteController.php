@@ -13,97 +13,133 @@ use App\Contato;
 use App\CodeRandom;
 use App\Plano;
 use App\Licenses;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 class ClienteController extends Controller
 {
 
 	public function adicionar(EntidadeRequest $request)
 	{
+		// cria o objeto entidade para começar a criacao do cliente
+		$newEntidade = new Entidade();
+		$entidade = $newEntidade->CreateEntidadeCliente($request);
 
-			// cria o objeto entidade para começar a criacao do cliente
-			$entidade = new Entidade();
-			$idEntidadeCliente = $entidade->CreateEntidadeCliente($request);
+		if(!$entidade){
+			return redirect()->back()->withInput($request->all);
+		}
 
-			if(!is_numeric($idEntidadeCliente)){
-				return $idEntidadeCliente;
-			}
-			 
-			// tendo ou não, passa peo metodo de criar endereços
-			$enderecos = new Endereco();
-			$enderecos = $enderecos->CreateEnderecoCliente($request, $idEntidadeCliente);
+		// tendo ou não, passa pelo metodo de criar endereços
+		$newEnderecos = new Endereco();
+		$enderecos = $newEnderecos->CreateEnderecoCliente($request, $entidade->idEntidade);
 
-			if($enderecos != 'true'){
-				return $enderecos;
-			}
+		if(!$enderecos){
+			return redirect()->back()->withInput($request->all);
+		}
 
-			// tendo ou não, passa peo metodo de criar contatos
-			$contatos = new Contato();
-			$contatos = $contatos->CreateContatoCliente($request, $idEntidadeCliente);
+		// tendo ou não, passa pelo metodo de criar contatos
+		$newContatos = new Contato();
+		$contatos = $newContatos->CreateContatoCliente($request, $entidade->idEntidade);
 
-			if($contatos != 'true'){
-				return $contatos;
-			}
+		if(!$contatos){
+			return redirect()->back()->withInput($request->all);
+		}
 
-			$plano = new Plano();
-			$idPlanoCliente = $plano->CreatePlanoCliente($request);
+		$newPlano = new Plano();
+		$plano = $newPlano->CreatePlanoCliente($request);
 
-			if(!is_numeric($idPlanoCliente)){
-				return $idPlanoCliente;
-			}
+		if(!$plano){
+			return redirect()->back()->withInput($request->all);
+		}
 
-			$cliente = new Cliente();
-			$CodCliente = $cliente->CreateCliente($request, $idPlanoCliente, $idEntidadeCliente);
+		$newCliente = new Cliente();
+		$cliente = $newCliente->CreateCliente($request, $plano->idPlano, $entidade->idEntidade);
 
-			if(!is_string($CodCliente)){
-				return $CodCliente;
-			}
+		if(!$cliente){
+			return redirect()->back()->withInput($request->all);
+		}
 
-			$license = new Licenses();
-			return $license->CreateLicenseCliente($request, $CodCliente);
+		$newLicense = new Licenses();
+		// se criar com sucesso a licensa do cliente
+		$license = $newLicense->CreateLicenseCliente($request, $cliente->codCliente);
+
+		if(!$license){
+			return redirect()->back()->withInput($request->all);
+		}
+
+		\Session::flash('mensagem',[
+			'title'=> 'Criar um novo Cliente',
+			'msg'=> 'Novo cliente criado com sucesso ! Código do Cliente: <b>'. $license->codLicense .'</b> Crie o script na pasta do cliente e adicione o código dele.',
+			'class'=> 'green white-text modal-show',
+			'class-mc'=> 'green',
+			'class-so'=> 'sidenav-overlay-show'
+			]);
+
+		// envia email de criacao do novo cliente
+		// envia o obj cliente, entidade, licensa e o status
+		Mail::to($entidade->email)->send(new WelcomeMail($cliente, $entidade, $license));
+
+		return redirect()->route('clientes');
 	}
 
 	public function atualizar(EntidadeRequest $request, $idEnt, $idPla, $idCli)
 	{
 			// cria o objeto entidade para começar a criacao do cliente
-			$entidade = new Entidade();
-			$entidade = $entidade->UpdateEntidadeCliente($request, $idEnt);
+			$newEntidade = new Entidade();
+			$entidade = $newEntidade->UpdateEntidadeCliente($request, $idEnt);
 
-			if($entidade != 'true'){
-				return $entidade;
+			if(!$entidade){
+				return redirect()->back()->withInput($request->all);
 			}
 
-			// tendo ou não, passa peo metodo de criar endereços
-			$enderecos = new Endereco();
-			$enderecos = $enderecos->UpdateEnderecoCliente($request, $idEnt);
+			// tendo ou não, passa pelo metodo de criar endereços
+			$newEnderecos = new Endereco();
+			$enderecos = $newEnderecos->UpdateEnderecoCliente($request, $idEnt);
 
-			if($enderecos != 'true'){
-				return $enderecos;
+			if(!$enderecos){
+				return redirect()->back()->withInput($request->all);
 			}
 
-			// tendo ou não, passa peo metodo de criar contatos
-			$contatos = new Contato();
-			$contatos = $contatos->UpdateContatoCliente($request, $idEnt);
+			// tendo ou não, passa pelo metodo de criar contatos
+			$newContatos = new Contato();
+			$contatos = $newContatos->UpdateContatoCliente($request, $idEnt);
 
-			if($contatos != 'true'){
-				return $contatos;
+			if(!$contatos){
+				return redirect()->back()->withInput($request->all);
 			}
 
-			$plano = new Plano();
-			$idPlanoCliente = $plano->UpdatePlanoCliente($request, $idPla);
+			$newPlano = new Plano();
+			$plano = $newPlano->UpdatePlanoCliente($request, $idPla);
 
-			if($idPlanoCliente != 'true'){
-				return $idPlanoCliente;
+			if(!$plano){
+				return redirect()->back()->withInput($request->all);
 			}
 
-			$cliente = new Cliente();
-			$CodCliente = $cliente->UpdateCliente($request, $idCli);
+			$newCliente = new Cliente();
+			$cliente = $newCliente->UpdateCliente($request, $idCli);
 
-			if(!is_string($CodCliente)){
-				return $CodCliente;
+			if(!$cliente){
+				return redirect()->back()->withInput($request->all);
+			}else{
+				$CodCliente = $cliente->codCliente;
 			}
 
-			$license = new Licenses();
-			return $license->UpdateLicenseCliente($request, $CodCliente);
+			$newLicense = new Licenses();
+			$license = $newLicense->UpdateLicenseCliente($request, $CodCliente);
+			
+			if(!$license){
+				return redirect()->back()->withInput($request->all);
+			}
+			// se ocorreu tudo bem, manda msg de sucesso e retorna.
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente atualizado com sucesso !',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+
+			return redirect()->back()->withInput($request->all);
 	}
 
 	public function list()
@@ -120,47 +156,47 @@ class ClienteController extends Controller
 
 	public function editar($idCli, $idEnt)
 	{
-		$cliente = new Cliente();
-		$cliente = $cliente->EditarCliente($idCli);
+		$getCliente = new Cliente();
+		$cliente = $getCliente->EditarCliente($idCli);
 
-		if(!isset($cliente->idCliente)){
-			return $cliente;
+		if(!$cliente){
+			return redirect()->back();
 		}
 
-		$entidade = new Entidade();
-		$entidade = $entidade->EditarEntidade($idEnt);
+		$getEntidade = new Entidade();
+		$entidade = $getEntidade->EditarEntidade($idEnt);
 
-		if(!isset($entidade->idEntidade)){
-			return $entidade;
+		if(!$entidade){
+			return redirect()->back();
 		}
 
-		$enderecos = new Endereco();
-		$enderecos = $enderecos->EditarEnderecos($idEnt);
+		$getEnderecos = new Endereco();
+		$enderecos = $getEnderecos->EditarEnderecos($idEnt);
 
-		if(session('isErrorEnd')){
-			return $enderecos;
-		}
+		// if(!$enderecos){
+		// 	return redirect()->back();
+		// }
 
-		$contatos = new Contato();
-		$contatos = $contatos->EditarContatos($idEnt);
+		$getContatos = new Contato();
+		$contatos = $getContatos->EditarContatos($idEnt);
 
-		if(session('isErrorCont')){
-			return $contatos;
-		}
+		// if(!$contatos){
+		// 	return redirect()->back();
+		// }
 
-		$plano = new Plano();
-		$plano = $plano->EditarPlanoCliente($cliente->idPlano);
+		$getPlano = new Plano();
+		$plano = $getPlano->EditarPlanoCliente($cliente->idPlano);
 
-		if(session('isErrorPlano')){
-			return $plano;
-		}
+		// if(!$plano){
+		// 	return redirect()->back();
+		// }
 
-		$license = new Licenses();
-		$license = $license->EditarLicenseCliente($cliente->codCliente);
+		$getLicense = new Licenses();
+		$license = $getLicense->EditarLicenseCliente($cliente->codCliente);
 
-		if(session('isErrorL')){
-			return $license;
-		}
+		// if(!$license){
+		// 	return redirect()->back();
+		// }
 
 		return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
 	}

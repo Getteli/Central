@@ -66,6 +66,8 @@
 	<input type="text" name="rg" maxlength="12" class="validade rg">
 	<label>Rg</label>
 </div>
+<!-- formata a data de nascimento para como desejar 
+$result['dataNascimento'] = date("d-m-Y", strtotime($result['dataNascimento'])) -->
 <div class="input-field inputpf">
 	<input type="date" name="dataExpedicao" class="validade" value="{{ isset($entidade->dataExpedicao) ? strftime( '%Y-%m-%d',strtotime($entidade->dataExpedicao) ) : old('dataExpedicao') }}">
 	<label>Data de Expedição (RG)</label>
@@ -82,6 +84,8 @@
 	<input type="text" name="nacionalidade" maxlength="25" class="validade" value="{{ isset($entidade->nacionalidade) ? $entidade->nacionalidade : old('nacionalidade') }}">
 	<label>Nacionalidade</label>
 </div>
+<!-- formata a data de nascimento para como desejar AO TRAZER
+$result['dataNascimento'] = date("d-m-Y", strtotime($result['dataNascimento'])) -->
 <div class="input-field">
 	<input type="date" name="dataNascimento" class="validade" value="{{ isset($entidade->dataNascimento) ? strftime( '%Y-%m-%d',strtotime($entidade->dataNascimento) ) : old('dataNascimento') }}">
 	<label>Data de Nascimento</label>

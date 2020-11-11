@@ -9,12 +9,6 @@
 			<div>
 				<h1>Dashboard</h1>
 			</div>
-
-			@if(Session::has('mensagem'))
-				<div>
-					{{ Session::get('mensagem')['msg'] }}
-				</div>
-			@endif
 		</div>
 	</div>
 @endsection

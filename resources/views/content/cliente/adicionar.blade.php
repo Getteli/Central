@@ -34,12 +34,6 @@
 					</form>
 				</div>
 			</div>
-
-			@if(Session::has('mensagem'))
-				<div>
-					{{ Session::get('mensagem')['msg'] }}
-				</div>
-			@endif
 		</div>
 	</div>
 	<script type="text/javascript">

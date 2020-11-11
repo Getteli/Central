@@ -59,7 +59,13 @@ class User extends Authenticatable
 					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Adicionar","adicionaPapel",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -80,7 +86,13 @@ class User extends Authenticatable
 					Papel::where('nome','=',$papel->nome)->firstOrFail()
 				);
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Remover","removePapel",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -97,7 +109,13 @@ class User extends Authenticatable
 			}
 			return $papel->intersect($this->papeis)->count();
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Verificar","existePapel",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -111,7 +129,13 @@ class User extends Authenticatable
 		try{
 			return $this->existePapel('admin');
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Verificar","existeAdmin",$e->getMessage(),'now'));
 			// retorna ao cliente

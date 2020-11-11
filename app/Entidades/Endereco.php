@@ -8,8 +8,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Endereco as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EntidadeRequest;
+use App\Exceptions\Handler;
 use App\Mail\Emails;
 
 class Endereco extends Authenticatable implements MustVerifyEmailContract
@@ -84,6 +86,20 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			// add o endereco
 			foreach ($endereco as $k => $arrayInterno) {
+
+				// verifica se algum dos campos importantes estao vazios
+				if(
+					!isset($arrayInterno['cep'])
+					|| !isset($arrayInterno['logradouro'])
+					|| !isset($arrayInterno['numero'])
+					|| !isset($arrayInterno['estado'])
+					|| !isset($arrayInterno['cidade'])
+					|| !isset($arrayInterno['bairro'])
+				){
+					return;
+					break;
+				}
+
 				$endereco = new Endereco();
 				$endereco->cep = isset($arrayInterno['cep']) ? $arrayInterno['cep'] : null;
 				$endereco->logradouro = isset($arrayInterno['logradouro']) ? $arrayInterno['logradouro'] : null;
@@ -98,13 +114,19 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 				$endereco->save();
 				break;
 			}
-			return 'true';
+			return true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateEnderecoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -129,6 +151,19 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			// add o endereco
 			foreach ($endereco as $k => $arrayInterno) {
+				// verifica se algum dos campos importantes estao vazios
+				if(
+					!isset($arrayInterno['cep'])
+					|| !isset($arrayInterno['logradouro'])
+					|| !isset($arrayInterno['numero'])
+					|| !isset($arrayInterno['estado'])
+					|| !isset($arrayInterno['cidade'])
+					|| !isset($arrayInterno['bairro'])
+				){
+					return;
+					break;
+				}
+
 				// se nao existe no banco, entao é um novo
 				if($enderecoBanco->isEmpty()){
 					$NovoEndereco = new Endereco();
@@ -174,13 +209,19 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 					break;
 				}
 			}
-			return 'true';
+			return true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateEnderecoCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
@@ -199,11 +240,17 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			}
 			return $enderecos;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarEnderecos",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->with('isErrorEnd',1);
+			return false;
 		}
 	}
 
@@ -218,7 +265,13 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEnderecos",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -237,7 +290,13 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEnderecos",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -257,7 +316,13 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 
 			return 'true';
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Clientes',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEnderecos",$e->getMessage(),'now'));
 			// retorna ao cliente

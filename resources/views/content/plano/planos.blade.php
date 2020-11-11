@@ -59,13 +59,12 @@
 				@endforeach
 				</tbody>
 			</table>
-			<p>total: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
-			
-			@if(Session::has('mensagem'))
+			@if(Session::has('resultado'))
 				<div>
-					{{ Session::get('mensagem')['msg'] }}
+					{{ Session::get('resultado')['msg'] }}
 				</div>
 			@endif
+			<p>total: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
 		</div>
 	</div>
 @endsection

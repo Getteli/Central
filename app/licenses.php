@@ -9,8 +9,10 @@ use App\Http\Requests\EntidadeRequest;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Servicos\FormasPagamento;
 use Illuminate\Http\Request;
 use App\Mail\PaymentMail;
+use App\MethodDefaults;
 use App\Mail\Emails;
 use App\CodeRandom;
 use App\Entidade;
@@ -36,13 +38,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	 * @var array
 	 */
 	protected $fillable = [
-		'codLicense',
-		'codCliente',
-		'observacao',
-		'special',
-		'dias',
-		'deletado',
-		'ativo',
+		'CodLicense',
+		'CodCliente',
+		'Observacao',
+		'Special',
+		'Dias',
+		'Deletado',
+		'Ativo',
 	];
 
 	/**
@@ -91,6 +93,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 				$cliente = Cliente::where('codCliente','=',$codCliente)->first();
 				$entidade = Entidade::find($cliente->idEntidade);
 				//funcao de enviar email
+				// TODO: FAZER UM TRY AQUI
 				// falando sobre o erro e mostrando outros dados
 				//Mail::to($entidade->email)->send(new Emails("Exibir","ListagemComSegmento",$e->getMessage(),'now'));
 				//$entidade->email
@@ -99,9 +102,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	// recebe do pagseguro para atualizar a licença do cliente e informar
-	public function PaymentCliente($codLicense, $status)
+	// Recebe do pagseguro para atualizar a licença do cliente e informar
+	public function PaymentCliente()
 	{
+
+		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente","Teste, Chegou",'now'));
+
+		/*
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
@@ -144,9 +151,10 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			// envia email pro suporte
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente",$e->getMessage(),'now'));
 		}
+		*/
 	}
 
-	// recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
+	// Recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
 	public function GetDataCliente($codLicense)
 	{
 		$dadosCliente = array();
@@ -154,8 +162,10 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
 			$cliente = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first();
+			$plano = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Plano;
 
 			if($licenseCliente && $entidade && $cliente){
+				
 				// pega o primeiro endereco do cliente
 				$enderecoCliente = Endereco::where([['idEntidade','=',$entidade->idEntidade],
 				['ativo','=',1]])
@@ -164,6 +174,23 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 					->orWhere('deletado','=',null);
 				})
 				->first();
+				
+				// remove os caracteres especiais do cep
+				if($enderecoCliente != null){
+					if($enderecoCliente->cep != null){
+						$enderecoCliente->cep = MethodDefaults::removeSpecialCharacter($enderecoCliente->cep);
+					}
+				}
+
+				if (empty($plano) || !isset($plano)) {
+					$formapagamento = null;
+					$valor = null;
+					$descricao = "";
+				}else{
+					$formapagamento = $plano->formaPagamento;
+					$valor = $plano->preco;
+					$descricao = $plano->descricao;
+				}
 
 				// pega o primeiro contato do cliente
 				$contatoCliente = Contato::where([['idEntidade','=',$entidade->idEntidade],
@@ -173,7 +200,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 					->orWhere('deletado','=',null);
 				})
 				->first();
-
+				
 				// cria o arrray com o que é necessário
 				$dadosCliente = array(
 					// key => value
@@ -182,9 +209,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 					'dataNascimentoCliente' => $entidade->dataNascimento,
 					'enderecoCliente' => $enderecoCliente,
 					'dddCliente' => $contatoCliente != null ? $contatoCliente->ddd : null,
-					'numeroCliente' => $contatoCliente != null ? $contatoCliente->numero : null,
+					'numeroCliente' => $contatoCliente != null ? MethodDefaults::removeSpecialCharacter($contatoCliente->numero) : null,
+					'formaPagamento' => $formapagamento,
+					'preco' => $valor,
+					'descricao' => $descricao,
 				);
 
+				// return json_encode("Ola Douglas");
 				return json_encode($dadosCliente);
 			}else{
 				throw new Exception("Erro ao acessar a licença e o cliente.");
@@ -214,15 +245,20 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			$license->special = $dados['especialLicense'];
 			$license->save();
 
-			\Session::flash('mensagem',['msg'=>'Novo cliente criado com sucesso! Código do Cliente: '. $license->codLicense .'<br/>Crie o script na pasta do cliente e adicione o código dele.','class'=>'green white-text']);
-			return redirect()->route('clientes');
+			return $license;
 
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateLicenseCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+
+			return false;
 		}
 	}
 
@@ -241,21 +277,27 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 				//$license->dataLicense = $dados['dataPagamentoPlano'];
 				$license->update();				
 			}
-			\Session::flash('mensagem',['msg'=>'Cliente atualizado com sucesso!','class'=>'green white-text']);
-			return redirect()->back()->withInput($request->all);
+
+			return  true;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateLicenseCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return false;
 		}
 	}
 
 	public function EditarLicenseCliente($codCliente)
 	{
 		try{
-			$license = Cliente::where([['codCliente','=',$codCliente],
+			$license = Licenses::where([['codCliente','=',$codCliente],
 			['ativo','=',1]])
 			->Where(function ($query) {
 				$query->where('deletado','=',0)
@@ -268,11 +310,17 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			
 			return $license;
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarLicenseCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->with('isErrorL',1);
+			return false;
 		}
 	}
 
@@ -283,10 +331,22 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			$license->ativo = false;
 			$license->update();
 
-			\Session::flash('mensagem',['msg'=>'Cliente desativado com sucesso.','class'=>'green white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente desativado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			return redirect()->back();
 		} catch (\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarLicenseCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -301,10 +361,22 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			$license->ativo = true;
 			$license->update();
 
-			\Session::flash('mensagem',['msg'=>'Cliente ativado com sucesso.','class'=>'green white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente ativado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			return redirect()->back();
 		}catch(\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarLicenseCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -317,13 +389,25 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 		try{
 			$license = Licenses::where('codCliente', '=', $codCliente)->first();
 			$license->ativo = false;
-			$license->desativado = true;
+			$license->deletado = true;
 			$license->update();
 
-			\Session::flash('mensagem',['msg'=>'Cliente deletado com sucesso.','class'=>'green white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente deletado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			return redirect()->back();
 		} catch (\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarLicenseCliente",$e->getMessage(),'now'));
 			// retorna ao cliente

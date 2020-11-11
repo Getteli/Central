@@ -71,11 +71,22 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmento->ativo = true;
 			$segmento->save();
 
-			\Session::flash('mensagem',['msg'=>'Novo segmento criado com sucesso!','class'=>'green white-text']);
+			\Session::flash('mensagem',['title'=> 'Segmentos',
+				'msg'=>'Novo segmento criado com sucesso!',
+				'class'=>'green white-text modal-show',
+				'class-so'=>'sidenav-overlay-show',
+				'class-mc'=> 'green']);
+
 			return redirect()->back()->withInput($request->all);
 
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>'Erro ao adicionar o novo Segmento, verifique com o suporte.','class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateSegmento",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -95,11 +106,22 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmento->descricao = $dados['descricao'];
 			$segmento->update();
 
-			\Session::flash('mensagem',['msg'=>'Cliente atualizado com sucesso!','class'=>'green white-text']);
-			
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> 'Segmento atualizado com sucesso !',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			return redirect()->back()->withInput($request->all);
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Atualizar","UpdateSegmento",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -113,7 +135,13 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmentos = Segmento::all()->where('ativo', 1)->where('desativado', 0);
 			return view('content.segmento.segmentos',compact('segmentos'));
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -149,14 +177,20 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmentos = $segmentos->get();
 
 			if ($segmentos->isEmpty() || $segmentos->count() == 0) {
-				\Session::flash('mensagem',['msg'=>'Sem resultados!','class'=>'green white-text']);
+				\Session::flash('resultado',['msg'=>'Sem resultados !']);
 			}else{
-				\Session::flash('mensagem', null);
+				\Session::flash('resultado', null);
 			}
 
 			return view('content.segmento.segmentos',compact('segmentos','filtrar'));
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("filtrar","Filtro",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -170,7 +204,13 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			$segmento = Segmento::find($idSeg);
 			return view('content.segmento.editar', compact('segmento'));
 		}catch(\Exception $e){
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Editar","EditarSegmento",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -192,11 +232,23 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 
 			if ($segmento && $servicos) {
-				\Session::flash('mensagem',['msg'=>'Segmento desativado com sucesso.','class'=>'green white-text']);
+				\Session::flash('mensagem',[
+					'title'=> 'Segmentos',
+					'msg'=> 'Segmento desativado com sucesso.',
+					'class'=> 'green white-text modal-show',
+					'class-mc'=> 'green',
+					'class-so'=> 'sidenav-overlay-show'
+					]);
 				return redirect()->back()->withInput();
 			}
 		}catch(\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","Desativar",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -218,11 +270,23 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 
 			if ($segmento && $servicos) {
-				\Session::flash('mensagem',['msg'=>'Segmento ativado com sucesso.','class'=>'green white-text']);
+				\Session::flash('mensagem',[
+					'title'=> 'Segmentos',
+					'msg'=> 'Segmento ativado com sucesso.',
+					'class'=> 'green white-text modal-show',
+					'class-mc'=> 'green',
+					'class-so'=> 'sidenav-overlay-show'
+					]);
 				return redirect()->route('segmentos');
 			}
 		}catch(\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","Ativar",$e->getMessage(),'now'));
 			// retorna ao cliente
@@ -246,11 +310,23 @@ class Segmento extends Authenticatable implements MustVerifyEmailContract
 			}
 
 			if ($segmento && $servicos) {
-				\Session::flash('mensagem',['msg'=>'Segmento deletado com sucesso.','class'=>'green white-text']);
+				\Session::flash('mensagem',[
+					'title'=> 'Segmentos',
+					'msg'=> 'Segmento deletado com sucesso.',
+					'class'=> 'green white-text modal-show',
+					'class-mc'=> 'green',
+					'class-so'=> 'sidenav-overlay-show'
+					]);
 				return redirect()->route('segmentos');
 			}
 		}catch(\Exception $e) {
-			\Session::flash('mensagem',['msg'=>$e->getMessage(),'class'=>'red white-text']);
+			\Session::flash('mensagem',[
+				'title'=> 'Segmentos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","Deletar",$e->getMessage(),'now'));
 			// retorna ao cliente

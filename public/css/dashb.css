@@ -1,3 +1,26 @@
 .none{
 	display: none;
 }
+/*desativa a edicao mas continua no form*/
+.noEdit{
+	pointer-events: none;
+	color: #ccc;
+	border-bottom: 1px solid #ccc !important;
+}
+
+/*modal de notificacao*/
+.modal-show{
+	display: block;
+	z-index: 998;
+	top: 10%;
+}
+.modal-footer{
+	height: 40px;
+}
+.modal-close{
+	margin-right: 20px;
+}
+.sidenav-overlay-show{
+	display: block;
+	opacity: 0.7;
+}
