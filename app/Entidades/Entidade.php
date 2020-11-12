@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entidades;
 
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\EntidadeRequest;
-use App\Cliente;
+use App\Entidades\Cliente;
 use App\CodeRandom;
 use App\Exceptions\Handler;
 use App\Mail\Emails;
@@ -68,17 +68,17 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 	// NAVIGATION
 	public function Cliente()
 	{
-		return $this->hasMany('App\Cliente','idEntidade');
+		return $this->hasMany('App\Entidades\Cliente','idEntidade');
 	}
 
 	public function Contato()
 	{
-		return $this->hasMany('App\Contato','idEntidade');
+		return $this->hasMany('App\Entidades\Contato','idEntidade');
 	}
 
 	public function Endereco()
 	{
-		return $this->hasMany('App\Endereco','idEntidade');
+		return $this->hasMany('App\Entidades\Endereco','idEntidade');
 	}
 
 	// METODO

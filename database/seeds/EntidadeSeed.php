@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Entidade;
+use App\Entidades\Entidade;
 use App\User;
 
 class EntidadeSeed extends Seeder

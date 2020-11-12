@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Plano;
+use App\Servicos\Plano;
 
 class PlanoController extends Controller
 {

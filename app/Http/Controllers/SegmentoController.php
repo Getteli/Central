@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SegmentoRequest;
-use App\Segmento;
-use App\Servico;
+use App\Servicos\Segmento;
+use App\Servicos\Servico;
 
 class SegmentoController extends Controller
 {

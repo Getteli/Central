@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Contas;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Recebido as Authenticatable;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServicoRequest;
-use App\Servico;
+use App\Servicos\Servico;
 
 class ServicoController extends Controller
 {

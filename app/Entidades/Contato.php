@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entidades;
 
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -145,7 +145,7 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 					$NovoContato->identificacao = isset($arrayInterno['identificacao']) ? $arrayInterno['identificacao'] != "Personalizado" ? $arrayInterno['identificacao'] : $arrayInterno['identificacaoManual'] : null;
 					$NovoContato->idEntidade = $idEntidadeCliente;
 					$NovoContato->ativo = true;
-					$NovoContato->save();	
+					$NovoContato->save();
 				}
 				//passa pelo array do banco
 				foreach ($contatoBanco as $key => $value) {
@@ -299,7 +299,7 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 			$contato->ativo = false;
 			$contato->deletado = true;
 			$contato->update();
-			
+
 			if ($contato) {
 				return "deletado com sucesso";
 			}

@@ -1,7 +1,7 @@
 <?php
 namespace App\Entidades;
 
-abstract class TiposEntidade
+abstract class TiposEntidades
 {
     const Usuario = 1;
     const Cliente = 2;

@@ -1,7 +1,7 @@
 <?php
 	use App\Servicos\FormasPagamento;
-	use App\Segmento;
-	use App\Servico;
+	use App\Servicos\Segmento;
+	use App\Servicos\Servico;
 ?>
 <h2>ENDEREÇO</h2>
 <p>obs: campos obrigatorios apenas se quiser adicionar um endereço</p>

@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EntidadeRequest;
-use App\Cliente;
-use App\Entidade;
-use App\Endereco;
-use App\Contato;
+use App\Entidades\Cliente;
+use App\Entidades\Entidade;
+use App\Entidades\Endereco;
+use App\Entidades\Contato;
 use App\CodeRandom;
-use App\Plano;
+use App\Servicos\Plano;
 use App\Licenses;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
@@ -126,7 +126,7 @@ class ClienteController extends Controller
 
 			$newLicense = new Licenses();
 			$license = $newLicense->UpdateLicenseCliente($request, $CodCliente);
-			
+
 			if(!$license){
 				return redirect()->back()->withInput($request->all);
 			}

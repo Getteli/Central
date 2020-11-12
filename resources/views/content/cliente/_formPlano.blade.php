@@ -1,7 +1,7 @@
 <?php
 	use App\Servicos\FormasPagamento;
-	use App\Segmento;
-	use App\Servico;
+	use App\Servicos\Segmento;
+	use App\Servicos\Servico;
 ?>
 <h2>PLANO DO CLIENTE </h2>
 
@@ -37,7 +37,7 @@
 <div class="input-field">
 	<input type="text" min="1" max="31" name="dataPagamentoPlano" id="dataPagamento" class="validade" value="{{ isset($plano->dataPagamento) ? $plano->dataPagamento : old('dataPagamentoPlano') }}" required>
 	<label>DIA (Data de pagamento) <strong style="color: red">*</strong></label>
-</div>	
+</div>
 <div class="input-field">
 	<select type="text" name="especialLicense" class="validade">
 		<option value="0" {{ ( isset($license->special) ? $license->special : old('especialLicense') ?? 0 ) == 0 ? 'selected' : '' }}>Não</option1>

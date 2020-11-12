@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Permissao;
+use App\Regras\Permissao;
 use App\CodeRandom;
 
 class PermissaoSeed extends Seeder
@@ -23,7 +23,7 @@ class PermissaoSeed extends Seeder
                 'codPermissao'=> $this->GetCod(),
                 'ativo'=> true
             ]);
-            
+
             $Permissao2 = Permissao::create([
                 'descricao'=> 'Listar_cliente',
                 'codPermissao'=> $this->GetCod(),

@@ -1,8 +1,8 @@
 <?php
 	use App\Servicos\FormasPagamento;
 	use App\Entidades\TiposIdentificacao;
-	use App\Segmento;
-	use App\Servico;
+	use App\Servicos\Segmento;
+	use App\Servicos\Servico;
 ?>
 <h2>CONTATO</h2>
 <?php

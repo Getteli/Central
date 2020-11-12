@@ -1,5 +1,5 @@
 <?php
-	use App\Segmento;
+	use App\Servicos\Segmento;
 ?>
 @if(isset($servico->idServico))
 <td>

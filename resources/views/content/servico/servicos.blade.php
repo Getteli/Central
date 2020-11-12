@@ -5,7 +5,7 @@
 <!-- conteudo -->
 @section('content')
 	<?php
-		use App\Segmento;
+		use App\Servicos\Segmento;
 	?>
 	<div>
 		<div>

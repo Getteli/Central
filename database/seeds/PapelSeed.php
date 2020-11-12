@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Papel;
+use App\Regras\Papel;
 use App\CodeRandom;
 
 class PapelSeed extends Seeder
