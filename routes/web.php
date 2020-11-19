@@ -28,13 +28,15 @@ Route::post('/login',['as'=>'login', 'uses'=>'AuthController@login']);
 // rota para coisas que sejam de fora do sistema
 // license (acessado pela url do cliente para saber se pode acessar)
 Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>'LicenseController@blockall']);
-
 Route::get('/licenses/getDataCliente/{codLicense}',['as'=>'license.getDataCliente', 'uses'=>'LicenseController@getDataCliente']);
+Route::any('/licenses/UpdatePaymenteCliente/',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
 
-Route::get('/licenses/UpdatePaymenteCliente/',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
-
+// emails (em formularios de clientes e etc, fazemos o processo de envio direto pelo laravel)
 Route::get('/mail/sendMailClient/{request}',['as'=>'mail.sendMailClient', 'uses'=>'MailController@sendMailClient']);
 
+// cron job, agendado
+Route::any('/cron/lessDay/',['as'=>'cron.lessDay', 'uses'=>'CronController@CronLessDay']);
+Route::any('/cron/verifyPayment/',['as'=>'cron.verifyPayment', 'uses'=>'CronController@CronVerifyPayment']);
 
 // rotas only AUTH TRUE, somente logado
 Route::group(['middleware'=>'auth'], function(){
@@ -63,7 +65,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/clientes/ativarEntidade/{idEntidade}',['as'=>'cliente.ativarEntidade', 'uses'=>'ClienteController@ativarEntidade']);
 	Route::get('/clientes/filtro/buscar',['as'=>'cliente.filter', 'uses'=>'ClienteController@filter']);
 	// -------------------------------------------------------------------------
-	
+
 	// segmento
 	Route::get('/segmento/adicionar',['as'=>'segmento.adicionar', function () {
 		return view('content.segmento.adicionar');

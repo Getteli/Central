@@ -61,7 +61,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 	// NAVIGATION
 	public function Cliente()
 	{
-		return $this->hasMany('App\Cliente','idPlano');
+		return $this->hasMany('App\Entidades\Cliente','idPlano');
 	}
 
 	// METODOS
@@ -153,7 +153,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 		try{
 
 			$cliente = Cliente::where('idPlano','=',$idPlano)->first();
-			
+
 			$entidade = Entidade::find($cliente->idEntidade);
 
 			$enderecos = Endereco::where('idEntidade', '=', $cliente->idEntidade)->where('ativo', '=', 1)->get();
@@ -208,7 +208,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano->preco = $dados['preco'];
 			$plano->dataPagamento = $dados['dataPagamentoPlano'];
 			$plano->save();
-			
+
 			return $plano;
 		}catch(\Exception $e){
 			\Session::flash('mensagem',[
@@ -235,7 +235,32 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano->ativo = true;
 			$plano->formaPagamento = $dados['formaPagamentoPlano'];
 			$plano->preco = $dados['preco'];
-			$plano->dataPagamento = $dados['dataPagamentoPlano'];
+
+			// se a data de pagamento nao tiver alterado, nao faz nada
+			if($plano->dataPagamento != $dados['dataPagamentoPlano']){
+				// so faz toda essa mudanca, se nao for mais o primeiro mes
+
+				// aux
+				$mesAnoCad = date('Y/m', strtotime($plano->created_at));
+				$mesAnoAtual = date('Y/m');
+				$mesAnoMais = date('Y/m', strtotime("+2 months", strtotime($plano->created_at)));
+
+				// se for 1° mes, entao ainda esta gratuito, nao muda nada só a data msm.
+				if($mesAnoCad != $mesAnoAtual){
+					// pega o cliente pelo plano e pega a sua licenca
+					$license = Licenses::where('codCliente', '=', $plano->Cliente->first()->codCliente)->first();
+					// pega o numero de dias alterado
+					$result = $plano->dataPagamento - $dados['dataPagamentoPlano'];
+					// add esse resultado aos dias restantes
+					$license->dias = $license->dias - $result;
+				}
+				// atualiza o dia de pagamento na licenca e no plano
+				$license->dataLicense = $dados['dataPagamentoPlano'];
+				$plano->dataPagamento = $dados['dataPagamentoPlano'];
+				// atualiza a licenca
+				$license->update();
+			}
+			// finaliza e atualiza
 			$plano->update();
 
 			return true;
@@ -291,7 +316,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano = Plano::find($idPlano);
 			$plano->ativo = false;
 			$plano->update();
-			
+
 			return 'true';
 		}catch(\Exception $e){
 			\Session::flash('mensagem',[
@@ -338,7 +363,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			$plano->ativo = false;
 			$plano->deletado = true;
 			$plano->update();
-			
+
 			return 'true';
 		}catch(\Exception $e){
 			\Session::flash('mensagem',[

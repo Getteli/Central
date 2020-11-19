@@ -70,44 +70,11 @@
 									</tr>
 									<tr>
 										<td class="td" style="padding: 20px 0 30px 0;">
-											Estamos passando para lhe dar as boas vindas !<br>
-											Você foi cadastrado em nosso sistema, agora qualquer problema que você <b>ACHA</b> que tem, é nosso problema ;)
+											Estamos entrando em contato para informar que o seu <b>plano</b> está a <b style="color: red;">{{ $dias }}</b> dias de entrar em <b style="color: red;">modo de espera</b>. Você ficará <b style="color: red;">sem acesso</b> ao seu serviço (seja ele site, loja ou outros.. e postagens agendadas serão paralizadas). Realize o seu pagamento aqui -> <a href="https://payment.agenciapublikando.com.br/?qq={{ $codLicense }}"><b>REALIZAR PAGAMENTO</b></a>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<table border="0" cellpadding="0" cellspacing="20" width="100%">
-												<tr>
-													<td width="260" valign="top">
-														<table border="0" cellpadding="0" cellspacing="0" width="100%">
-															<tr>
-																<td>
-																	<img src="{{ asset("assets/06.png") }}" alt="" width="100%" height="auto" style="display: block;" />
-																</td>
-															</tr>
-															<tr>
-																<td class="td" style="padding: 25px 0 0 0;">
-																	Estamos trabalhando para melhorar nossos serviços por toda a internet, desde as redes sociais até sites e propagandas. E se precisar, atendemos em diversos nichos. Queremos cuidar de suas redes sociais. Caso queira mais informações, conversa com a gente.
-																</td>
-															</tr>
-														</table>
-													</td>
-													<td width="260" valign="top">
-														<table border="0" cellpadding="0" cellspacing="0" width="100%">
-															<tr>
-																<td>
-																	<img src="{{ asset("assets/09.png") }}" alt="" width="100%" height="auto" style="display: block;" />
-																</td>
-															</tr>
-															<tr>
-																<td class="td" style="padding: 25px 0 0 0;">
-																	Desenvolvemos desde sites estáticos, lojas virtuais, aplicativos e muito outros. Nossa meta é levar a conexão e internet para a vivência de micro empresas, pequenos empreendedores e qualquer um que queira entrar nesse negócio. Conhece alguem ? pede para falar conosco.
-																</td>
-															</tr>
-														</table>
-													</td>
-												</tr>
-											</table>
 										</td>
 									</tr>
 									<tr>
@@ -118,7 +85,7 @@
 											<b>Código do cliente:</b> {{ $codCliente }}<br>
 											<b>Código da licença:</b> {{ $codLicense }}<br>
 											<b>Serviço:</b> {{ $servicoPrestado }}<br>
-											<b>Valor:</b> <b style="color: green!important;">R$ {{ $valor }}</b><br>
+											<b>Valor:</b> <b style="color: green;">R$ {{ $valor }}</b><br>
 											<b>Data de pagamento:</b> Todo o dia {{ $date }}<br>
 											<b>Forma de pagamento:</b> {{ $formaPag }}<br>
 											<?php

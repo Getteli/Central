@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Illuminate\Foundation\Auth\License as Authenticatable;
+use Illuminate\Foundation\Auth\Licenses as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\EntidadeRequest;
 use Illuminate\Auth\MustVerifyEmail;
@@ -68,7 +68,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	protected $guarded = ['idLicense', 'created_at', 'update_at'];
 
 	// METODOS
-
+	// ao entrar no site, verifica pela licença se pode continuar.
 	public function VerifyLicense($codLicense)
 	{
 		// busca a licença pelo codigo
@@ -105,10 +105,13 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	// Recebe do pagseguro para atualizar a licença do cliente e informar
 	public function PaymentCliente()
 	{
-
+		// testar o retorno
 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente","Teste, Chegou",'now'));
 
-		/*
+		// se for por post
+		// $codLicense = ;
+		// $status = 1;
+/*
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
@@ -151,7 +154,7 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			// envia email pro suporte
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente",$e->getMessage(),'now'));
 		}
-		*/
+*/
 	}
 
 	// Recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
@@ -272,9 +275,6 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			if($license){
 				$license->observacao = $dados['observacaoLicense'];
 				$license->special = $dados['especialLicense'];
-				// se ele atualizar a data de pagamento, atualizar a data de licença
-				// planejar isto
-				//$license->dataLicense = $dados['dataPagamentoPlano'];
 				$license->update();
 			}
 
@@ -415,7 +415,8 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function GetCodLicense($codCli){
+	public function GetCodLicense($codCli)
+	{
 		$codP = new CodeRandom;
 		$cod = $codP->CreateCodLicense($codCli);
 		return $cod;

@@ -12,7 +12,7 @@ use App\Licenses;
 use Carbon\Carbon;
 use App\Servicos\FormasPagamento;
 
-class PaymentMail extends Mailable
+class DeadlineMail extends Mailable
 {
 	use Queueable, SerializesModels;
 
@@ -21,13 +21,13 @@ class PaymentMail extends Mailable
 	 *
 	 * @return void
 	 */
-	public function __construct(Cliente $cliente, Entidade $entidade, Licenses $licensecliente, $status)
+	public function __construct(Cliente $cliente, Entidade $entidade, Licenses $licensecliente, $dias)
 	{
 		//
 		$this->cliente = $cliente;
 		$this->entidade = $entidade;
 		$this->license = $licensecliente;
-		$this->status = $status;
+    $this->dias = $dias;
 	}
 
 	/**
@@ -38,8 +38,8 @@ class PaymentMail extends Mailable
 	public function build()
 	{
 		return $this->from('contato@agenciapublikando.com.br')
-		->subject('Publikando: Informações sobre a fatura.')
-		->view('email.default.payment')
+		->subject('Publikando: Sua licença está para acabar.')
+		->view('email.default.deadline')
 		->with([
 			'codCliente' => $this->cliente->codCliente,
 			'entidadeEmail' => $this->entidade->email,
@@ -49,8 +49,8 @@ class PaymentMail extends Mailable
 			'valor' => $this->cliente->Plano->preco,
 			'formaPag' => FormasPagamento::getNameFPagamento($this->cliente->Plano->formaPagamento),
 			'date' => $this->cliente->Plano->dataPagamento,
+      'dias' => $this->dias,
 			'obs' => $this->license->observacao,
-			'status' => $this->status,
 		])
 		;
 	}

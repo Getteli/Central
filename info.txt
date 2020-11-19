@@ -27,19 +27,16 @@ COMO SUBIR:
 
 PERGUNTAS:
 
-A FAZER:
-	. criar uma busca de endereços pertos de tal CEP, provavelmente api do google
-	. Cron para enviar email, sobre pagamento e etc.
-	. design
+UPDATES FUTUROS:
+	. 
 
 TRABALHOS:
-	. colocar para enviar email pro cliente se nao tiver pago e renovado a licença
 	. desenhar a tela, ver o que tem de required, por modal, e etc.
-	. eu mesmo criar o layout dos emails (desenhar ver corel e etc)
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
 	. cliente controler, desativarEntidade, continua melhorando para retornar certinho com erro, pondo false e etc..
+	. verificar ao selecionar o segmento (ao criar serviço), ele selecionar apenas os ativos.
 
 HORARIOS / DATAS:
 
