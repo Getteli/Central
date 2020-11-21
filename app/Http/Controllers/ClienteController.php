@@ -69,14 +69,14 @@ class ClienteController extends Controller
 
 		\Session::flash('mensagem',[
 			'title'=> 'Criar um novo Cliente',
-			'msg'=> 'Novo cliente criado com sucesso ! Código do Cliente: <b>'. $license->codLicense .'</b> Crie o script na pasta do cliente e adicione o código dele.',
+			'msg'=> 'Novo cliente criado com sucesso ! Código do Cliente: '. $license->codLicense .'. Crie o script na pasta do cliente e adicione o código dele.',
 			'class'=> 'green white-text modal-show',
 			'class-mc'=> 'green',
 			'class-so'=> 'sidenav-overlay-show'
 			]);
 
 		// envia email de criacao do novo cliente
-		// envia o obj cliente, entidade, licensa e o status
+		// envia o obj cliente, entidade, license
 		Mail::to($entidade->email)->send(new WelcomeMail($cliente, $entidade, $license));
 
 		return redirect()->route('clientes');
@@ -156,173 +156,105 @@ class ClienteController extends Controller
 
 	public function editar($idCli, $idEnt)
 	{
+		$return = true;
+
 		$getCliente = new Cliente();
 		$cliente = $getCliente->EditarCliente($idCli);
 
 		if(!$cliente){
-			return redirect()->back();
+			$return = false;
 		}
 
 		$getEntidade = new Entidade();
 		$entidade = $getEntidade->EditarEntidade($idEnt);
 
 		if(!$entidade){
-			return redirect()->back();
+			$return = false;
 		}
 
 		$getEnderecos = new Endereco();
 		$enderecos = $getEnderecos->EditarEnderecos($idEnt);
 
-		// if(!$enderecos){
-		// 	return redirect()->back();
-		// }
-
 		$getContatos = new Contato();
 		$contatos = $getContatos->EditarContatos($idEnt);
-
-		// if(!$contatos){
-		// 	return redirect()->back();
-		// }
 
 		$getPlano = new Plano();
 		$plano = $getPlano->EditarPlanoCliente($cliente->idPlano);
 
-		// if(!$plano){
-		// 	return redirect()->back();
-		// }
+		if(!$plano || empty($plano)){
+			$return = false;
+		}
 
 		$getLicense = new Licenses();
 		$license = $getLicense->EditarLicenseCliente($cliente->codCliente);
 
-		// if(!$license){
-		// 	return redirect()->back();
-		// }
+		if(!$license){
+			$return = false;
+		}
 
-		return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
+		if($return){
+			return view('content.cliente.editar', compact('cliente', 'entidade', 'plano', 'license', 'enderecos', 'contatos'));
+		}else{
+			\Session::flash('mensagem',[
+				'title'=> 'Ver Cliente',
+				'msg'=> 'Não foi possivel achar este cliente (possivel problema: Cliente/Entidade/Plano ou licença). Verifique no email de suporte o erro.',
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			return redirect()->back();
+		}
 	}
 
 	public function desativarEntidade($idEnt)
 	{
-		$entidade = new Entidade();
-		$entidade = $entidade->DesativarEntidade($idEnt);
-
-		if($entidade != 'true'){
-			return $entidade;
-		}
-
 		$cliente = new Cliente();
 		$cliente = $cliente->DesativarCliente($idEnt);
 
-		if(!isset($cliente->idCliente)){
-			return $cliente;
+		if($cliente){
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente desativado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			return redirect('clientes');
 		}
-
-		$contato = new Contato();
-		$contato = $contato->DesativarContatos($idEnt);
-
-		if($contato != 'true'){
-			return $contato;
-		}
-
-		$endereco = new Endereco();
-		$endereco = $endereco->DesativarEnderecos($idEnt);
-
-		if($endereco != 'true'){
-			return $endereco;
-		}
-
-		$plano = new Plano();
-		$plano = $plano->DesativarPlano($cliente->idPlano);
-
-		if($plano != 'true'){
-			return $plano;
-		}
-
-		$license = new Licenses();
-		return $license->DesativarLicenseCliente($cliente->codCliente);
 	}
 
 	public function ativarEntidade($idEnt)
 	{
-		$entidade = new Entidade();
-		$entidade = $entidade->AtivarEntidade($idEnt);
-
-		if($entidade != 'true'){
-			return $entidade;
-		}
-
 		$cliente = new Cliente();
 		$cliente = $cliente->AtivarCliente($idEnt);
 
-		if(!isset($cliente->idCliente)){
-			return $cliente;
+		if($cliente){
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente ativado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			return redirect()->back();
 		}
-
-		$contato = new Contato();
-		$contato = $contato->AtivarContatos($idEnt);
-
-		if($contato != 'true'){
-			return $contato;
-		}
-
-		$endereco = new Endereco();
-		$endereco = $endereco->AtivarEnderecos($idEnt);
-
-		if($endereco != 'true'){
-			return $endereco;
-		}
-
-		$plano = new Plano();
-		$plano = $plano->AtivarPlano($cliente->idPlano);
-
-		if($plano != 'true'){
-			return $plano;
-		}
-
-		$license = new Licenses();
-		return $license->AtivarLicenseCliente($cliente->codCliente);
-
 	}
 
 	public function deleteEntidade($idEnt)
 	{
-		$entidade = new Entidade();
-		$entidade = $entidade->DeletarEntidade($idEnt);
-
-		if($entidade != 'true'){
-			return $entidade;
-		}
-
 		$cliente = new Cliente();
 		$cliente = $cliente->DeletarCliente($idEnt);
 
-		if(!isset($cliente->idCliente)){
-			return $cliente;
+		if($cliente){
+			\Session::flash('mensagem',[
+				'title'=> 'Licença',
+				'msg'=> 'Cliente deletado com sucesso.',
+				'class'=> 'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			return redirect('clientes');
 		}
-
-		$contato = new Contato();
-		$contato = $contato->DeletarContatos($idEnt);
-
-		if($contato != 'true'){
-			return $contato;
-		}
-
-		$endereco = new Endereco();
-		$endereco = $endereco->DeletarEnderecos($idEnt);
-
-		if($endereco != 'true'){
-			return $endereco;
-		}
-
-		$plano = new Plano();
-		$plano = $plano->DeletarPlano($cliente->idPlano);
-
-		if($plano != 'true'){
-			return $plano;
-		}
-
-		$license = new Licenses();
-		return $license->DeletarLicenseCliente($cliente->codCliente);
 
 	}
 
