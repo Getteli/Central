@@ -214,81 +214,81 @@ class Contato extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function DesativarContatos($idEntidade)
-	{
-		try{
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = false;
-				$contato->update();
-			}
+	// public function DesativarContatos($idEntidade)
+	// {
+	// 	try{
+	// 		$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($contatos as $key => $contato) {
+	// 			$contato->ativo = false;
+	// 			$contato->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarContatos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarContatos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function AtivarContatos($idEntidade)
+	// {
+	// 	try{
+	// 		$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($contatos as $key => $contato) {
+	// 			$contato->ativo = true;
+	// 			$contato->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarContatos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-	public function AtivarContatos($idEntidade)
-	{
-		try{
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = true;
-				$contato->update();
-			}
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarContatos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
-
-	public function DeletarContatos($idEntidade)
-	{
-		try{
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = false;
-				$contato->deletado = true;
-				$contato->update();
-			}
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarContatos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function DeletarContatos($idEntidade)
+	// {
+	// 	try{
+	// 		$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($contatos as $key => $contato) {
+	// 			$contato->ativo = false;
+	// 			$contato->deletado = true;
+	// 			$contato->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarContatos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
 	public function DeletarContatoPorId(Request $request)
 	{
