@@ -195,73 +195,73 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function DesativarEntidade($idEntidade)
-	{
-		try{
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = false;
-			$entidade->update();
+	// public function DesativarEntidade($idEntidade)
+	// {
+	// 	try{
+	// 		$entidade = Entidade::find($idEntidade);
+	// 		$entidade->ativo = false;
+	// 		$entidade->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEntidade",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEntidade",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function AtivarEntidade($idEntidade)
+	// {
+	// 	try{
+	// 		$entidade = Entidade::find($idEntidade);
+	// 		$entidade->ativo = true;
+	// 		$entidade->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEntidade",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-	public function AtivarEntidade($idEntidade)
-	{
-		try{
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = true;
-			$entidade->update();
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEntidade",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
-
-	public function DeletarEntidade($idEntidade)
-	{
-		try{
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = false;
-			$entidade->deletado = true;
-			$entidade->update();
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEntidade",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function DeletarEntidade($idEntidade)
+	// {
+	// 	try{
+	// 		$entidade = Entidade::find($idEntidade);
+	// 		$entidade->ativo = false;
+	// 		$entidade->deletado = true;
+	// 		$entidade->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEntidade",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 }
