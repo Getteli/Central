@@ -324,65 +324,65 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function DesativarLicenseCliente($codCliente)
-	{
-		try{
-			$license = Licenses::where('codCliente', '=', $codCliente)->where('ativo', '=', 1)->first();
-			$license->ativo = false;
-			$license->update();
+	// public function DesativarLicenseCliente($codCliente)
+	// {
+	// 	try{
+	// 		$license = Licenses::where('codCliente', '=', $codCliente)->where('ativo', '=', 1)->first();
+	// 		$license->ativo = false;
+	// 		$license->update();
+	//
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> 'Cliente desativado com sucesso.',
+	// 			'class'=> 'green white-text modal-show',
+	// 			'class-mc'=> 'green',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		return redirect()->back();
+	// 	} catch (\Exception $e) {
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarLicenseCliente",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> 'Cliente desativado com sucesso.',
-				'class'=> 'green white-text modal-show',
-				'class-mc'=> 'green',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			return redirect()->back();
-		} catch (\Exception $e) {
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarLicenseCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
-
-	public function AtivarLicenseCliente($codCliente)
-	{
-		try{
-			$license = Licenses::where('codCliente', '=', $codCliente)->where('ativo', '=', 0)->first();
-			$license->ativo = true;
-			$license->update();
-
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> 'Cliente ativado com sucesso.',
-				'class'=> 'green white-text modal-show',
-				'class-mc'=> 'green',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			return redirect()->back();
-		}catch(\Exception $e) {
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarLicenseCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function AtivarLicenseCliente($codCliente)
+	// {
+	// 	try{
+	// 		$license = Licenses::where('codCliente', '=', $codCliente)->where('ativo', '=', 0)->first();
+	// 		$license->ativo = true;
+	// 		$license->update();
+	//
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> 'Cliente ativado com sucesso.',
+	// 			'class'=> 'green white-text modal-show',
+	// 			'class-mc'=> 'green',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		return redirect()->back();
+	// 	}catch(\Exception $e) {
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarLicenseCliente",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
 	public function DeletarLicenseCliente($codCliente)
 	{
