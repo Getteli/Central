@@ -310,73 +310,73 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function DesativarPlano($idPlano)
-	{
-		try{
-			$plano = Plano::find($idPlano);
-			$plano->ativo = false;
-			$plano->update();
+	// public function DesativarPlano($idPlano)
+	// {
+	// 	try{
+	// 		$plano = Plano::find($idPlano);
+	// 		$plano->ativo = false;
+	// 		$plano->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Planos',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarPlano",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Planos',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarPlano",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function AtivarPlano($idPlano)
+	// {
+	// 	try{
+	// 		$plano = Plano::find($idPlano);
+	// 		$plano->ativo = true;
+	// 		$plano->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Planos',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarPlano",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-	public function AtivarPlano($idPlano)
-	{
-		try{
-			$plano = Plano::find($idPlano);
-			$plano->ativo = true;
-			$plano->update();
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Planos',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarPlano",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
-
-	public function DeletarPlano($idPlano)
-	{
-		try{
-			$plano = Plano::find($idPlano);
-			$plano->ativo = false;
-			$plano->deletado = true;
-			$plano->update();
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Planos',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarPlano",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function DeletarPlano($idPlano)
+	// {
+	// 	try{
+	// 		$plano = Plano::find($idPlano);
+	// 		$plano->ativo = false;
+	// 		$plano->deletado = true;
+	// 		$plano->update();
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Planos',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarPlano",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 }
