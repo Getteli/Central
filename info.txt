@@ -3,13 +3,10 @@ version #
 data 29/06/20
 
 INFO:
-	. Este info serve para lembrete do que falta fazer sobre o sistema CENTRAL
+	. Este info serve para lembrete do que falta fazer sobre o sistema CENTRAL e tudo de seu eco sistema.
 	. Site para calcular dias - http://www.webcid.com.br/calendario/calcular-dias
 	. Site para calcular tempo CRONJOB - https://crontab.guru/
 	. Site para minificar e ofuscar - https://php-minify.com
-
-ATUALIZAÇÃO:
-	. add a nova cliente no sistema
 
 COMO SUBIR:
 	. Para fazer o deploy do projeto para o servidor, siga esses passos:
@@ -26,20 +23,30 @@ COMO SUBIR:
 	. se NÃO exibir veja a pasta bootstrap, se está com o app.php, e a pasta cache
 
 PERGUNTAS:
+	.
+	.
 
 UPDATES FUTUROS:
-	. 
+	. add a nova cliente ao sistema e alterar a mes de criacao dela para mes retrasado
+	.
 
 TRABALHOS:
 	. desenhar a tela, ver o que tem de required, por modal, e etc.
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
-	. cliente controler, desativarEntidade, continua melhorando para retornar certinho com erro, pondo false e etc..
-	. verificar ao selecionar o segmento (ao criar serviço), ele selecionar apenas os ativos.
+	. Criar join para deletar com uma query a entidade/cliente/contatos/endereços/plano/licenca
 
-HORARIOS / DATAS:
+CRON:
+	. Nosso CronJob se encontra alocado no Central. Tem sua classe sua rota e seus metodos, como outros do sistema. Ele é acessado pela rota web de fora do sistema.
+	. O cron é gerenciado pelo servidor hostinger.
+	. Ele acessa esse arquivo especifico no nosso sistema, q é um php com o script de cURL para acessar via url a rota do cron que vai acessar o banco e fazer o necessário.
+	. o código poderia ser feito direto pela url no comando do cron mas não é muito bom pois pode haver problemas.
+	. código que poderia ser feito é via wget 'https:www.url/acesso...'
+	. O código que usamos no momento acessa o arquivo pelas pastas:
+	. /usr/bin/env php -q /home/agenc921/central.agenciapublikando.com.br/app/arquivo.php
 
 CLIENTES (Agência Publikando):
-	mtzbiologistica.com.br
-	cliente02.ap_0911
+	. mtzbiologistica.com.br
+	. amocadorh.com.br
+	.
