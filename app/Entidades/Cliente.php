@@ -8,9 +8,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\Cliente as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\EntidadeRequest;
 use App\Entidades\Entidade;
+use App\Entidades\Endereco;
+use App\Entidades\Contato;
+use App\Servicos\Plano;
+use App\Licenses;
 use App\CodeRandom;
+use App\Exceptions\Handler;
 use App\Mail\Emails;
 
 class Cliente extends Authenticatable implements MustVerifyEmailContract
@@ -234,12 +240,51 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 	public function DesativarCliente($idEntidade)
 	{
 		try{
+			// OBS: Preferi desativar cada parte direto do cliente, para caso ocorra algum erro, o código não conclua
+			// a desativação por parte.
+			$queryAll = Cliente::join('entidades', 'clientes.idEntidade', '=', 'entidades.idEntidade')
+			// ->join('planos', 'clientes.idPlano', '=', 'planos.idPlano')
+	    // ->leftjoin('enderecos', 'enderecos.idEntidade','=', 'entidades.idEntidade')
+	    // ->leftjoin('contatos', 'contatos.idEntidade', '=', 'entidades.idEntidade')
+			// ->join('license.licenses', 'clientes.codCliente', '=', 'licenses.codCliente')
+			// ->where('clientes.idEntidade','=',$idEntidade)
+			// ->select('entidades.ativo AS ativoe','clientes.ativo AS ativoc')
+			->get();
+
+			foreach ($queryAll as $key => $query) {
+				$query->update(
+			     ['entidades.ativo' => false],
+			     ['clientes.ativo'  => false],
+			 );
+			}
+			// $queryAll->update();
+			/*
+
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = false;
 			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
 			$cliente->ativo = false;
+			$plano = Plano::find($cliente->idPlano);
+			$plano->ativo = false;
+			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
+			$license->ativo = false;
+			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = false;
+				$contato->update();
+			}
+			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = false;
+				$endereco->update();
+			}
+			$entidade->update();
 			$cliente->update();
-
-			return $cliente;
-		} catch (Exception $e) {
+			$plano->update();
+			$license->update();
+			*/
+			return true;
+		} catch (\Exception $e) {
 			\Session::flash('mensagem',[
 				'title'=> 'Clientes',
 				'msg'=> $e->getMessage(),
@@ -257,12 +302,33 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 	public function AtivarCliente($idEntidade)
 	{
 		try{
+			// OBS: Preferi desativar cada parte direto do cliente, para caso ocorra algum erro, o código não conclua
+			// a desativação por parte.
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = true;
 			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
 			$cliente->ativo = true;
+			$plano = Plano::find($cliente->idPlano);
+			$plano->ativo = true;
+			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
+			$license->ativo = true;
+			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = true;
+				$contato->update();
+			}
+			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = true;
+				$endereco->update();
+			}
+			$entidade->update();
 			$cliente->update();
+			$plano->update();
+			$license->update();
 
-			return $cliente;
-		} catch (Exception $e) {
+			return true;
+		} catch (\Exception $e) {
 			\Session::flash('mensagem',[
 				'title'=> 'Clientes',
 				'msg'=> $e->getMessage(),
@@ -280,13 +346,39 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 	public function DeletarCliente($idEntidade)
 	{
 		try{
+			$entidade = Entidade::find($idEntidade);
+			$entidade->ativo = false;
+			$entidade->deletado = true;
+
 			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
 			$cliente->ativo = false;
 			$cliente->deletado = true;
+			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
+			foreach ($contatos as $key => $contato) {
+				$contato->ativo = false;
+				$contato->deletado = true;
+				$contato->update();
+			}
+			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+			foreach ($enderecos as $key => $endereco) {
+				$endereco->ativo = false;
+				$endereco->deletado = true;
+				$endereco->update();
+			}
+			$plano = Plano::find($cliente->idPlano);
+			$plano->ativo = false;
+			$plano->deletado = true;
+			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
+			$license->ativo = false;
+			$license->deletado = true;
+
+			$license->update();
+			$plano->update();
+			$entidade->update();
 			$cliente->update();
 
-			return $cliente;
-		} catch (Exception $e) {
+			return true;
+		} catch (\Exception $e) {
 			\Session::flash('mensagem',[
 				'title'=> 'Clientes',
 				'msg'=> $e->getMessage(),
