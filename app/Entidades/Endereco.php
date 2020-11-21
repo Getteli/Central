@@ -254,81 +254,81 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 		}
 	}
 
-	public function DesativarEnderecos($idEntidade)
-	{
-		try{
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = false;
-				$endereco->update();
-			}
+	// public function DesativarEnderecos($idEntidade)
+	// {
+	// 	try{
+	// 		$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($enderecos as $key => $endereco) {
+	// 			$endereco->ativo = false;
+	// 			$endereco->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEnderecos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarEnderecos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function AtivarEnderecos($idEntidade)
+	// {
+	// 	try{
+	// 		$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($enderecos as $key => $endereco) {
+	// 			$endereco->ativo = true;
+	// 			$endereco->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEnderecos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
-	public function AtivarEnderecos($idEntidade)
-	{
-		try{
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = true;
-				$endereco->update();
-			}
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarEnderecos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
-
-	public function DeletarEnderecos($idEntidade)
-	{
-		try{
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = false;
-				$endereco->deletado = true;
-				$endereco->update();
-			}
-
-			return 'true';
-		}catch(\Exception $e){
-			\Session::flash('mensagem',[
-				'title'=> 'Clientes',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEnderecos",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
-		}
-	}
+	// public function DeletarEnderecos($idEntidade)
+	// {
+	// 	try{
+	// 		$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
+	// 		foreach ($enderecos as $key => $endereco) {
+	// 			$endereco->ativo = false;
+	// 			$endereco->deletado = true;
+	// 			$endereco->update();
+	// 		}
+	//
+	// 		return 'true';
+	// 	}catch(\Exception $e){
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Clientes',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarEnderecos",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back()->withInput($request->all);
+	// 	}
+	// }
 
 	public function DeletarEnderecoPorId(Request $request)
 	{
@@ -339,7 +339,7 @@ class Endereco extends Authenticatable implements MustVerifyEmailContract
 			$endereco->ativo = false;
 			$endereco->deletado = true;
 			$endereco->update();
-			
+
 			if ($endereco) {
 				return "deletado com sucesso";
 			}
