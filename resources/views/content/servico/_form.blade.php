@@ -39,7 +39,7 @@
 <div class="input-field">
 	<select name="idSegmento" class="validade" required>
 		<option value="">Selecione</option>
-		@foreach(Segmento::all() as $Segmento )
+		@foreach(Segmento::where('ativo','=',1)->get() as $Segmento )
 		<option value="{{ $Segmento->idSegmento }}" {{ (isset($servico->idSegmento) && $servico->idSegmento == $Segmento->idSegmento) || (old('idSegmento') == $Segmento->idSegmento ) ? 'selected' : '' }}>{{ $Segmento->segmento }}</option>
 		@endforeach
 	</select>
