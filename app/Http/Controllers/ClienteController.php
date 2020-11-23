@@ -219,8 +219,8 @@ class ClienteController extends Controller
 				'class-mc'=> 'green',
 				'class-so'=> 'sidenav-overlay-show'
 				]);
-			return redirect('clientes');
 		}
+		return redirect('clientes');
 	}
 
 	public function ativarEntidade($idEnt)
@@ -236,8 +236,8 @@ class ClienteController extends Controller
 				'class-mc'=> 'green',
 				'class-so'=> 'sidenav-overlay-show'
 				]);
-			return redirect()->back();
 		}
+		return redirect()->back();
 	}
 
 	public function deleteEntidade($idEnt)
@@ -253,8 +253,8 @@ class ClienteController extends Controller
 				'class-mc'=> 'green',
 				'class-so'=> 'sidenav-overlay-show'
 				]);
-			return redirect('clientes');
 		}
+		return redirect('clientes');
 
 	}
 

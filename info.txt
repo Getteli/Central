@@ -35,7 +35,6 @@ TRABALHOS:
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. Ver a aba de contas apos a api de pagamento, como vms criar e etc
-	. Criar join para deletar com uma query a entidade/cliente/contatos/endereços/plano/licenca
 
 CRON:
 	. Nosso CronJob se encontra alocado no Central. Tem sua classe sua rota e seus metodos, como outros do sistema. Ele é acessado pela rota web de fora do sistema.

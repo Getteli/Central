@@ -93,8 +93,8 @@ class Entidade extends Authenticatable implements MustVerifyEmailContract
 			$entidade->primeiroNome = $dados['primeiroNome'];
 			$entidade->sobrenome = $dados['sobrenome'];
 			$entidade->email = $dados['email'];
-			$entidade->cpf = Hash::make($dados['cpf']);
-			$entidade->rg = Hash::make($dados['rg']);
+			$entidade->cpf = empty($dados['cpf']) ? null : Hash::make($dados['cpf']);
+			$entidade->rg = empty($dados['rg']) ? null : Hash::make($dados['rg']);
 			$entidade->ativo = true;
 			$entidade->orgaoEmissor = $dados['orgaoEmissor'];
 			$entidade->dataExpedicao = $dados['dataExpedicao'];

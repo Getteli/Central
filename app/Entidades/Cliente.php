@@ -243,46 +243,20 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			// OBS: Preferi desativar cada parte direto do cliente, para caso ocorra algum erro, o código não conclua
 			// a desativação por parte.
 			$queryAll = Cliente::join('entidades', 'clientes.idEntidade', '=', 'entidades.idEntidade')
-			// ->join('planos', 'clientes.idPlano', '=', 'planos.idPlano')
-	    // ->leftjoin('enderecos', 'enderecos.idEntidade','=', 'entidades.idEntidade')
-	    // ->leftjoin('contatos', 'contatos.idEntidade', '=', 'entidades.idEntidade')
-			// ->join('license.licenses', 'clientes.codCliente', '=', 'licenses.codCliente')
-			// ->where('clientes.idEntidade','=',$idEntidade)
-			// ->select('entidades.ativo AS ativoe','clientes.ativo AS ativoc')
-			->get();
+			->join('planos', 'clientes.idPlano', '=', 'planos.idPlano')
+	    ->leftjoin('enderecos', 'enderecos.idEntidade','=', 'entidades.idEntidade')
+	    ->leftjoin('contatos', 'contatos.idEntidade', '=', 'entidades.idEntidade')
+			->join('license.licenses', 'clientes.codCliente', '=', 'licenses.codCliente')
+			->where('clientes.idEntidade','=',$idEntidade)
+			->update(array(
+				'entidades.ativo' => false,
+				'clientes.ativo' => false,
+				'planos.ativo' => false,
+				'licenses.ativo' => false,
+				'enderecos.ativo' => false,
+				'contatos.ativo' => false
+			));
 
-			foreach ($queryAll as $key => $query) {
-				$query->update(
-			     ['entidades.ativo' => false],
-			     ['clientes.ativo'  => false],
-			 );
-			}
-			// $queryAll->update();
-			/*
-
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = false;
-			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
-			$cliente->ativo = false;
-			$plano = Plano::find($cliente->idPlano);
-			$plano->ativo = false;
-			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
-			$license->ativo = false;
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = false;
-				$contato->update();
-			}
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = false;
-				$endereco->update();
-			}
-			$entidade->update();
-			$cliente->update();
-			$plano->update();
-			$license->update();
-			*/
 			return true;
 		} catch (\Exception $e) {
 			\Session::flash('mensagem',[
@@ -295,7 +269,7 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Desativar","DesativarCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back();
+			return false;
 		}
 	}
 
@@ -304,28 +278,20 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 		try{
 			// OBS: Preferi desativar cada parte direto do cliente, para caso ocorra algum erro, o código não conclua
 			// a desativação por parte.
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = true;
-			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
-			$cliente->ativo = true;
-			$plano = Plano::find($cliente->idPlano);
-			$plano->ativo = true;
-			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
-			$license->ativo = true;
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = true;
-				$contato->update();
-			}
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = true;
-				$endereco->update();
-			}
-			$entidade->update();
-			$cliente->update();
-			$plano->update();
-			$license->update();
+			$queryAll = Cliente::join('entidades', 'clientes.idEntidade', '=', 'entidades.idEntidade')
+			->join('planos', 'clientes.idPlano', '=', 'planos.idPlano')
+	    ->leftjoin('enderecos', 'enderecos.idEntidade','=', 'entidades.idEntidade')
+	    ->leftjoin('contatos', 'contatos.idEntidade', '=', 'entidades.idEntidade')
+			->join('license.licenses', 'clientes.codCliente', '=', 'licenses.codCliente')
+			->where('clientes.idEntidade','=',$idEntidade)
+			->update(array(
+				'entidades.ativo' => true,
+				'clientes.ativo' => true,
+				'planos.ativo' => true,
+				'licenses.ativo' => true,
+				'enderecos.ativo' => true,
+				'contatos.ativo' => true
+			));
 
 			return true;
 		} catch (\Exception $e) {
@@ -339,43 +305,40 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Ativar","AtivarCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back();
+			return false;
 		}
 	}
 
 	public function DeletarCliente($idEntidade)
 	{
 		try{
-			$entidade = Entidade::find($idEntidade);
-			$entidade->ativo = false;
-			$entidade->deletado = true;
+			// OBS: Preferi deletar cada parte direto do cliente, para caso ocorra algum erro, o código não conclua
+			// a exclusao por parte.
+			$queryAll = Cliente::join('entidades', 'clientes.idEntidade', '=', 'entidades.idEntidade')
+			->join('planos', 'clientes.idPlano', '=', 'planos.idPlano')
+	    ->leftjoin('enderecos', 'enderecos.idEntidade','=', 'entidades.idEntidade')
+	    ->leftjoin('contatos', 'contatos.idEntidade', '=', 'entidades.idEntidade')
+			->join('license.licenses', 'clientes.codCliente', '=', 'licenses.codCliente')
+			->where('clientes.idEntidade','=',$idEntidade)
+			->update(array(
+				'entidades.ativo' => false,
+				'entidades.deletado' => true,
 
-			$cliente = Cliente::where("idEntidade","=",$idEntidade)->first();
-			$cliente->ativo = false;
-			$cliente->deletado = true;
-			$contatos = Contato::where("idEntidade","=",$idEntidade)->get();
-			foreach ($contatos as $key => $contato) {
-				$contato->ativo = false;
-				$contato->deletado = true;
-				$contato->update();
-			}
-			$enderecos = Endereco::where("idEntidade","=",$idEntidade)->get();
-			foreach ($enderecos as $key => $endereco) {
-				$endereco->ativo = false;
-				$endereco->deletado = true;
-				$endereco->update();
-			}
-			$plano = Plano::find($cliente->idPlano);
-			$plano->ativo = false;
-			$plano->deletado = true;
-			$license = Licenses::where('codCliente', '=', $cliente->codCliente)->first();
-			$license->ativo = false;
-			$license->deletado = true;
+				'clientes.ativo' => false,
+				'clientes.deletado' => true,
 
-			$license->update();
-			$plano->update();
-			$entidade->update();
-			$cliente->update();
+				'planos.ativo' => false,
+				'planos.deletado' => true,
+
+				'licenses.ativo' => false,
+				'licenses.deletado' => true,
+
+				'enderecos.ativo' => true,
+				'enderecos.deletado' => true,
+
+				'contatos.ativo' => false,
+				'contatos.deletado' => true
+			));
 
 			return true;
 		} catch (\Exception $e) {
@@ -389,7 +352,7 @@ class Cliente extends Authenticatable implements MustVerifyEmailContract
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarCliente",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back();
+			return false;
 		}
 	}
 

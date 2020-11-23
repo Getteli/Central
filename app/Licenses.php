@@ -387,36 +387,36 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	// 	}
 	// }
 
-	public function DeletarLicenseCliente($codCliente)
-	{
-		try{
-			$license = Licenses::where('codCliente', '=', $codCliente)->first();
-			$license->ativo = false;
-			$license->deletado = true;
-			$license->update();
-
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> 'Cliente deletado com sucesso.',
-				'class'=> 'green white-text modal-show',
-				'class-mc'=> 'green',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			return redirect()->back();
-		} catch (\Exception $e) {
-			\Session::flash('mensagem',[
-				'title'=> 'Licença',
-				'msg'=> $e->getMessage(),
-				'class'=> 'red white-text modal-show',
-				'class-mc'=> 'red',
-				'class-so'=> 'sidenav-overlay-show'
-				]);
-			// envia email de erro
-			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarLicenseCliente",$e->getMessage(),'now'));
-			// retorna ao cliente
-			return redirect()->back();
-		}
-	}
+	// public function DeletarLicenseCliente($codCliente)
+	// {
+	// 	try{
+	// 		$license = Licenses::where('codCliente', '=', $codCliente)->first();
+	// 		$license->ativo = false;
+	// 		$license->deletado = true;
+	// 		$license->update();
+	//
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> 'Cliente deletado com sucesso.',
+	// 			'class'=> 'green white-text modal-show',
+	// 			'class-mc'=> 'green',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		return redirect()->back();
+	// 	} catch (\Exception $e) {
+	// 		\Session::flash('mensagem',[
+	// 			'title'=> 'Licença',
+	// 			'msg'=> $e->getMessage(),
+	// 			'class'=> 'red white-text modal-show',
+	// 			'class-mc'=> 'red',
+	// 			'class-so'=> 'sidenav-overlay-show'
+	// 			]);
+	// 		// envia email de erro
+	// 		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Deletar","DeletarLicenseCliente",$e->getMessage(),'now'));
+	// 		// retorna ao cliente
+	// 		return redirect()->back();
+	// 	}
+	// }
 
 	public function GetCodLicense($codCli)
 	{
