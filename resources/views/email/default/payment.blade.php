@@ -75,12 +75,23 @@
 											switch ($status) {
 												case 1:
 													echo "
-													<b style='color: blue;'>FOI PAGO</b><br>
-													Já pode continuar a aproveitar o nosso serviço e o seu plano. Caso o seu serviço (seja ele um site, loja ou postagens em suas redes) ainda tenha algum problema ou não esteja ativado, entre em contato com o nosso suporte imediatamente para que possamos resolver o mais rápido possivel.";
+													<b style='color: blue;'>AGUARDANDO PAGAMENTO</b><br>
+													Seu status está aguardando pagamento, assim que o provedor de seu banco e/ou o sistema de pagamento for finalizado e cair seu serviço ficará disponivel, para aproveitar o seu plano. Caso tenha algum problema ou não esteja ativado, entre em contato com o nosso suporte imediatamente para que possamos resolver o mais rápido possivel.";
 													break;
 												case 2:
 													echo "
-													<b style='color: red;'>FOI RECUSADO</b><br>
+													<b style='color: blue;'>EM ANÁLISE</b><br>
+													Seu pagamento está em análise e logo logo estará disponivel, para aproveitar o nosso serviço. Caso tenha algum problema ou não esteja ativado, entre em contato com o nosso suporte imediatamente para que possamos resolver o mais rápido possivel.";
+													break;
+												case 3:
+													echo "
+													<b style='color: blue;'>FOI PAGO</b><br>
+													Já pode continuar a aproveitar o nosso serviço e o seu plano. Caso o seu serviço (seja ele um site, loja ou postagens em suas redes) ainda tenha algum problema ou não esteja ativado, entre em contato com o nosso suporte imediatamente para que possamos resolver o mais rápido possivel.";
+													break;
+												case 6:
+												case 7:
+													echo "
+													<b style='color: red;'>FOI DEVOLVIDO / CANCELADO</b><br>
 													Pode ter ocorrido algo com o seu {{ $formaPag }} que não concluiu o pagamento. Verifique o extrato ou seu {{ $formaPag }} e entre em contato conosco urgentemente pelos nossos meios de comunicação(email, facebook, numero..) para resolvermos este problema.";
 													break;
 												default:

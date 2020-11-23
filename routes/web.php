@@ -29,7 +29,7 @@ Route::post('/login',['as'=>'login', 'uses'=>'AuthController@login']);
 // license (acessado pela url do cliente para saber se pode acessar)
 Route::get('/licenses/blockAll/{codLicense}',['as'=>'license.blockall', 'uses'=>'LicenseController@blockall']);
 Route::get('/licenses/getDataCliente/{codLicense}',['as'=>'license.getDataCliente', 'uses'=>'LicenseController@getDataCliente']);
-Route::any('/licenses/UpdatePaymenteCliente/',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
+Route::any('/licenses/UpdatePaymenteCliente/{codLicense}/{status}',['as'=>'license.UpdatePaymenteCliente', 'uses'=>'LicenseController@UpdatePaymenteCliente']);
 
 // emails (em formularios de clientes e etc, fazemos o processo de envio direto pelo laravel)
 Route::get('/mail/sendMailClient/{request}',['as'=>'mail.sendMailClient', 'uses'=>'MailController@sendMailClient']);

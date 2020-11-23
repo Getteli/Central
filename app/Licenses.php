@@ -103,15 +103,8 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 	}
 
 	// Recebe do pagseguro para atualizar a licença do cliente e informar
-	public function PaymentCliente()
+	public function PaymentCliente($codLicense, $status)
 	{
-		// testar o retorno
-		Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente","Teste, Chegou",'now'));
-
-		// se for por post
-		// $codLicense = ;
-		// $status = 1;
-/*
 		try{
 			$licenseCliente = Licenses::where('codLicense','=',$codLicense)->first();
 			$entidade = Cliente::where('codCliente','=',$licenseCliente->codCliente)->first()->Entidade;
@@ -120,27 +113,38 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 
 			if($licenseCliente && $entidade && $cliente && $plano){
 				// verifica o status do pagamento vindo do pagseguro
-				// switch ($status) {
-				// 	case 1:
-				// 		# code...
-				// 		break;
+				switch ($status) {
+					case 1: // aguardando pagamento
+						break;
+					case 2: // Em analise
+						# code...
+						break;
+					case 3: // Paga
+							// cria o registro informando o recebido
+							$recebido = new Recebido();
+							$check_recebido = $recebido->CreateRecebido($plano);
 
-				// 	default:
-				// 		# code...
-				// 		break;
-				// }
+							if(!$check_recebido){
+								throw new \Exception("Erro ao criar o registro de recebido.");
+							}
 
-				// cria o registro informando o recebido
-				$recebido = new Recebido();
-				$check_recebido = $recebido->CreateRecebido($plano);
-
-				if(!$check_recebido){
-					throw new \Exception("Erro ao criar o registro de recebido.");
+							// coloca mais 1 mes
+							$licenseCliente->dias = $licenseCliente->dias + 31;
+							$licenseCliente->update();
+						break;
+					case 4: // Disponivel
+						# code...
+						break;
+					case 5: // Em disputa
+							# code...
+							break;
+					case 6: // Devolvida
+							# code...
+							break;
+					case 7: // Cancelada
+							# code...
+							break;
 				}
-
-				// coloca mais 1 mes
-				$licenseCliente->dias = $licenseCliente->dias + 31;
-				$licenseCliente->update();
 
 				// envia email pro cliente se deu tudo certo
 				// envia o obj cliente, entidade, licensa e o status
@@ -154,7 +158,6 @@ class Licenses extends Authenticatable implements MustVerifyEmailContract
 			// envia email pro suporte
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Pagar","PaymentCliente",$e->getMessage(),'now'));
 		}
-*/
 	}
 
 	// Recebe o cod de licença do cliente pela pagina de payment e retorna os dados do cliente
