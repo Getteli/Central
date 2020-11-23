@@ -69,7 +69,10 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 	{
 		try{
 			$valorTotal = 0;
-			$planos = Plano::all()->where('ativo', 1)->where('desativado', 0);
+			$planos = Plano::where('ativo','=', 1)->Where(function ($query) {
+				$query->where('deletado','=',0)
+				->orWhere('deletado','=',null);
+			})->get();
 
 			foreach ($planos as $key => $value) {
 				$valorTotal += $value['preco'];
@@ -87,7 +90,7 @@ class Plano extends Authenticatable implements MustVerifyEmailContract
 			// envia email de erro
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
 			// retorna ao cliente
-			return redirect()->back()->withInput($request->all);
+			return redirect()->back();
 		}
 	}
 

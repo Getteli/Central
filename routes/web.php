@@ -100,4 +100,12 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/planos',['as'=>'planos', 'uses'=>'PlanoController@list']);
 	Route::get('/planos/{idPlano}',['as'=>'plano.editar', 'uses'=>'PlanoController@editar']);
 	Route::get('/planos/filtro/buscar',['as'=>'plano.filter', 'uses'=>'PlanoController@filter']);
+	// -------------------------------------------------------------------------
+
+	// recebidos
+	Route::get('/recebidos',['as'=>'recebidos', 'uses'=>'RecebidoController@list']);
+	Route::get('/recebidos/{idRecebido}',['as'=>'recebido.editar', 'uses'=>'RecebidoController@editar']);
+	Route::get('/recebidos/filtro/buscar',['as'=>'recebido.filter', 'uses'=>'RecebidoController@filter']);
+	Route::get('/recebidos/Plano/{idPlano}',['as'=>'recebido.verCliente', 'uses'=>'RecebidoController@verCliente']);
+
 });

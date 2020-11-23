@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Mail\Emails;
+use App\Entidades\Cliente;
 use Carbon\Carbon;
 
 class Recebido extends Authenticatable implements MustVerifyEmailContract
@@ -52,16 +53,16 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 	protected $guarded = ['idRecebido', 'created_at', 'update_at'];
 
 	// NAVIGATION
-	public function Plano()
+	public function Recebido()
 	{
-		return $this->belongsTo('App\Plano','idPlano');
+		return $this->belongsTo('App\Recebido','idRecebido');
 	}
 
 	public function CreateRecebido($request)
 	{
 		try{
 			$dados = $request;
-			
+
 			// entao cria o cliente
 			$recebido = new Recebido();
 			$recebido->valor = $dados['preco'];
@@ -77,6 +78,98 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","CreateRecebido",$e->getMessage(),'now'));
 			// retorna ao cliente
 			return false;
+		}
+	}
+
+	public function Listagem()
+	{
+		try{
+			$valorTotal = 0;
+			$recebidos = Recebido::all()->where('ativo', 1)->where('desativado', 0);
+
+			foreach ($recebidos as $key => $value) {
+				$valorTotal += $value['valor'];
+			}
+			return view('content.recebido.recebidos',compact('recebidos','valorTotal'));
+		}catch(\Exception $e){;
+
+			\Session::flash('mensagem',[
+				'title'=> 'Recebidos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Exibir","Listagem",$e->getMessage(),'now'));
+			// retorna ao cliente
+			return redirect()->back()->withInput($request->all);
+		}
+	}
+
+	public function Filtro(Request $request)
+	{
+		try{
+			$filtrar = $request->all();
+
+			$valorTotal = 0;
+
+			// cria o objeto para a busca
+			$recebidos = new Recebido();
+
+			// busca do usuario
+			if (isset($filtrar['texto'])) {
+				$recebidos = $recebidos->Where(function ($query) use($filtrar) {
+					$query->where('descricao','LIKE','%'. $filtrar['texto'] .'%');
+				});
+			}
+			if (isset($filtrar['preco'])) {
+				$recebidos = $recebidos->where('valor','<=',$filtrar['preco']);
+			}
+
+			//padrao, buscar o que nao pode ser deletado E pega tudo em array
+			$recebidos = $recebidos->Where(function ($query) {
+				$query->where('deletado', '=', 0)
+				->orWhere('deletado','=',null)
+				->orWhere('deletado','!=',1);
+			});
+			$recebidos = $recebidos->get();
+
+			// foreach ($recebidos as $key => $value) {
+			// 	$valorTotal += $value['preco'];
+			// }
+
+			if ($recebidos->isEmpty() || $recebidos->count() == 0) {
+				\Session::flash('resultado',['msg'=>'Sem resultados !']);
+			}else{
+				\Session::flash('resultado', null);
+			}
+
+			return view('content.recebido.recebidos',compact('recebidos','filtrar'));
+		}catch(\Exception $e){
+			\Session::flash('mensagem',[
+				'title'=> 'Recebidos',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Filtrar","Filtro",$e->getMessage(),'now'));
+			// retorna ao cliente
+			return redirect()->back()->withInput($request->all);
+		}
+	}
+
+	public function VerCliente($idPlano)
+	{
+		$cliente = Cliente::Where('idPlano','=',$idPlano)->first();
+
+		if(!is_null($cliente)){
+			return redirect()->route('cliente.editar',[$cliente->idCliente, $cliente->idEntidade]);
+			// echo $cliente->idEntidade;
+		}else{
+			return redirect()->back();
 		}
 	}
 }

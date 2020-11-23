@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		
+
 		<!-- CSRF Token -->
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -79,7 +79,7 @@
 								<li><a href="#">Despesas</a></li>
 								<li><a href="#">Adicionar uma despesa</a></li>
 								<li class="divider"></li>
-								<li><a href="#">Recebidos</a></li>
+								<li><a href="{{route('recebidos')}}">Recebidos</a></li>
 								<li class="divider"></li>
 								<li><a href="{{route('planos')}}">Listar planos</a></li>
 							</ul>

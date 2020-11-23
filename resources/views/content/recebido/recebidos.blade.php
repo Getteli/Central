@@ -1,7 +1,7 @@
 <!-- layout onde esse conteudo sera apresentado -->
 @extends('layouts.main')
 <!-- titulo desta pagina -->
-@section('title', 'Planos - Central')
+@section('title', 'Recebidos - Central')
 <!-- conteudo -->
 @section('content')
 	<?php
@@ -10,10 +10,10 @@
 	?>
 	<div>
 		<div>
-			<h1>Planos</h1>
+			<h1>Recebidos</h1>
 		</div>
 		<div class="row">
-			<form method="GET" action="{{ route('plano.filter') }}">
+			<form method="GET" action="{{ route('recebido.filter') }}">
 				<div class="col l3 m4 s4">
 					<input type="text" placeholder="texto" name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>
 				</div>
@@ -32,28 +32,30 @@
 			</form>
 		</div>
 		<div class="row">
-			<p>total: {{ $planos->count() }}</p>
+			<p>total: {{ $recebidos->count() }}</p>
 			<table>
 				<thead>
 					<tr>
-						<th>Dia de Pagamento</th>
-						<th>Forma</th>
-						<th>Descrição</th>
+						<th>Entrada</th>
+						<th>Serviço</th>
 						<th>Preço</th>
 						<th>Ação</th>
 					</tr>
 				</thead>
 				<tbody>
-				@foreach($planos as $plano)
+				@foreach($recebidos as $recebido)
 					<tr>
-						<td>{{ $plano->dataPagamento }}</td>
-						<td>{{ FormasPagamento::getNameFPagamento($plano->formaPagamento) }}</td>
-						<td>{{ $plano->descricao }}</td>
-						<td>{{ "R$ ". number_format($plano->preco, 2) }}</td>
+						<td>{{ $recebido->dataEntrada }}</td>
+						<td>{{ $recebido->descricao }}</td>
+						<td>{{ "R$ ". number_format($recebido->valor, 2) }}</td>
 						<td>
-							<a class="btn blue"
-							href="{{ route('plano.editar',[$plano->idPlano]) }}">
-							Editar</a>
+							@if(isset($recebido->idPlano))
+							  <a class="btn blue"
+							  href="{{ route('recebido.verCliente',$recebido->idPlano) }}">
+							  Ver o Cliente</a>
+							@else
+								<p>sem cliente</p>
+							@endif
 						</td>
 					</tr>
 				@endforeach
@@ -64,7 +66,7 @@
 					{{ Session::get('resultado')['msg'] }}
 				</div>
 			@endif
-			<p>Por mês, o que tem de receber é: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
+			<p>O Total recebido é: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
 		</div>
 	</div>
 @endsection
