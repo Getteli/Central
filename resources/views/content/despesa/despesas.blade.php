@@ -1,22 +1,22 @@
 <!-- layout onde esse conteudo sera apresentado -->
 @extends('layouts.main')
 <!-- titulo desta pagina -->
-@section('title', 'Recebidos - Central')
+@section('title', 'Despesas - Central')
 <!-- conteudo -->
 @section('content')
 	<div>
 		<div>
-			<h1>Recebidos</h1>
+			<h1>Despesas</h1>
 		</div>
 		<div class="row">
 			<div class="col s12">
-				<a href="{{route('recebido.adicionar')}}">
-				<button class="btn blue">Recibo Externo</button>
+				<a href="{{route('despesa.adicionar')}}">
+				<button class="btn blue">Adicionar uma nova despesa</button>
 				</a>
 			</div>
 		</div>
 		<div class="row">
-			<form method="GET" action="{{ route('recebido.filter') }}">
+			<form method="GET" action="{{ route('despesa.filter') }}">
 				<input hidden readonly type="number" name="idp" value="{{ $filtrar['idp'] ?? '' }}"/>
 				<div class="col l3 m4 s12">
 					<input type="text" placeholder="texto" name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>
@@ -33,31 +33,21 @@
 			</form>
 		</div>
 		<div class="row">
-			<p>total: {{ $recebidos->count() }}</p>
+			<p>total: {{ $despesas->count() }}</p>
 			<table>
 				<thead>
 					<tr>
-						<th>Entrada</th>
-						<th>Serviço / descrição</th>
+						<th>descrição</th>
 						<th>Preço</th>
-						<th>Ação</th>
+            <th>Pago em</th>
 					</tr>
 				</thead>
 				<tbody>
-				@foreach($recebidos as $recebido)
+				@foreach($despesas as $despesa)
 					<tr>
-						<td>{{ $recebido->dataEntrada }}</td>
-						<td>{{ $recebido->descricao }}</td>
-						<td>{{ "R$ ". number_format($recebido->valor, 2) }}</td>
-						<td>
-							@if(isset($recebido->idPlano))
-							  <a class="btn blue"
-							  href="{{ route('recebido.verCliente',$recebido->idPlano) }}">
-							  Cliente</a>
-							@else
-								<p>sem cliente</p>
-							@endif
-						</td>
+						<td>{{ $despesa->descricao }}</td>
+						<td>{{ "R$ ". number_format($despesa->valor, 2) }}</td>
+            <td>{{ $despesa->dataPagamento }}</td>
 					</tr>
 				@endforeach
 				</tbody>
@@ -67,7 +57,7 @@
 					{{ Session::get('resultado')['msg'] }}
 				</div>
 			@endif
-			<p>O Total recebido é: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
+			<p>O Total de despesas é: <b>{{ "R$ ". number_format($valorTotal, 2) }}</b></p>
 		</div>
 	</div>
 @endsection

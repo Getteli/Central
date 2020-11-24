@@ -111,5 +111,15 @@ Route::group(['middleware'=>'auth'], function(){
 		return view('content.recebido.adicionar');
 	}]);
 	Route::post('/recebido/salvar',['as'=>'recebido.salvar', 'uses'=>'RecebidoController@adicionar']);
+	// -------------------------------------------------------------------------
+
+	// despesas
+	Route::get('/despesas',['as'=>'despesas', 'uses'=>'DespesaController@list']);
+	Route::get('/despesas/filtro/buscar',['as'=>'despesa.filter', 'uses'=>'DespesaController@filter']);
+	Route::get('/despesa/adicionar',['as'=>'despesa.adicionar', function () {
+		return view('content.despesa.adicionar');
+	}]);
+	Route::get('/despesas/{idRecebido}',['as'=>'despesa.editar', 'uses'=>'DespesaController@editar']);
+	Route::post('/despesa/salvar',['as'=>'despesa.salvar', 'uses'=>'DespesaController@adicionar']);
 
 });

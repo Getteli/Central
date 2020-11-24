@@ -35,8 +35,6 @@ TRABALHOS:
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
 	. criar outros requests de classe, como plano e etc..
-	. na aba de despesa	ter um botao para criar as despesas. Como pagamento do servidor, dominio e etc.
-	. Por o filtro tambem por data (por mes, por ano e etc) na despesa
 	. callmebot, ver a api de whatsapp para enviar mensagem ao cliente lembrando do Pagamento
 
 CRON:

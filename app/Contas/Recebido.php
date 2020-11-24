@@ -86,7 +86,10 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 	{
 		try{
 			$valorTotal = 0;
-			$recebidos = Recebido::all()->where('ativo', 1)->where('desativado', 0);
+			$recebidos = Recebido::where('ativo', 1)->Where(function ($query) {
+				$query->where('deletado','=',0)
+				->orWhere('deletado','=',null);
+			})->get();
 
 			foreach ($recebidos as $key => $value) {
 				$valorTotal += $value['valor'];
@@ -135,13 +138,13 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 
 			if(isset($filtrar['dataini']) && isset($filtrar['datafim']))
 			{
-				$recebidos = $recebidos->whereBetween('DataEntrada', [$filtrar['dataini'], $filtrar['datafim']]);
+				$recebidos = $recebidos->whereBetween('dataEntrada', [$filtrar['dataini'], $filtrar['datafim']]);
 			}else if(isset($filtrar['dataini']))
 			{
-				$recebidos = $recebidos->where('DataEntrada', '>=',$filtrar['dataini']);
+				$recebidos = $recebidos->where('dataEntrada', '>=',$filtrar['dataini']);
 			}else if (isset($filtrar['datafim']))
 			{
-				$recebidos = $recebidos->where('DataEntrada', '<=',$filtrar['datafim']);
+				$recebidos = $recebidos->where('dataEntrada', '<=',$filtrar['datafim']);
 			}
 
 			//padrao, buscar o que nao pode ser deletado E pega tudo em array

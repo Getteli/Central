@@ -76,8 +76,8 @@
 							<i class="material-icons right">arrow_drop_down</i>
 							</a>
 							<ul id="dropdown-pay" class="dropdown-content">
-								<li><a href="#">Despesas</a></li>
-								<li><a href="#">Adicionar uma despesa</a></li>
+								<li><a href="{{route('despesas')}}">Despesas</a></li>
+								<li><a href="{{route('despesa.adicionar')}}">Adicionar uma despesa</a></li>
 								<li class="divider"></li>
 								<li><a href="{{route('recebidos')}}">Recebidos</a></li>
 								<li class="divider"></li>
@@ -98,12 +98,12 @@
 						</li>
 						<!-- Tarefas -->
 						<li>
-							<a href="#" class="dropdown-trigger" data-target="dropdown-dt">
+							<a href="#" class="dropdown-trigger" data-target="dropdown-ta">
 							<i class="material-icons left">view_list</i>
 							Tarefas
 							<i class="material-icons right">arrow_drop_down</i>
 							</a>
-							<ul id="dropdown-dt" class="dropdown-content">
+							<ul id="dropdown-ta" class="dropdown-content">
 								<li><a href="#">Tarefas</a></li>
 								<li><a href="#">Criar uma nova tarefa</a></li>
 							</ul>
@@ -167,10 +167,10 @@
 				<i class="material-icons right">arrow_drop_down</i>
 				</a>
 				<ul id="dropdown-m-pay" class="dropdown-content">
-					<li><a href="#">Despesas</a></li>
-					<li><a href="#">Adicionar uma despesa</a></li>
+					<li><a href="{{route('despesas')}}">Despesas</a></li>
+					<li><a href="{{route('despesa.adicionar')}}">Adicionar uma despesa</a></li>
 					<li class="divider"></li>
-					<li><a href="#">Recebidos</a></li>
+					<li><a href="{{route('recebidos')}}">Recebidos</a></li>
 					<li class="divider"></li>
 					<li><a href="{{route('planos')}}">Listar planos</a></li>
 				</ul>
@@ -189,12 +189,12 @@
 			</li>
 			<!-- Tarefas -->
 			<li>
-				<a href="#" class="dropdown-trigger" data-target="dropdown-m-dt">
+				<a href="#" class="dropdown-trigger" data-target="dropdown-m-ta">
 				<i class="material-icons left">view_list</i>
 				Tarefas
 				<i class="material-icons right">arrow_drop_down</i>
 				</a>
-				<ul id="dropdown-m-dt" class="dropdown-content">
+				<ul id="dropdown-m-ta" class="dropdown-content">
 					<li><a href="#">Tarefas</a></li>
 					<li><a href="#">Criar uma nova tarefa</a></li>
 				</ul>
