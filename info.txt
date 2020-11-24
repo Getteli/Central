@@ -34,10 +34,7 @@ TRABALHOS:
 	. desenhar a tela, ver o que tem de required, por modal, e etc.
 	. fazer a pagina de cases
 	. subir as aplicações (mpt, athena?, qis?) pro servidor
-	. Na tela do cliente, por botão para ir ver os recebidos dele (ja com o filtro sobre o id do plano dele)
-	. Permitir uma filtragem pelo id do plano, no recebidos, mas nao por um campo para isto. apenas permitir na url e no metodos
-	. Por o filtro tambem por data (por mes, por ano e etc) no recebido
-	. criar uma tela e um botao para permitir criar um recebido de fora.
+	. criar outros requests de classe, como plano e etc..
 	. na aba de despesa	ter um botao para criar as despesas. Como pagamento do servidor, dominio e etc.
 	. Por o filtro tambem por data (por mes, por ano e etc) na despesa
 	. callmebot, ver a api de whatsapp para enviar mensagem ao cliente lembrando do Pagamento

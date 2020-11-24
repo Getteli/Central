@@ -14,13 +14,13 @@
 		</div>
 		<div class="row">
 			<form method="GET" action="{{ route('plano.filter') }}">
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s12">
 					<input type="text" placeholder="texto" name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>
 				</div>
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s6">
 					<input type="number" placeholder="até R$ valor" name="preco" min="0" value="{{ $filtrar['preco'] ?? '' }}"/>
 				</div>
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s12">
 					<select name="formaPagamento">
 						<option value="" {{ !isset($filtrar['formaPagamento']) ? 'selected' : '' }}>Todas</option>
 						@foreach(FormasPagamento::getAll() as $meioPagto => $key )
@@ -28,7 +28,7 @@
 						@endforeach
 					</select>
 				</div>
-				<button type="submit" class="btn blue">Buscar</button>
+				<button type="submit" class="btn blue btn-pos">Buscar</button>
 			</form>
 		</div>
 		<div class="row">
@@ -36,10 +36,10 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Dia de Pagamento</th>
+						<th>Dia de Pag.</th>
 						<th>Forma</th>
 						<th>Descrição</th>
-						<th>Preço</th>
+						<th>Valor</th>
 						<th>Ação</th>
 					</tr>
 				</thead>

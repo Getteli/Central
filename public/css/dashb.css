@@ -8,6 +8,10 @@
 	border-bottom: 1px solid #ccc !important;
 }
 
+.flex{
+	display:flex
+}
+
 /*modal de notificacao*/
 .modal-show{
 	display: block;
@@ -23,4 +27,32 @@
 .sidenav-overlay-show{
 	display: block;
 	opacity: 0.7;
+}
+
+
+
+/* TELA GRANDE */
+@media only screen and (min-width: 1650px) {
+}
+
+@media only screen and (min-width: 2200px) {
+}
+
+
+/*MOBILE*/
+@media only screen and (max-width: 600px) {
+	.btn-pos{
+		float: right !important;
+		margin-right: 10px;
+	}
+}
+
+/*telas menores*/
+@media only screen and (max-width: 414px) {
+}
+
+/* EXEMPLO */
+/*       min   -->    601     <--  max           */
+/* --------------------|------------\------------*/
+@media only screen and (min-width: 826px) and (max-width: 919px){
 }

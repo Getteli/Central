@@ -107,5 +107,9 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/recebidos/{idRecebido}',['as'=>'recebido.editar', 'uses'=>'RecebidoController@editar']);
 	Route::get('/recebidos/filtro/buscar',['as'=>'recebido.filter', 'uses'=>'RecebidoController@filter']);
 	Route::get('/recebidos/Plano/{idPlano}',['as'=>'recebido.verCliente', 'uses'=>'RecebidoController@verCliente']);
+	Route::get('/recebido/adicionar',['as'=>'recebido.adicionar', function () {
+		return view('content.recebido.adicionar');
+	}]);
+	Route::post('/recebido/salvar',['as'=>'recebido.salvar', 'uses'=>'RecebidoController@adicionar']);
 
 });

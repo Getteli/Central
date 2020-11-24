@@ -13,22 +13,27 @@
 			<h1>Recebidos</h1>
 		</div>
 		<div class="row">
+			<div class="col s12">
+				<a href="{{route('recebido.adicionar')}}">
+				<button class="btn blue">Recibo Externo</button>
+				</a>
+			</div>
+		</div>
+		<div class="row">
 			<form method="GET" action="{{ route('recebido.filter') }}">
-				<div class="col l3 m4 s4">
+				<input hidden readonly type="number" name="idp" value="{{ $filtrar['idp'] ?? '' }}"/>
+				<div class="col l3 m4 s12">
 					<input type="text" placeholder="texto" name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>
 				</div>
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s6">
 					<input type="number" placeholder="até R$ valor" name="preco" min="0" value="{{ $filtrar['preco'] ?? '' }}"/>
 				</div>
-				<div class="col l3 m4 s4">
-					<select name="formaPagamento">
-						<option value="" {{ !isset($filtrar['formaPagamento']) ? 'selected' : '' }}>Todas</option>
-						@foreach(FormasPagamento::getAll() as $meioPagto => $key )
-						<option value="{{ $key }}" {{isset($filtrar['formaPagamento']) && $filtrar['formaPagamento'] == $key ? 'selected' : '' }}>{{ $meioPagto }}</option>
-						@endforeach
-					</select>
+				<div class="col l3 m4 s12 flex">
+					<input type="date" name="dataini" value="{{ $filtrar['dataini'] ?? '' }}"/>
+					&nbsp;<p>até</p>&nbsp;
+					<input type="date" name="datafim" value="{{ $filtrar['datafim'] ?? date('Y-m-d') }}"/>
 				</div>
-				<button type="submit" class="btn blue">Buscar</button>
+				<button type="submit" class="btn blue btn-pos">Buscar</button>
 			</form>
 		</div>
 		<div class="row">
@@ -37,7 +42,7 @@
 				<thead>
 					<tr>
 						<th>Entrada</th>
-						<th>Serviço</th>
+						<th>Serviço / descrição</th>
 						<th>Preço</th>
 						<th>Ação</th>
 					</tr>
@@ -52,7 +57,7 @@
 							@if(isset($recebido->idPlano))
 							  <a class="btn blue"
 							  href="{{ route('recebido.verCliente',$recebido->idPlano) }}">
-							  Ver o Cliente</a>
+							  Cliente</a>
 							@else
 								<p>sem cliente</p>
 							@endif

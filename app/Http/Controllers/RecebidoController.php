@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RecebidoRequest;
 use App\Contas\Recebido;
 
 class RecebidoController extends Controller
@@ -32,5 +33,11 @@ class RecebidoController extends Controller
 	{
 		$recebido = new Recebido();
 		return $recebido->VerCliente($idPlano);
+	}
+
+	public function adicionar(RecebidoRequest $request)
+	{
+		$recebido = new Recebido();
+		return $recebido->Adicionar($request);
 	}
 }

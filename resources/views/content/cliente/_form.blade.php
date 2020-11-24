@@ -24,6 +24,12 @@
 	@endif
 @endif
 
+@if(isset($cliente->idPlano))
+<a class="btn blue"
+href="{{ route('recebido.filter', 'idp='.$cliente->idPlano) }}">
+Ver extrato</a>
+@endif
+
 <select id="btnType">
 	<option value="1">PF</option>
 	<option value="2">PJ</option>
@@ -66,7 +72,7 @@
 	<input type="text" name="rg" maxlength="12" class="validade rg">
 	<label>Rg</label>
 </div>
-<!-- formata a data de nascimento para como desejar 
+<!-- formata a data de nascimento para como desejar
 $result['dataNascimento'] = date("d-m-Y", strtotime($result['dataNascimento'])) -->
 <div class="input-field inputpf">
 	<input type="date" name="dataExpedicao" class="validade" value="{{ isset($entidade->dataExpedicao) ? strftime( '%Y-%m-%d',strtotime($entidade->dataExpedicao) ) : old('dataExpedicao') }}">

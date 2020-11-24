@@ -9,6 +9,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use App\Http\Requests\RecebidoRequest;
 use App\Mail\Emails;
 use App\Entidades\Cliente;
 use Carbon\Carbon;
@@ -127,6 +128,22 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 				$recebidos = $recebidos->where('valor','<=',$filtrar['preco']);
 			}
 
+			if (isset($filtrar['idp']))
+			{
+				$recebidos = $recebidos->where('idPlano','=',$filtrar['idp']);
+			}
+
+			if(isset($filtrar['dataini']) && isset($filtrar['datafim']))
+			{
+				$recebidos = $recebidos->whereBetween('DataEntrada', [$filtrar['dataini'], $filtrar['datafim']]);
+			}else if(isset($filtrar['dataini']))
+			{
+				$recebidos = $recebidos->where('DataEntrada', '>=',$filtrar['dataini']);
+			}else if (isset($filtrar['datafim']))
+			{
+				$recebidos = $recebidos->where('DataEntrada', '<=',$filtrar['datafim']);
+			}
+
 			//padrao, buscar o que nao pode ser deletado E pega tudo em array
 			$recebidos = $recebidos->Where(function ($query) {
 				$query->where('deletado', '=', 0)
@@ -135,9 +152,9 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 			});
 			$recebidos = $recebidos->get();
 
-			// foreach ($recebidos as $key => $value) {
-			// 	$valorTotal += $value['preco'];
-			// }
+			foreach ($recebidos as $key => $value) {
+				$valorTotal += $value['valor'];
+			}
 
 			if ($recebidos->isEmpty() || $recebidos->count() == 0) {
 				\Session::flash('resultado',['msg'=>'Sem resultados !']);
@@ -145,7 +162,7 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 				\Session::flash('resultado', null);
 			}
 
-			return view('content.recebido.recebidos',compact('recebidos','filtrar'));
+			return view('content.recebido.recebidos',compact('recebidos','filtrar','valorTotal'));
 		}catch(\Exception $e){
 			\Session::flash('mensagem',[
 				'title'=> 'Recebidos',
@@ -170,6 +187,43 @@ class Recebido extends Authenticatable implements MustVerifyEmailContract
 			// echo $cliente->idEntidade;
 		}else{
 			return redirect()->back();
+		}
+	}
+
+	public function Adicionar(RecebidoRequest $request)
+	{
+		try{
+			$dados = $request->all();
+
+			// cria a entidade
+			$recebido = new Recebido();
+			$recebido->descricao = $dados['descricao'];
+			$recebido->valor = $dados['valor'];
+			$recebido->dataEntrada = $dados['dataEntrada'];
+			$recebido->ativo = true;
+			$recebido->save();
+
+			\Session::flash('mensagem',[
+				'title'=> 'Recebido',
+				'msg'=>'Recebido externo criado com sucesso !',
+				'class'=>'green white-text modal-show',
+				'class-mc'=> 'green',
+				'class-so'=>'sidenav-overlay-show'
+				]);
+
+			return redirect()->back()->withInput($request->all);
+		}catch(\Exception $e){
+			\Session::flash('mensagem',[
+				'title'=> 'Recebido',
+				'msg'=> $e->getMessage(),
+				'class'=> 'red white-text modal-show',
+				'class-mc'=> 'red',
+				'class-so'=> 'sidenav-overlay-show'
+				]);
+			// envia email de erro
+			Mail::to(\Config::get('mail.from.address'))->send(new Emails("Criar","AdicionarRecebido",$e->getMessage(),'now'));
+			// retorna ao cliente
+			return redirect()->back()->withInput($request->all);
 		}
 	}
 }

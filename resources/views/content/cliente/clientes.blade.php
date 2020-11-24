@@ -17,17 +17,17 @@
 		</div>
 		<div class="row">
 			<form method="GET" action="{{ route('cliente.filter') }}">
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s12">
 					<input type="text" placeholder="razao social,nome, cnpj, cod. do cliente, email..." name="texto" value="{{ $filtrar['texto'] ?? '' }}"/>
 				</div>
-				<div class="col l3 m4 s4">
+				<div class="col l3 m4 s6">
 					<select name="status">
 						<option value="" {{ !isset($filtrar['status']) ? 'selected' : '' }}>Ativado & Desativado</option>
 						<option value="1" {{ isset($filtrar['status']) && $filtrar['status'] == '1' ? 'selected' : '' }}>Ativado</option>
 						<option value="0" {{ isset($filtrar['status']) && $filtrar['status'] == '0' ? 'selected' : '' }}>Desativado</option>
 					</select>
 				</div>
-				<button type="submit" class="btn blue">Buscar</button>
+				<button type="submit" class="btn blue btn-pos">Buscar</button>
 			</form>
 		</div>
 		<p>total: {{ $clientes->count() }}</p>
@@ -35,45 +35,41 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Id</th>
-						<th>ent</th>
-						<th>Cnpj</th>
-						<th>Razão Social</th>
-						<th>Código de Cliente</th>
+						<th>Nome / fantasia</th>
+						<th>Documento</th>
+						<th>Cod. Cliente</th>
 						<th>Ação</th>
 					</tr>
 				</thead>
 				<tbody>
 				@foreach($clientes as $cliente)
 					<tr>
-						<td>{{ $cliente->idCliente }}</td>
-						<td>{{ $cliente->idEntidade }}</td>
-						<td>{{ $cliente->cnpj }}</td>
-						<td>{{ $cliente->razaoSocial }}</td>
+						<td>{{ $cliente->razaoSocial ?? $cliente->Entidade->apelido }}</td>
+						<td>{{ $cliente->cnpj ?? 'não possui' }}</td>
 						<td>{{ $cliente->codCliente }}</td>
 						<td>
 							<a class="btn blue"
 							href="{{ route('cliente.editar',[$cliente->idCliente, $cliente->idEntidade]) }}">
 							Editar</a>
-						</td>
-						<td>
+							<!-- </td>
+							<td> -->
 							<a class="btn red"
 							href="{{ route('cliente.deleteEntidade',$cliente->idEntidade) }}">
 							Excluir</a>
-						</td>
-						@if($cliente->ativo)
-						<td>
+							<!-- </td> -->
+							@if($cliente->ativo)
+							<!-- <td> -->
 							<a class="btn green"
 							href="{{ route('cliente.desativarEntidade',$cliente->idEntidade) }}">
 							Desativar</a>
-						</td>
-						@else
-						<td>
+							<!-- </td> -->
+							@else
+							<!-- <td> -->
 							<a class="btn green"
 							href="{{ route('cliente.ativarEntidade',$cliente->idEntidade) }}">
 							Ativar</a>
+							@endif
 						</td>
-						@endif
 					</tr>
 				@endforeach
 				</tbody>
